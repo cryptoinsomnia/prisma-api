@@ -1,9 +1,9 @@
 # import Post from "./generated/prisma.graphql"
 
 type Query {
-  feed: [Post!]!
-  drafts: [Post!]!
+  feed(first: Int = 20, orderBy: PostOrderByInput = createdAt_DESC): [Post!]!
   post(id: ID!): Post!
+  user(username: String): User
   me: User
 }
 
@@ -22,7 +22,17 @@ type AuthPayload {
 
 type User {
   id: ID!
-  email: String!
-  name: String!
+  facebookUserId: String
+  facebookEmail: String
+  createdAt: DateTime!
+  email: String
+  username: String
+  name: String
+  admin: Boolean
+  about: String
+  userType: USER_TYPE
   posts: [Post!]!
+  comments: [Comment!]!
+  flagsReportedAboutOthers: [Flag!]!
+  flagsReportedAboutThisUser: [Flag!]!
 }
