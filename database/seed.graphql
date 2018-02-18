@@ -1,24 +1,104 @@
-mutation {
-  createUser(data: {
-    email: "developer@example.com"
-    password: "$2a$10$hACwQ5/HQI6FhbIISOUVeusy3sKyUDhSq36fF5d/54aAdiygJPFzm" # plaintext password: "nooneknows"
-    name: "Sarah"
-    posts: {
-      create: [{
-        title: "Hello World"
-        text: "This is my first blog post ever!"
-        isPublished: true
-      }, {
-        title: "My Second Post"
-        text: "My first post was good, but this one is better!"
-        isPublished: true
-      }, {
-        title: "Solving World Hunger"
-        text: "This is a draft..."
-        isPublished: false
-      }]
+mutation CreateRuud {
+  createUser(
+    data: {
+      username: "rgmvisser"
+      name: "Ruud Visser"
+      admin: true
+      userType: ADMIN
+      posts: {
+        create: [
+          {
+            title: "Ruud's first post"
+            url: "http://google.com"
+            content: "First post of Ruud content"
+          }
+          {
+            title: "Ruud's second post"
+            url: "http://google.com"
+            content: "Second post of Ruud content"
+          }
+          {
+            title: "Ruud's third post"
+            url: "http://google.com"
+            content: "Third post of Ruud content"
+          }
+        ]
+      }
     }
-  }) {
+  ) {
     id
+    posts {
+      id
+    }
+  }
+}
+
+mutation CreateMatt {
+  createUser(
+    data: {
+      username: "matt"
+      name: "Matt Schulman"
+      admin: true
+      userType: ADMIN
+      posts: {
+        create: [
+          {
+            title: "Matthew's first post"
+            url: "http://google.com"
+            content: "First post of Matthew content"
+          }
+          {
+            title: "Matthew's second post"
+            url: "http://google.com"
+            content: "Second post of Matthew content"
+          }
+          {
+            title: "Matthew's third post"
+            url: "http://google.com"
+            content: "Third post of Matthew content"
+          }
+        ]
+      }
+    }
+  ) {
+    id
+    posts {
+      id
+    }
+  }
+}
+
+mutation CreateFragosti {
+  createUser(
+    data: {
+      username: "fragosti"
+      name: "Francesco Agosti"
+      admin: true
+      userType: ADMIN
+      posts: {
+        create: [
+          {
+            title: "Fragosti's first post"
+            url: "http://google.com"
+            content: "First post of Fragosti content"
+          }
+          {
+            title: "Fragosti's second post"
+            url: "http://google.com"
+            content: "Second post of Fragosti content"
+          }
+          {
+            title: "Fragosti's third post"
+            url: "http://google.com"
+            content: "Third post of Fragosti content"
+          }
+        ]
+      }
+    }
+  ) {
+    id
+    posts {
+      id
+    }
   }
 }
