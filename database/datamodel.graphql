@@ -1,0 +1,83 @@
+type User {
+  id: ID! @unique
+  facebookUserId: String @unique
+  facebookEmail: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String
+  username: String @unique
+  password: String
+  name: String
+  admin: Boolean @default(value: "false")
+  about: String
+  userType: USER_TYPE
+  posts: [Post!]! @relation(name: "UserPosts")
+  comments: [Comment!]! @relation(name: "UserComments")
+  flagsReportedAboutOthers: [Flag!]! @relation(name: "UserReportsOfOthersFlags")
+  flagsReportedAboutThisUser: [Flag!]! @relation(name: "AllFlagsAboutAUser")
+}
+
+type Post {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String!
+  url: String
+  content: String
+  hidden: Boolean @default(value: "false")
+  mediaLink: String
+  isAdmin: Boolean @default(value: "false")
+  author: User! @relation(name: "UserPosts")
+  comments: [Comment!]! @relation(name: "PostComments")
+  flags: [Flag!]! @relation(name: "PostFlags")
+  votes: [Vote!]! @relation(name: "PostVotes")
+}
+
+type Vote {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  score: Int!
+  contentType: CONTENT_TYPE!
+  comment: Comment @relation(name: "CommentVotes")
+  post: Post! @relation(name: "PostVotes")
+}
+
+type Comment {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  content: String!
+  directParentType: CONTENT_TYPE!
+  author: User! @relation(name: "UserComments")
+  post: Post! @relation(name: "PostComments")
+  votes: [Vote!]! @relation(name: "CommentVotes")
+  flags: [Flag!]! @relation(name: "CommentFlags")
+}
+
+type Flag {
+  id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  reportedContentType: CONTENT_TYPE!
+  creator: User! @relation(name: "UserReportsOfOthersFlags")
+  reportedUser: User! @relation(name: "AllFlagsAboutAUser")
+  comment: Comment @relation(name: "CommentFlags")
+  post: Post! @relation(name: "PostFlags")
+}
+
+enum USER_TYPE {
+  ADMIN,
+  MODERATOR,
+  NORMAL
+}
+
+# Might not need this enum depending on how graphcool shapes out.
+# For now, keep the notion of a content type enum for help with the 
+# relations between votes/comments/flags and the content that they 
+# refer to which can either be a post or a comment.
+enum CONTENT_TYPE {
+  POST,
+  COMMENT
+}
+
