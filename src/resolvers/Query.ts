@@ -1,11 +1,15 @@
-import { getUserId, Context } from '../utils'
+import { getUserId, Context } from "../utils";
 
 export const Query = {
-  feed(parent, args, ctx: Context, info) {
-    return ctx.db.query.posts({ where: { isPublished: true } }, info)
+  feed(parent, { first, orderBy }, ctx: Context, info) {
+    return ctx.db.query.posts({ first: first, orderBy: orderBy }, info);
   },
 
-  drafts(parent, args, ctx: Context, info) {
+  user(parent, { username }, ctx: Context, info) {
+    return ctx.db.query.user({ where: { username: username } }, info);
+  },
+
+  /*drafts(parent, args, ctx: Context, info) {
     const id = getUserId(ctx)
 
     const where = {
@@ -16,14 +20,14 @@ export const Query = {
     }
 
     return ctx.db.query.posts({ where }, info)
-  },
+  },*/
 
   post(parent, { id }, ctx: Context, info) {
-    return ctx.db.query.post({ where: { id: id } }, info)
+    return ctx.db.query.post({ where: { id: id } }, info);
   },
 
   me(parent, args, ctx: Context, info) {
-    const id = getUserId(ctx)
-    return ctx.db.query.user({ where: { id } }, info)
-  },
-}
+    const id = getUserId(ctx);
+    return ctx.db.query.user({ where: { id } }, info);
+  }
+};
