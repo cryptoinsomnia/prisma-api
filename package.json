@@ -1,12 +1,17 @@
 {
   "name": "api2",
   "scripts": {
-    "start": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
-    "dev": "npm-run-all --parallel start playground",
+    "dev-stage": "dotenv -e .env.stage -- nodemon -e ts,graphql -x ts-node src/index.ts",
+    "dev-prod": "dotenv -e .env.prod -- nodemon -e ts,graphql -x ts-node src/index.ts",
     "debug": "dotenv -- nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
-    "playground": "graphql playground",
     "build": "rimraf dist && tsc",
-    "prisma": "prisma"
+    "start": "dotenv -e .env.prod -- node dist/index.js",
+    "prisma": "prisma",
+    "deploy-db-stage": "prisma deploy --env-file .env.stage",
+    "deploy-db-prod": "prisma deploy --env-file .env.prod",
+    "generate-prod-token": "prisma token --env-file .env.prod",
+    "generate-stage-token": "prisma token --env-file .env.stage",
+    "now": "now"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
@@ -19,6 +24,7 @@
     "dotenv-cli": "1.4.0",
     "graphql-cli": "2.14.1",
     "nodemon": "1.15.0",
+    "now": "^9.3.3",
     "npm-run-all": "4.1.2",
     "prisma": "1.2.4",
     "rimraf": "2.6.2",
