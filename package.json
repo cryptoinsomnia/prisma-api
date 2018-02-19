@@ -11,7 +11,8 @@
     "deploy-db-prod": "prisma deploy --env-file .env.prod",
     "generate-prod-token": "prisma token --env-file .env.prod",
     "generate-stage-token": "prisma token --env-file .env.stage",
-    "now": "now"
+    "deploy-prod": "now --dotenv .env.prod",
+    "deploy-stage": "now --dotenv .env.stage"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
