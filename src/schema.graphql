@@ -10,29 +10,10 @@ type Query {
 type Mutation {
   signup(email: String!, password: String!, name: String!): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
-  createDraft(title: String!, text: String!): Post!
-  publish(id: ID!): Post!
   deletePost(id: ID!): Post!
 }
 
 type AuthPayload {
   token: String!
   user: User!
-}
-
-type User {
-  id: ID!
-  facebookUserId: String
-  facebookEmail: String
-  createdAt: DateTime!
-  email: String
-  username: String
-  name: String
-  admin: Boolean
-  about: String
-  userType: USER_TYPE
-  posts: [Post!]!
-  comments: [Comment!]!
-  flagsReportedAboutOthers: [Flag!]!
-  flagsReportedAboutThisUser: [Flag!]!
 }
