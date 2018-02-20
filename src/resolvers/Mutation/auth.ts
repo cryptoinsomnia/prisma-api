@@ -1,34 +1,26 @@
-import * as bcrypt from 'bcryptjs'
-import * as jwt from 'jsonwebtoken'
-import { Context } from '../../utils'
+import * as jwt from "jsonwebtoken";
+import { Context } from "../../utils/types";
+import { getFacebookUser } from "../../utils/facebook";
+import { createPrismaUserFromFacebook } from "../../utils/auth";
 
-export const auth = {
-  async signup(parent, args, ctx: Context, info) {
-    const password = await bcrypt.hash(args.password, 10)
-    const user = await ctx.db.mutation.createUser({
-      data: { ...args, password },
-    })
+export default async (parent, { idToken }, ctx: Context, info) => {
+  let user = null;
+  try {
+    const facebookUser = await getFacebookUser(idToken);
+    user = await ctx.db.query.user(
+      { where: { facebookUserId: facebookUser.id } },
+      info
+    );
+
+    if (!user) {
+      user = await createPrismaUserFromFacebook(ctx, facebookUser);
+    }
 
     return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user,
-    }
-  },
-
-  async login(parent, { email, password }, ctx: Context, info) {
-    // const user = await ctx.db.query.user({ where: { email } })
-    // if (!user) {
-    //   throw new Error(`No such user found for email: ${email}`)
-    // }
-    // console.log(email)
-    // const valid = await bcrypt.compare(password, user.password)
-    // if (!valid) {
-    //   throw new Error('Invalid password')
-    // }
-
-    // return {
-    //   token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-    //   user,
-    // }
-  },
-}
+      ...user,
+      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET)
+    };
+  } catch (error) {
+    throw new Error(error);
+  }
+};

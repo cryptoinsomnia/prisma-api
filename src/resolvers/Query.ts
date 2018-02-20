@@ -1,4 +1,4 @@
-import { getUserId, Context } from "../utils";
+import { getUserId, Context } from "../utils/utils";
 
 export const Query = {
   feed(parent, { first, orderBy }, ctx: Context, info) {
