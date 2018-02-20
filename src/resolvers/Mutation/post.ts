@@ -1,7 +1,6 @@
 import { getUserId, Context } from '../../utils'
 
 export const post = {
-
   async deletePost(parent, { id }, ctx: Context, info) {
     const userId = getUserId(ctx)
     const postExists = await ctx.db.exists.Post({
@@ -14,4 +13,17 @@ export const post = {
 
     return ctx.db.mutation.deletePost({ where: { id } })
   },
+  async createPost(parent, { title, url, content }, ctx: Context, info) {
+    const userId = getUserId(ctx);
+    return ctx.db.mutation.createPost({ 
+      data: {
+        author: {
+          connect: { id: userId }
+        },
+        title,
+        url,
+        content,
+      }
+    }, info)
+  }
 }
