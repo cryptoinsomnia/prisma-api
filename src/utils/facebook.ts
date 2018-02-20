@@ -26,7 +26,7 @@ interface Picture {
   data: PictureData;
 }
 
-interface FacebookUser {
+export interface FacebookUser {
   id: string;
   email: string | null;
   name: string | null;
@@ -42,7 +42,7 @@ interface FacebookUser {
 
 const ENDPOINT = "https://graph.facebook.com";
 const API_VERSION = "v2.9";
-const fields = `id,name,first_name,last_name,birthday,locale,education,work,email,gender,picture`;
+const fields = `id,name,first_name,last_name,email,picture`;
 
 export const getFacebookUser = async (
   facebookToken: string

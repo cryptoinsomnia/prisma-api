@@ -1,26 +1,29 @@
 import * as jwt from "jsonwebtoken";
-import { Context } from "../../utils/types";
+import { Context } from "../../utils/utils";
 import { getFacebookUser } from "../../utils/facebook";
-import { createPrismaUserFromFacebook } from "../../utils/auth";
+import { createUserFromFacebook } from "../../utils/auth";
 
-export default async (parent, { idToken }, ctx: Context, info) => {
-  let user = null;
-  try {
-    const facebookUser = await getFacebookUser(idToken);
-    user = await ctx.db.query.user(
-      { where: { facebookUserId: facebookUser.id } },
-      info
-    );
-
-    if (!user) {
-      user = await createPrismaUserFromFacebook(ctx, facebookUser);
+export const auth = {
+  async authenticateFacebook(parent, { fbToken }, ctx: Context, info) {
+    let user = null;
+    try {
+      const facebookUser = await getFacebookUser(fbToken);
+      
+      const exists = await ctx.db.exists.User({
+        facebookUserId : facebookUser.id
+      });  
+      user = await ctx.db.query.user(
+        { where: { facebookUserId: facebookUser.id } }, null
+      );
+      if (!user) {
+        user = await createUserFromFacebook(ctx, facebookUser);
+      }
+      return {
+        user: user,
+        token: jwt.sign({ userId: user.id }, process.env.APP_SECRET)
+      };
+    } catch (error) {
+      throw new Error(error);
     }
-
-    return {
-      ...user,
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET)
-    };
-  } catch (error) {
-    throw new Error(error);
   }
 };
