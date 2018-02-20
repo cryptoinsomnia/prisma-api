@@ -1,13 +1,13 @@
-import axios from "axios";
+import axios from 'axios';
 
 interface Employer {
-  id: String;
-  name: String;
+  id: string;
+  name: string;
 }
 
 interface School {
-  id: String;
-  name: String;
+  id: string;
+  name: string;
 }
 
 interface Work {
@@ -19,7 +19,7 @@ interface Education {
 }
 
 interface PictureData {
-  url: String;
+  url: string;
 }
 
 interface Picture {
@@ -40,12 +40,12 @@ export interface FacebookUser {
   picture: Picture;
 }
 
-const ENDPOINT = "https://graph.facebook.com";
-const API_VERSION = "v2.9";
+const ENDPOINT = 'https://graph.facebook.com';
+const API_VERSION = 'v2.9';
 const fields = `id,name,first_name,last_name,email,picture`;
 
 export const getFacebookUser = async (
-  facebookToken: string
+  facebookToken: string,
 ): Promise<FacebookUser> => {
   const endpoint = `${ENDPOINT}/${API_VERSION}/me?fields=${fields}&access_token=${facebookToken}`;
 

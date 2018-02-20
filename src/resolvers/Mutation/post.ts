@@ -1,11 +1,11 @@
-import { getUserId, Context } from "../../utils/utils";
+import { Context, getUserId } from '../../utils/utils';
 
 export const post = {
   async deletePost(parent, { id }, ctx: Context, info) {
     const userId = getUserId(ctx);
     const postExists = await ctx.db.exists.Post({
       id,
-      author: { id: userId }
+      author: { id: userId },
     });
     if (!postExists) {
       throw new Error(`Post not found or you're not the author`);
@@ -19,14 +19,14 @@ export const post = {
       {
         data: {
           author: {
-            connect: { id: userId }
+            connect: { id: userId },
           },
           title,
           url,
-          content
-        }
+          content,
+        },
       },
-      info
+      info,
     );
-  }
+  },
 };

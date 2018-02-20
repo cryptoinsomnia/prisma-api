@@ -12,7 +12,12 @@
     "generate-prod-token": "prisma token --env-file .env.prod",
     "generate-stage-token": "prisma token --env-file .env.stage",
     "deploy-prod": "now --dotenv .env.prod",
-    "deploy-stage": "now --dotenv .env.stage"
+    "deploy-stage": "now --dotenv .env.stage",
+    "lint": "tslint -c tslint.json 'src/**/*.ts' --exclude 'src/generated/*.ts' --fix",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.ts": ["lint", "git add"]
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -25,12 +30,16 @@
     "@types/bcryptjs": "2.4.1",
     "dotenv-cli": "1.4.0",
     "graphql-cli": "2.14.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.1.1",
     "nodemon": "1.15.0",
     "now": "^9.3.3",
     "npm-run-all": "4.1.2",
     "prisma": "1.2.4",
     "rimraf": "2.6.2",
     "ts-node": "4.1.0",
+    "tslint": "^5.9.1",
+    "tslint-eslint-rules": "^5.0.0",
     "typescript": "2.7.2"
   },
   "resolutions": {
