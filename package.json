@@ -20,6 +20,7 @@
     "*.ts": ["lint", "git add"]
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bcryptjs": "2.4.3",
     "graphql-yoga": "1.3.2",
     "jsonwebtoken": "8.1.1",

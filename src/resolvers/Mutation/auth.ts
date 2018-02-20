@@ -1,34 +1,29 @@
-import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
-import { Context } from '../../utils';
+import { createUserFromFacebook } from '../../utils/auth';
+import { getFacebookUser } from '../../utils/facebook';
+import { Context } from '../../utils/utils';
 
 export const auth = {
-  async signup(parent, args, ctx: Context, info) {
-    const password = await bcrypt.hash(args.password, 10);
-    const user = await ctx.db.mutation.createUser({
-      data: { ...args, password },
-    });
+  async authenticateFacebook(parent, { fbToken }, ctx: Context, info) {
+    let user = null;
+    try {
+      const facebookUser = await getFacebookUser(fbToken);
 
-    return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user,
-    };
-  },
-
-  async login(parent, { email, password }, ctx: Context, info) {
-    // const user = await ctx.db.query.user({ where: { email } })
-    // if (!user) {
-    //   throw new Error(`No such user found for email: ${email}`)
-    // }
-    // console.log(email)
-    // const valid = await bcrypt.compare(password, user.password)
-    // if (!valid) {
-    //   throw new Error('Invalid password')
-    // }
-
-    // return {
-    //   token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-    //   user,
-    // }
+      const exists = await ctx.db.exists.User({
+        facebookUserId : facebookUser.id,
+      });
+      user = await ctx.db.query.user(
+        { where: { facebookUserId: facebookUser.id } }, null,
+      );
+      if (!user) {
+        user = await createUserFromFacebook(ctx, facebookUser);
+      }
+      return {
+        user,
+        token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
+      };
+    } catch (error) {
+      throw new Error(error);
+    }
   },
 };

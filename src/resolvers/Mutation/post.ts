@@ -1,4 +1,4 @@
-import { Context, getUserId } from '../../utils';
+import { Context, getUserId } from '../../utils/utils';
 
 export const post = {
   async deletePost(parent, { id }, ctx: Context, info) {
@@ -15,15 +15,18 @@ export const post = {
   },
   async createPost(parent, { title, url, content }, ctx: Context, info) {
     const userId = getUserId(ctx);
-    return ctx.db.mutation.createPost({
-      data: {
-        author: {
-          connect: { id: userId },
+    return ctx.db.mutation.createPost(
+      {
+        data: {
+          author: {
+            connect: { id: userId },
+          },
+          title,
+          url,
+          content,
         },
-        title,
-        url,
-        content,
       },
-    }, info);
+      info,
+    );
   },
 };

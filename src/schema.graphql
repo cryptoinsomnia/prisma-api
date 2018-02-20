@@ -8,8 +8,7 @@ type Query {
 }
 
 type Mutation {
-  signup(email: String!, password: String!, name: String!): AuthPayload!
-  login(email: String!, password: String!): AuthPayload!
+  authenticateFacebook(fbToken: String!): AuthPayload!
   deletePost(id: ID!): Post!
   createPost(title: String!, url: String, content: String): Post!
 }
