@@ -21,13 +21,13 @@ Which means, run a GraphQL (public API) Server on localhost, and use the staging
 
 If you make changes to the database layer in `datamodel.graphql` you will have to run:
 ```
-$ deploy-db-stage
+$ yarn deploy-db-stage
 ```
 To see the changes reflected in the private API (or you can try using `--watch` but I'd be surprised if it worked).
 
 If you make changes to the public API (GraphQL Server) they will take effect immediately.
 
-There is a similar workflow to connect to prod: `$ yarn dev-prod` and  `$ deploy-db-prod`. **Note: See deploying section below to be able to deploy to prod**.
+There is a similar workflow to connect to prod: `$ yarn dev-prod` and  `$ yarn deploy-db-prod`. **Note: See deploying section below to be able to deploy to prod**.
 
 These workflows run the same commands, but read from different `.env` files: `.env.stage` and `.env.prod`.
 
