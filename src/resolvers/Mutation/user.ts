@@ -2,12 +2,12 @@ import { Context, getUserId } from '../../utils/utils';
 
 export const user = {
   async deleteUser(parent, { id }, ctx: Context, info) {
-    const userId = getUserId(ctx);   
-    if (userId != id) {
-        const user = await ctx.db.query.user(
+    const userId = getUserId(ctx);
+    if (userId !== id) {
+        const myUser = await ctx.db.query.user(
             { where: { id: userId } }, null,
         );
-        if (user.admin != true) {
+        if (myUser.admin !== true) {
             throw new Error(`User can only delete own account or needs to be admin`);
         }
     }

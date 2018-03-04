@@ -12,7 +12,9 @@ type Mutation {
   deletePost(id: ID!): Post!
   createPost(title: String!, url: String, content: String): Post!
 
-  deleteUser(id: String!) : User
+  voteOnPost(postId: ID) : Vote!
+
+  deleteUser(id: ID!) : User
 }
 
 type AuthPayload {
