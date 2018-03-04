@@ -42,7 +42,7 @@ export interface FacebookUser {
 
 const ENDPOINT = 'https://graph.facebook.com';
 const API_VERSION = 'v2.9';
-const fields = `id,name,first_name,last_name,email,picture`;
+const fields = `id,name,first_name,last_name,email,picture.type(large)`;
 
 export const getFacebookUser = async (
   facebookToken: string,
