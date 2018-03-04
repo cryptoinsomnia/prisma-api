@@ -12,7 +12,9 @@ export const createUserFromFacebook = async (ctx: Context, facebookUser: Faceboo
     data: {
       facebookUserId: facebookUser.id,
       name: facebookUser.name,
+      username: facebookUser.name.replace(/[\W_-]/g, '').toLowerCase(),
       facebookEmail: facebookUser.email,
+      profileImageUrl: facebookUser.picture.data.url,
       userType: 'NORMAL',
     },
   });
