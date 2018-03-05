@@ -10,9 +10,11 @@ type User {
   name: String
   admin: Boolean @default(value: "false")
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   posts: [Post!]! @relation(name: "UserPosts")
   comments: [Comment!]! @relation(name: "UserComments")
+  votes: [Vote!]! @relation(name:"UserVotes")
   flagsReportedAboutOthers: [Flag!]! @relation(name: "UserReportsOfOthersFlags")
   flagsReportedAboutThisUser: [Flag!]! @relation(name: "AllFlagsAboutAUser")
 }
@@ -41,6 +43,7 @@ type Vote {
   contentType: CONTENT_TYPE!
   comment: Comment @relation(name: "CommentVotes")
   post: Post! @relation(name: "PostVotes")
+  voter: User! @relation(name: "UserVotes")
 }
 
 type Comment {

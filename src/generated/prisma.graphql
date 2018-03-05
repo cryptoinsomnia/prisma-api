@@ -56,9 +56,11 @@ type User implements Node {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
   flagsReportedAboutOthers(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
   flagsReportedAboutThisUser(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
 }
@@ -71,6 +73,7 @@ type Vote implements Node {
   contentType: CONTENT_TYPE!
   comment(where: CommentWhereInput): Comment
   post(where: PostWhereInput): Post!
+  voter(where: UserWhereInput): User!
 }
 
 
@@ -1793,9 +1796,11 @@ input UserCreateInput {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
+  votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
   flagsReportedAboutThisUser: FlagCreateManyWithoutReportedUserInput
 }
@@ -1820,6 +1825,11 @@ input UserCreateOneWithoutPostsInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateOneWithoutVotesInput {
+  create: UserCreateWithoutVotesInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateWithoutCommentsInput {
   facebookUserId: String
   facebookEmail: String
@@ -1829,8 +1839,10 @@ input UserCreateWithoutCommentsInput {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   posts: PostCreateManyWithoutAuthorInput
+  votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
   flagsReportedAboutThisUser: FlagCreateManyWithoutReportedUserInput
 }
@@ -1844,9 +1856,11 @@ input UserCreateWithoutFlagsReportedAboutOthersInput {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
+  votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutThisUser: FlagCreateManyWithoutReportedUserInput
 }
 
@@ -1859,9 +1873,11 @@ input UserCreateWithoutFlagsReportedAboutThisUserInput {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
+  votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
 }
 
@@ -1874,7 +1890,26 @@ input UserCreateWithoutPostsInput {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
+  comments: CommentCreateManyWithoutAuthorInput
+  votes: VoteCreateManyWithoutVoterInput
+  flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
+  flagsReportedAboutThisUser: FlagCreateManyWithoutReportedUserInput
+}
+
+input UserCreateWithoutVotesInput {
+  facebookUserId: String
+  facebookEmail: String
+  email: String
+  username: String
+  password: String
+  name: String
+  admin: Boolean
+  about: String
+  profileImageUrl: String
+  userType: USER_TYPE
+  posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
   flagsReportedAboutThisUser: FlagCreateManyWithoutReportedUserInput
@@ -1917,6 +1952,8 @@ enum UserOrderByInput {
   admin_DESC
   about_ASC
   about_DESC
+  profileImageUrl_ASC
+  profileImageUrl_DESC
   userType_ASC
   userType_DESC
 }
@@ -1933,6 +1970,7 @@ type UserPreviousValues {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
 }
 
@@ -1980,9 +2018,11 @@ input UserUpdateInput {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
+  votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
   flagsReportedAboutThisUser: FlagUpdateManyWithoutReportedUserInput
 }
@@ -2023,6 +2063,15 @@ input UserUpdateOneWithoutPostsInput {
   upsert: UserUpsertWithoutPostsInput
 }
 
+input UserUpdateOneWithoutVotesInput {
+  create: UserCreateWithoutVotesInput
+  connect: UserWhereUniqueInput
+  disconnect: UserWhereUniqueInput
+  delete: UserWhereUniqueInput
+  update: UserUpdateWithoutVotesInput
+  upsert: UserUpsertWithoutVotesInput
+}
+
 input UserUpdateWithoutCommentsDataInput {
   facebookUserId: String
   facebookEmail: String
@@ -2032,8 +2081,10 @@ input UserUpdateWithoutCommentsDataInput {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   posts: PostUpdateManyWithoutAuthorInput
+  votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
   flagsReportedAboutThisUser: FlagUpdateManyWithoutReportedUserInput
 }
@@ -2052,9 +2103,11 @@ input UserUpdateWithoutFlagsReportedAboutOthersDataInput {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
+  votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutThisUser: FlagUpdateManyWithoutReportedUserInput
 }
 
@@ -2072,9 +2125,11 @@ input UserUpdateWithoutFlagsReportedAboutThisUserDataInput {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
+  votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
 }
 
@@ -2092,8 +2147,10 @@ input UserUpdateWithoutPostsDataInput {
   name: String
   admin: Boolean
   about: String
+  profileImageUrl: String
   userType: USER_TYPE
   comments: CommentUpdateManyWithoutAuthorInput
+  votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
   flagsReportedAboutThisUser: FlagUpdateManyWithoutReportedUserInput
 }
@@ -2101,6 +2158,28 @@ input UserUpdateWithoutPostsDataInput {
 input UserUpdateWithoutPostsInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutPostsDataInput!
+}
+
+input UserUpdateWithoutVotesDataInput {
+  facebookUserId: String
+  facebookEmail: String
+  email: String
+  username: String
+  password: String
+  name: String
+  admin: Boolean
+  about: String
+  profileImageUrl: String
+  userType: USER_TYPE
+  posts: PostUpdateManyWithoutAuthorInput
+  comments: CommentUpdateManyWithoutAuthorInput
+  flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
+  flagsReportedAboutThisUser: FlagUpdateManyWithoutReportedUserInput
+}
+
+input UserUpdateWithoutVotesInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutVotesDataInput!
 }
 
 input UserUpsertWithoutCommentsInput {
@@ -2125,6 +2204,12 @@ input UserUpsertWithoutPostsInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutPostsDataInput!
   create: UserCreateWithoutPostsInput!
+}
+
+input UserUpsertWithoutVotesInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutVotesDataInput!
+  create: UserCreateWithoutVotesInput!
 }
 
 input UserWhereInput {
@@ -2623,6 +2708,59 @@ input UserWhereInput {
   All values not ending with the given string.
   """
   about_not_ends_with: String
+  profileImageUrl: String
+  """
+  All values that are not equal to given value.
+  """
+  profileImageUrl_not: String
+  """
+  All values that are contained in given list.
+  """
+  profileImageUrl_in: [String!]
+  """
+  All values that are not contained in given list.
+  """
+  profileImageUrl_not_in: [String!]
+  """
+  All values less than the given value.
+  """
+  profileImageUrl_lt: String
+  """
+  All values less than or equal the given value.
+  """
+  profileImageUrl_lte: String
+  """
+  All values greater than the given value.
+  """
+  profileImageUrl_gt: String
+  """
+  All values greater than or equal the given value.
+  """
+  profileImageUrl_gte: String
+  """
+  All values containing the given string.
+  """
+  profileImageUrl_contains: String
+  """
+  All values not containing the given string.
+  """
+  profileImageUrl_not_contains: String
+  """
+  All values starting with the given string.
+  """
+  profileImageUrl_starts_with: String
+  """
+  All values not starting with the given string.
+  """
+  profileImageUrl_not_starts_with: String
+  """
+  All values ending with the given string.
+  """
+  profileImageUrl_ends_with: String
+  """
+  All values not ending with the given string.
+  """
+  profileImageUrl_not_ends_with: String
   userType: USER_TYPE
   """
   All values that are not equal to given value.
@@ -2642,6 +2780,9 @@ input UserWhereInput {
   comments_every: CommentWhereInput
   comments_some: CommentWhereInput
   comments_none: CommentWhereInput
+  votes_every: VoteWhereInput
+  votes_some: VoteWhereInput
+  votes_none: VoteWhereInput
   flagsReportedAboutOthers_every: FlagWhereInput
   flagsReportedAboutOthers_some: FlagWhereInput
   flagsReportedAboutOthers_none: FlagWhereInput
@@ -2676,6 +2817,7 @@ input VoteCreateInput {
   contentType: CONTENT_TYPE!
   comment: CommentCreateOneWithoutVotesInput
   post: PostCreateOneWithoutVotesInput!
+  voter: UserCreateOneWithoutVotesInput!
 }
 
 input VoteCreateManyWithoutCommentInput {
@@ -2688,16 +2830,30 @@ input VoteCreateManyWithoutPostInput {
   connect: [VoteWhereUniqueInput!]
 }
 
+input VoteCreateManyWithoutVoterInput {
+  create: [VoteCreateWithoutVoterInput!]
+  connect: [VoteWhereUniqueInput!]
+}
+
 input VoteCreateWithoutCommentInput {
   score: Int!
   contentType: CONTENT_TYPE!
   post: PostCreateOneWithoutVotesInput!
+  voter: UserCreateOneWithoutVotesInput!
 }
 
 input VoteCreateWithoutPostInput {
   score: Int!
   contentType: CONTENT_TYPE!
   comment: CommentCreateOneWithoutVotesInput
+  voter: UserCreateOneWithoutVotesInput!
+}
+
+input VoteCreateWithoutVoterInput {
+  score: Int!
+  contentType: CONTENT_TYPE!
+  comment: CommentCreateOneWithoutVotesInput
+  post: PostCreateOneWithoutVotesInput!
 }
 
 """
@@ -2775,6 +2931,7 @@ input VoteUpdateInput {
   contentType: CONTENT_TYPE
   comment: CommentUpdateOneWithoutVotesInput
   post: PostUpdateOneWithoutVotesInput
+  voter: UserUpdateOneWithoutVotesInput
 }
 
 input VoteUpdateManyWithoutCommentInput {
@@ -2795,10 +2952,20 @@ input VoteUpdateManyWithoutPostInput {
   upsert: [VoteUpsertWithoutPostInput!]
 }
 
+input VoteUpdateManyWithoutVoterInput {
+  create: [VoteCreateWithoutVoterInput!]
+  connect: [VoteWhereUniqueInput!]
+  disconnect: [VoteWhereUniqueInput!]
+  delete: [VoteWhereUniqueInput!]
+  update: [VoteUpdateWithoutVoterInput!]
+  upsert: [VoteUpsertWithoutVoterInput!]
+}
+
 input VoteUpdateWithoutCommentDataInput {
   score: Int
   contentType: CONTENT_TYPE
   post: PostUpdateOneWithoutVotesInput
+  voter: UserUpdateOneWithoutVotesInput
 }
 
 input VoteUpdateWithoutCommentInput {
@@ -2810,11 +2977,24 @@ input VoteUpdateWithoutPostDataInput {
   score: Int
   contentType: CONTENT_TYPE
   comment: CommentUpdateOneWithoutVotesInput
+  voter: UserUpdateOneWithoutVotesInput
 }
 
 input VoteUpdateWithoutPostInput {
   where: VoteWhereUniqueInput!
   data: VoteUpdateWithoutPostDataInput!
+}
+
+input VoteUpdateWithoutVoterDataInput {
+  score: Int
+  contentType: CONTENT_TYPE
+  comment: CommentUpdateOneWithoutVotesInput
+  post: PostUpdateOneWithoutVotesInput
+}
+
+input VoteUpdateWithoutVoterInput {
+  where: VoteWhereUniqueInput!
+  data: VoteUpdateWithoutVoterDataInput!
 }
 
 input VoteUpsertWithoutCommentInput {
@@ -2827,6 +3007,12 @@ input VoteUpsertWithoutPostInput {
   where: VoteWhereUniqueInput!
   update: VoteUpdateWithoutPostDataInput!
   create: VoteCreateWithoutPostInput!
+}
+
+input VoteUpsertWithoutVoterInput {
+  where: VoteWhereUniqueInput!
+  update: VoteUpdateWithoutVoterDataInput!
+  create: VoteCreateWithoutVoterInput!
 }
 
 input VoteWhereInput {
@@ -2993,6 +3179,7 @@ input VoteWhereInput {
   contentType_not_in: [CONTENT_TYPE!]
   comment: CommentWhereInput
   post: PostWhereInput
+  voter: UserWhereInput
 }
 
 input VoteWhereUniqueInput {
