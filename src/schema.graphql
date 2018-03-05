@@ -11,6 +11,11 @@ type Mutation {
   authenticateFacebook(fbToken: String!): AuthPayload!
   deletePost(id: ID!): Post!
   createPost(title: String!, url: String, content: String): Post!
+
+  voteOnPost(postId: ID) : Vote!
+
+  editUser(id: ID!, name: String, profileImageUrl: String, email: String, about: String): User!
+  deleteUser(id: ID!) : User
 }
 
 type AuthPayload {
