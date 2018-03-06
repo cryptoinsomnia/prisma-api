@@ -1,18 +1,7 @@
 import { Context, getUserId } from '../../utils/utils';
+import { user } from './user';
 
 export const vote = {
-//   async deletePost(parent, { id }, ctx: Context, info) {
-//     const userId = getUserId(ctx);
-//     const postExists = await ctx.db.exists.Post({
-//       id,
-//       author: { id: userId },
-//     });
-//     if (!postExists) {
-//       throw new Error(`Post not found or you're not the author`);
-//     }
-
-//     return ctx.db.mutation.deletePost({ where: { id } });
-//   },
   async voteOnPost(parent, { postId }, ctx: Context, info) {
     const userId = getUserId(ctx);
     const post = await ctx.db.query.post({where : { id: postId }});
@@ -47,5 +36,18 @@ export const vote = {
             },
         },
         info);
+  },
+
+  async deleteVotes(parent, {userId}, ctx: Context, info) {
+    const myUserId = getUserId(ctx);
+    if (myUserId !== userId) {
+        const myUser = await ctx.db.query.user(
+            { where: { id: userId } }, null,
+        );
+        if (myUser.admin !== true) {
+            throw new Error(`User can only delete own votes or needs to be admin`);
+        }
+    }
+    return ctx.db.mutation.deleteManyVotes({where: {voter : {id : userId}}}, info);
   },
 };

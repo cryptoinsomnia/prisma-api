@@ -12,7 +12,8 @@ type Mutation {
   deletePost(id: ID!): Post!
   createPost(title: String!, url: String, content: String): Post!
 
-  voteOnPost(postId: ID) : Vote!
+  voteOnPost(postId: ID!) : Vote!
+  deleteVotes(userId: ID!) : BatchPayload
 
   editUser(id: ID!, name: String, profileImageUrl: String, email: String, about: String): User!
   deleteUser(id: ID!) : User
