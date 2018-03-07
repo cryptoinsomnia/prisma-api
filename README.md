@@ -118,7 +118,7 @@ graphql create my-app --boilerplate typescript-advanced
 cd my-app
 
 # 4. Start server (runs on http://localhost:4000) and open GraphQL Playground
-yarn dev
+yarn dev-stage
 ```
 
 ![](https://imgur.com/hElq68i.png)
