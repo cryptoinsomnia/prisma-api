@@ -38,7 +38,7 @@ You may try to connect to one of our private API instances only to find that the
 
 However, this is not the case. All private API instances are protected.
 
-So for example, go to our staging private API: `https://us1.prisma.sh/francesco-agosti-8ced69/api2/stage`. It will say something about a missing token. 
+So for example, go to our staging private API: `http://165.227.60.186:4466/api2/stage`. It will say something about a missing token. 
 
 To generate this token (for stage), run:
 ```
