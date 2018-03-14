@@ -68,19 +68,3 @@ type Flag {
   comment: Comment @relation(name: "CommentFlags")
   post: Post! @relation(name: "PostFlags")
 }
-
-enum USER_TYPE {
-  ADMIN,
-  MODERATOR,
-  NORMAL
-}
-
-# Might not need this enum depending on how graphcool shapes out.
-# For now, keep the notion of a content type enum for help with the 
-# relations between votes/comments/flags and the content that they 
-# refer to which can either be a post or a comment.
-enum CONTENT_TYPE {
-  POST,
-  COMMENT
-}
-

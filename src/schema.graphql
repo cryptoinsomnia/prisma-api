@@ -3,6 +3,8 @@
 type Query {
   feed(first: Int = 20, orderBy: PostOrderByInput = createdAt_DESC): [Post!]!
   post(id: ID!): Post!
+  comment(id: ID!): Comment!
+  comments(first: Int = 20): [Comment!]!
   user(username: String): User
   me: User
 }
@@ -11,6 +13,9 @@ type Mutation {
   authenticateFacebook(fbToken: String!): AuthPayload!
   deletePost(id: ID!): Post!
   createPost(title: String!, url: String, content: String): Post!
+
+  deleteComment(id: ID!): Comment!
+  createComment(content: String!, postId: ID!, directParentType: CONTENT_TYPE): Comment!
 
   voteOnPost(postId: ID!) : Vote!
   deleteVotes(userId: ID!) : BatchPayload

@@ -13,6 +13,15 @@ export const Query = {
     return ctx.db.query.post({ where: { id } }, info);
   },
 
+  comment(parent, { id }, ctx: Context, info) {
+    return ctx.db.query.comment({ where: { id } }, info);
+  },
+
+  // TODO make this take in a 'WHERE POST ID is x' qualifier
+  comments(parent, { first }, ctx: Context, info) {
+    return ctx.db.query.comments({ first }, info);
+  },
+
   me(parent, args, ctx: Context, info) {
     const id = getUserId(ctx);
     return ctx.db.query.user({ where: { id } }, info);
