@@ -4,7 +4,8 @@ type Query {
   feed(first: Int = 20, orderBy: PostOrderByInput = createdAt_DESC): [Post!]!
   post(id: ID!): Post!
   comment(id: ID!): Comment!
-  comments(first: Int = 20): [Comment!]!
+  allComments(first: Int = 20): [Comment!]!
+  commentsForPost(postId: ID!): [Comment!]!
   user(username: String): User
   me: User
 }

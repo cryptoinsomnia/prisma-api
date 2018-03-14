@@ -17,9 +17,16 @@ export const Query = {
     return ctx.db.query.comment({ where: { id } }, info);
   },
 
-  // TODO make this take in a 'WHERE POST ID is x' qualifier
-  comments(parent, { first }, ctx: Context, info) {
+  allComments(parent, { first }, ctx: Context, info) {
     return ctx.db.query.comments({ first }, info);
+  },
+
+  async commentsForPost(parent, { postId }, ctx: Context, info) {
+    const post = await ctx.db.query.post({ where: { id: postId } });
+    if (!post) {
+      throw new Error(`Post does not exist`);
+    }
+    return ctx.db.query.comments({ where: { post } }, info);
   },
 
   me(parent, args, ctx: Context, info) {
