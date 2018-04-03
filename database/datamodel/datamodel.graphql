@@ -54,6 +54,7 @@ type Comment {
   directParentType: CONTENT_TYPE!
   author: User! @relation(name: "UserComments")
   post: Post! @relation(name: "PostComments")
+  threadedParentComment: Comment @relation(name: "CommentComments")
   votes: [Vote!]! @relation(name: "CommentVotes")
   flags: [Flag!]! @relation(name: "CommentFlags")
 }
@@ -67,4 +68,19 @@ type Flag {
   reportedUser: User! @relation(name: "AllFlagsAboutAUser")
   comment: Comment @relation(name: "CommentFlags")
   post: Post! @relation(name: "PostFlags")
+}
+
+enum USER_TYPE {
+  ADMIN,
+  MODERATOR,
+  NORMAL
+}
+
+# Might not need this enum depending on how graphcool shapes out.
+# For now, keep the notion of a content type enum for help with the 
+# relations between votes/comments/flags and the content that they 
+# refer to which can either be a post or a comment.
+enum CONTENT_TYPE {
+  POST,
+  COMMENT
 }

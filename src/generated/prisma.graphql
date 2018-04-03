@@ -13,6 +13,7 @@ type Comment implements Node {
   directParentType: CONTENT_TYPE!
   author(where: UserWhereInput): User!
   post(where: PostWhereInput): Post!
+  threadedParentComment(where: CommentWhereInput): Comment
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
   flags(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
 }
@@ -128,6 +129,7 @@ input CommentCreateInput {
   directParentType: CONTENT_TYPE!
   author: UserCreateOneWithoutCommentsInput!
   post: PostCreateOneWithoutCommentsInput!
+  threadedParentComment: CommentCreateOneWithoutThreadedParentCommentInput
   votes: VoteCreateManyWithoutCommentInput
   flags: FlagCreateManyWithoutCommentInput
 }
@@ -147,6 +149,11 @@ input CommentCreateOneWithoutFlagsInput {
   connect: CommentWhereUniqueInput
 }
 
+input CommentCreateOneWithoutThreadedParentCommentInput {
+  create: CommentCreateWithoutThreadedParentCommentInput
+  connect: CommentWhereUniqueInput
+}
+
 input CommentCreateOneWithoutVotesInput {
   create: CommentCreateWithoutVotesInput
   connect: CommentWhereUniqueInput
@@ -156,6 +163,7 @@ input CommentCreateWithoutAuthorInput {
   content: String!
   directParentType: CONTENT_TYPE!
   post: PostCreateOneWithoutCommentsInput!
+  threadedParentComment: CommentCreateOneWithoutThreadedParentCommentInput
   votes: VoteCreateManyWithoutCommentInput
   flags: FlagCreateManyWithoutCommentInput
 }
@@ -165,6 +173,7 @@ input CommentCreateWithoutFlagsInput {
   directParentType: CONTENT_TYPE!
   author: UserCreateOneWithoutCommentsInput!
   post: PostCreateOneWithoutCommentsInput!
+  threadedParentComment: CommentCreateOneWithoutThreadedParentCommentInput
   votes: VoteCreateManyWithoutCommentInput
 }
 
@@ -172,6 +181,16 @@ input CommentCreateWithoutPostInput {
   content: String!
   directParentType: CONTENT_TYPE!
   author: UserCreateOneWithoutCommentsInput!
+  threadedParentComment: CommentCreateOneWithoutThreadedParentCommentInput
+  votes: VoteCreateManyWithoutCommentInput
+  flags: FlagCreateManyWithoutCommentInput
+}
+
+input CommentCreateWithoutThreadedParentCommentInput {
+  content: String!
+  directParentType: CONTENT_TYPE!
+  author: UserCreateOneWithoutCommentsInput!
+  post: PostCreateOneWithoutCommentsInput!
   votes: VoteCreateManyWithoutCommentInput
   flags: FlagCreateManyWithoutCommentInput
 }
@@ -181,6 +200,7 @@ input CommentCreateWithoutVotesInput {
   directParentType: CONTENT_TYPE!
   author: UserCreateOneWithoutCommentsInput!
   post: PostCreateOneWithoutCommentsInput!
+  threadedParentComment: CommentCreateOneWithoutThreadedParentCommentInput
   flags: FlagCreateManyWithoutCommentInput
 }
 
@@ -259,6 +279,7 @@ input CommentUpdateInput {
   directParentType: CONTENT_TYPE
   author: UserUpdateOneWithoutCommentsInput
   post: PostUpdateOneWithoutCommentsInput
+  threadedParentComment: CommentUpdateOneWithoutThreadedParentCommentInput
   votes: VoteUpdateManyWithoutCommentInput
   flags: FlagUpdateManyWithoutCommentInput
 }
@@ -290,6 +311,15 @@ input CommentUpdateOneWithoutFlagsInput {
   upsert: CommentUpsertWithoutFlagsInput
 }
 
+input CommentUpdateOneWithoutThreadedParentCommentInput {
+  create: CommentCreateWithoutThreadedParentCommentInput
+  connect: CommentWhereUniqueInput
+  disconnect: CommentWhereUniqueInput
+  delete: CommentWhereUniqueInput
+  update: CommentUpdateWithoutThreadedParentCommentInput
+  upsert: CommentUpsertWithoutThreadedParentCommentInput
+}
+
 input CommentUpdateOneWithoutVotesInput {
   create: CommentCreateWithoutVotesInput
   connect: CommentWhereUniqueInput
@@ -303,6 +333,7 @@ input CommentUpdateWithoutAuthorDataInput {
   content: String
   directParentType: CONTENT_TYPE
   post: PostUpdateOneWithoutCommentsInput
+  threadedParentComment: CommentUpdateOneWithoutThreadedParentCommentInput
   votes: VoteUpdateManyWithoutCommentInput
   flags: FlagUpdateManyWithoutCommentInput
 }
@@ -317,6 +348,7 @@ input CommentUpdateWithoutFlagsDataInput {
   directParentType: CONTENT_TYPE
   author: UserUpdateOneWithoutCommentsInput
   post: PostUpdateOneWithoutCommentsInput
+  threadedParentComment: CommentUpdateOneWithoutThreadedParentCommentInput
   votes: VoteUpdateManyWithoutCommentInput
 }
 
@@ -329,6 +361,7 @@ input CommentUpdateWithoutPostDataInput {
   content: String
   directParentType: CONTENT_TYPE
   author: UserUpdateOneWithoutCommentsInput
+  threadedParentComment: CommentUpdateOneWithoutThreadedParentCommentInput
   votes: VoteUpdateManyWithoutCommentInput
   flags: FlagUpdateManyWithoutCommentInput
 }
@@ -338,11 +371,26 @@ input CommentUpdateWithoutPostInput {
   data: CommentUpdateWithoutPostDataInput!
 }
 
+input CommentUpdateWithoutThreadedParentCommentDataInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  author: UserUpdateOneWithoutCommentsInput
+  post: PostUpdateOneWithoutCommentsInput
+  votes: VoteUpdateManyWithoutCommentInput
+  flags: FlagUpdateManyWithoutCommentInput
+}
+
+input CommentUpdateWithoutThreadedParentCommentInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutThreadedParentCommentDataInput!
+}
+
 input CommentUpdateWithoutVotesDataInput {
   content: String
   directParentType: CONTENT_TYPE
   author: UserUpdateOneWithoutCommentsInput
   post: PostUpdateOneWithoutCommentsInput
+  threadedParentComment: CommentUpdateOneWithoutThreadedParentCommentInput
   flags: FlagUpdateManyWithoutCommentInput
 }
 
@@ -367,6 +415,12 @@ input CommentUpsertWithoutPostInput {
   where: CommentWhereUniqueInput!
   update: CommentUpdateWithoutPostDataInput!
   create: CommentCreateWithoutPostInput!
+}
+
+input CommentUpsertWithoutThreadedParentCommentInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutThreadedParentCommentDataInput!
+  create: CommentCreateWithoutThreadedParentCommentInput!
 }
 
 input CommentUpsertWithoutVotesInput {
@@ -563,6 +617,7 @@ input CommentWhereInput {
   directParentType_not_in: [CONTENT_TYPE!]
   author: UserWhereInput
   post: PostWhereInput
+  threadedParentComment: CommentWhereInput
   votes_every: VoteWhereInput
   votes_some: VoteWhereInput
   votes_none: VoteWhereInput
