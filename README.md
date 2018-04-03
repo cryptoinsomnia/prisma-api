@@ -19,7 +19,7 @@ $ yarn dev-stage
 
 Which means, run a GraphQL (public API) Server on localhost, and use the staging instance as a private API and database. 
 
-If you make changes to the database layer in `types.graphql` you will have to run:
+If you make changes to the database layer in `datamodel.graphql` you will have to run:
 ```
 $ yarn deploy-db-stage
 ```
