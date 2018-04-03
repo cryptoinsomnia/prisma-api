@@ -16,7 +16,7 @@ type Mutation {
   createPost(title: String!, url: String, content: String): Post!
 
   deleteComment(id: ID!): Comment!
-  createComment(content: String!, postId: ID!, directParentType: CONTENT_TYPE): Comment!
+  createComment(content: String!, postId: ID!, parentCommentId: ID): Comment!
 
   voteOnPost(postId: ID!) : Vote!
   deleteVotes(userId: ID!) : BatchPayload
