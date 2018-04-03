@@ -19,19 +19,17 @@ export const comment = {
         if (!post) {
             throw new Error(`Post does not exist`);
         }
-        const directParentType = 'POST';
-        const parentComment;
+
+        const directParentType;
         const threadedParentCommentData;
+
         if (parentCommentId) {
-            parentComment = await ctx.db.query.comment({ where: { id: parentCommentId } });
-            if (!parentComment) {
-                throw new Error(`Parent comment does not exist for the provided parentCommentId`);
-            }
             directParentType = 'COMMENT';
-            threadedParentCommentData = {
-                connect: { id: parentComment.id },
-            };
+            threadedParentCommentData = getThreadedParentCommentDataForCommentOnComment(parentCommentId);
+        } else {
+            directParentType = 'POST';
         }
+
         return ctx.db.mutation.createComment(
             {
                 data: {
@@ -50,3 +48,14 @@ export const comment = {
         );
     },
 };
+
+async function getThreadedParentCommentDataForCommentOnComment(parentCommentId) {
+    parentComment = await ctx.db.query.comment({ where: { id: parentCommentId } });
+    if (!parentComment) {
+        throw new Error(`Parent comment does not exist for the provided parentCommentId`);
+    }
+    threadedParentCommentData = {
+        connect: { id: parentComment.id },
+    };
+    return threadedParentCommentData;
+}
