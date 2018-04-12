@@ -15,19 +15,21 @@ export const comment = {
     },
     async createComment(parent, { content, postId, parentCommentId }, ctx: Context, info) {
         const userId = getUserId(ctx);
-        const post = await ctx.db.query.post({ where: { id: postId } });
-        if (!post) {
-            throw new Error(`Post does not exist`);
-        }
+        checkPostExists(postId, ctx);
 
-        const directParentType;
-        const threadedParentCommentData;
+        const directParentType = 'POST';
+        const threadedParentCommentData = null;
 
         if (parentCommentId) {
             directParentType = 'COMMENT';
-            threadedParentCommentData = getThreadedParentCommentDataForCommentOnComment(parentCommentId);
-        } else {
-            directParentType = 'POST';
+            const parentComment = await ctx.db.query.comment({ where: { id: parentCommentId } });
+            if (!parentComment) {
+                throw new Error(`Parent comment does not exist.`);
+            }
+            threadedParentCommentData = {
+                connect: { id: parentCommentId },
+            };
+            //threadedParentCommentData = getParentCommentData(parentCommentId, ctx);
         }
 
         return ctx.db.mutation.createComment(
@@ -39,7 +41,7 @@ export const comment = {
                         connect: { id: userId },
                     },
                     post: {
-                        connect: { id: post.id },
+                        connect: { id: postId },
                     },
                     threadedParentComment: threadedParentCommentData,
                 },
@@ -49,13 +51,20 @@ export const comment = {
     },
 };
 
-async function getThreadedParentCommentDataForCommentOnComment(parentCommentId) {
-    parentComment = await ctx.db.query.comment({ where: { id: parentCommentId } });
-    if (!parentComment) {
-        throw new Error(`Parent comment does not exist for the provided parentCommentId`);
+async function checkPostExists(postId, ctx) {
+    const post = await ctx.db.query.post({ where: { id: postId } });
+    if (!post) {
+        throw new Error(`Post does not exist`);
     }
-    threadedParentCommentData = {
+}
+
+function getParentCommentData(parentCommentId, ctx) {
+    const parentComment = ctx.db.query.comment({ where: { id: parentCommentId } });
+    if (!parentComment) {
+        throw new Error(`Parent comment does not exist.`);
+    }
+    const threadedParentData = {
         connect: { id: parentComment.id },
-    };
-    return threadedParentCommentData;
+    }
+    return threadedParentData;
 }

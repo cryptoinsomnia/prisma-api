@@ -54,7 +54,7 @@ type Comment {
   directParentType: CONTENT_TYPE!
   author: User! @relation(name: "UserComments")
   post: Post! @relation(name: "PostComments")
-  threadedParentComment: Comment @relation(name: "CommentComments")
+  threadedParentComment: [Comment!]!
   votes: [Vote!]! @relation(name: "CommentVotes")
   flags: [Flag!]! @relation(name: "CommentFlags")
 }
