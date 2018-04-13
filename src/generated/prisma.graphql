@@ -64,6 +64,7 @@ type User implements Node {
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
   flagsReportedAboutOthers(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
   flagsReportedAboutThisUser(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
+  karma: Int
 }
 
 type Vote implements Node {
@@ -1855,6 +1856,7 @@ input UserCreateInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1898,6 +1900,7 @@ input UserCreateWithoutCommentsInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -1915,6 +1918,7 @@ input UserCreateWithoutFlagsReportedAboutOthersInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1932,6 +1936,7 @@ input UserCreateWithoutFlagsReportedAboutThisUserInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1949,6 +1954,7 @@ input UserCreateWithoutPostsInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -1966,6 +1972,7 @@ input UserCreateWithoutVotesInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -2013,6 +2020,8 @@ enum UserOrderByInput {
   profileImageUrl_DESC
   userType_ASC
   userType_DESC
+  karma_ASC
+  karma_DESC
 }
 
 type UserPreviousValues {
@@ -2029,6 +2038,7 @@ type UserPreviousValues {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
 }
 
 type UserSubscriptionPayload {
@@ -2077,6 +2087,7 @@ input UserUpdateInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
@@ -2140,6 +2151,7 @@ input UserUpdateWithoutCommentsDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
@@ -2162,6 +2174,7 @@ input UserUpdateWithoutFlagsReportedAboutOthersDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
@@ -2184,6 +2197,7 @@ input UserUpdateWithoutFlagsReportedAboutThisUserDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
@@ -2206,6 +2220,7 @@ input UserUpdateWithoutPostsDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
@@ -2228,6 +2243,7 @@ input UserUpdateWithoutVotesDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
@@ -2831,6 +2847,35 @@ input UserWhereInput {
   All values that are not contained in given list.
   """
   userType_not_in: [USER_TYPE!]
+  karma: Int
+  """
+  All values that are not equal to given value.
+  """
+  karma_not: Int
+  """
+  All values that are contained in given list.
+  """
+  karma_in: [Int!]
+  """
+  All values that are not contained in given list.
+  """
+  karma_not_in: [Int!]
+  """
+  All values less than the given value.
+  """
+  karma_lt: Int
+  """
+  All values less than or equal the given value.
+  """
+  karma_lte: Int
+  """
+  All values greater than the given value.
+  """
+  karma_gt: Int
+  """
+  All values greater than or equal the given value.
+  """
+  karma_gte: Int
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput

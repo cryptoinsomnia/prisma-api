@@ -1,4 +1,4 @@
-import { Context, getUserId } from '../../utils/utils';
+import { Context, getUserId, incrementUserKarma } from '../../utils/utils';
 
 export const comment = {
     async deleteComment(parent, { id }, ctx: Context, info) {
@@ -15,7 +15,16 @@ export const comment = {
     },
     async createComment(parent, { content, postId, parentCommentId }, ctx: Context, info) {
         const userId = getUserId(ctx);
-        checkPostExists(postId, ctx);
+        const post = await ctx.db.query.post({ where: { id: postId } },
+            `{
+                id
+                author {
+                    id
+                }
+            }`);
+        if (!post) {
+            throw new Error(`Post does not exist`);
+        }
 
         const directParentType = 'POST';
         const threadedParentCommentData = null;
@@ -27,8 +36,11 @@ export const comment = {
                 throw new Error(`Parent comment does not exist.`);
             }
             threadedParentCommentData = {
-                connect: { id: parentCommentId },
+                connect: { id: parentComment.id },
             };
+        }
+        if (post.author.id !== userId) { // prevent abuse of karma
+            incrementUserKarma(post.author.id, ctx, info);
         }
         return ctx.db.mutation.createComment(
             {

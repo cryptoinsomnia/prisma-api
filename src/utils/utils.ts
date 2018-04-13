@@ -22,3 +22,21 @@ export class AuthError extends Error {
     super('Not authorized');
   }
 }
+
+export async function incrementUserKarma(id, ctx: Context, info) {
+  const userToIncrement = await ctx.db.query.user(
+    { where: { id } }, null,
+  );
+  const curKarma = userToIncrement.karma;
+  if (!curKarma) {
+    curKarma = 0;
+  }
+  const karma = curKarma + 1;
+  return ctx.db.mutation.updateUser({
+    data: {
+      karma,
+    }, where: {
+      id,
+    },
+  }, info);
+}
