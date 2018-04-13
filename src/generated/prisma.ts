@@ -68,6 +68,7 @@ type User implements Node {
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
   flagsReportedAboutOthers(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
   flagsReportedAboutThisUser(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
+  karma: Int
 }
 
 type Vote implements Node {
@@ -1859,6 +1860,7 @@ input UserCreateInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1902,6 +1904,7 @@ input UserCreateWithoutCommentsInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -1919,6 +1922,7 @@ input UserCreateWithoutFlagsReportedAboutOthersInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1936,6 +1940,7 @@ input UserCreateWithoutFlagsReportedAboutThisUserInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1953,6 +1958,7 @@ input UserCreateWithoutPostsInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -1970,6 +1976,7 @@ input UserCreateWithoutVotesInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -2017,6 +2024,8 @@ enum UserOrderByInput {
   profileImageUrl_DESC
   userType_ASC
   userType_DESC
+  karma_ASC
+  karma_DESC
 }
 
 type UserPreviousValues {
@@ -2033,6 +2042,7 @@ type UserPreviousValues {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
 }
 
 type UserSubscriptionPayload {
@@ -2081,6 +2091,7 @@ input UserUpdateInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
@@ -2144,6 +2155,7 @@ input UserUpdateWithoutCommentsDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
@@ -2166,6 +2178,7 @@ input UserUpdateWithoutFlagsReportedAboutOthersDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
@@ -2188,6 +2201,7 @@ input UserUpdateWithoutFlagsReportedAboutThisUserDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
@@ -2210,6 +2224,7 @@ input UserUpdateWithoutPostsDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
@@ -2232,6 +2247,7 @@ input UserUpdateWithoutVotesDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
@@ -2835,6 +2851,35 @@ input UserWhereInput {
   All values that are not contained in given list.
   """
   userType_not_in: [USER_TYPE!]
+  karma: Int
+  """
+  All values that are not equal to given value.
+  """
+  karma_not: Int
+  """
+  All values that are contained in given list.
+  """
+  karma_in: [Int!]
+  """
+  All values that are not contained in given list.
+  """
+  karma_not_in: [Int!]
+  """
+  All values less than the given value.
+  """
+  karma_lt: Int
+  """
+  All values less than or equal the given value.
+  """
+  karma_lte: Int
+  """
+  All values greater than the given value.
+  """
+  karma_gt: Int
+  """
+  All values greater than or equal the given value.
+  """
+  karma_gte: Int
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
@@ -3248,6 +3293,10 @@ input VoteWhereUniqueInput {
 }
 `
 
+export type CONTENT_TYPE = 
+  'POST' |
+  'COMMENT'
+
 export type UserOrderByInput = 
   'id_ASC' |
   'id_DESC' |
@@ -3274,11 +3323,9 @@ export type UserOrderByInput =
   'profileImageUrl_ASC' |
   'profileImageUrl_DESC' |
   'userType_ASC' |
-  'userType_DESC'
-
-export type CONTENT_TYPE = 
-  'POST' |
-  'COMMENT'
+  'userType_DESC' |
+  'karma_ASC' |
+  'karma_DESC'
 
 export type PostOrderByInput = 
   'id_ASC' |
@@ -3500,6 +3547,14 @@ export interface UserWhereInput {
   userType_not?: USER_TYPE
   userType_in?: USER_TYPE[] | USER_TYPE
   userType_not_in?: USER_TYPE[] | USER_TYPE
+  karma?: Int
+  karma_not?: Int
+  karma_in?: Int[] | Int
+  karma_not_in?: Int[] | Int
+  karma_lt?: Int
+  karma_lte?: Int
+  karma_gt?: Int
+  karma_gte?: Int
   posts_every?: PostWhereInput
   posts_some?: PostWhereInput
   posts_none?: PostWhereInput
@@ -3517,32 +3572,6 @@ export interface UserWhereInput {
   flagsReportedAboutThisUser_none?: FlagWhereInput
 }
 
-export interface FlagCreateWithoutCommentInput {
-  reportedContentType: CONTENT_TYPE
-  creator: UserCreateOneWithoutFlagsReportedAboutOthersInput
-  reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
-  post: PostCreateOneWithoutFlagsInput
-}
-
-export interface FlagUpsertWithoutPostInput {
-  where: FlagWhereUniqueInput
-  update: FlagUpdateWithoutPostDataInput
-  create: FlagCreateWithoutPostInput
-}
-
-export interface PostCreateInput {
-  title: String
-  url?: String
-  content?: String
-  hidden?: Boolean
-  mediaLink?: String
-  isAdmin?: Boolean
-  author: UserCreateOneWithoutPostsInput
-  comments?: CommentCreateManyWithoutPostInput
-  flags?: FlagCreateManyWithoutPostInput
-  votes?: VoteCreateManyWithoutPostInput
-}
-
 export interface CommentUpdateOneWithoutVotesInput {
   create?: CommentCreateWithoutVotesInput
   connect?: CommentWhereUniqueInput
@@ -3552,32 +3581,59 @@ export interface CommentUpdateOneWithoutVotesInput {
   upsert?: CommentUpsertWithoutVotesInput
 }
 
-export interface VoteCreateInput {
-  score: Int
-  contentType: CONTENT_TYPE
-  comment?: CommentCreateOneWithoutVotesInput
-  post: PostCreateOneWithoutVotesInput
-  voter: UserCreateOneWithoutVotesInput
+export interface VoteWhereInput {
+  AND?: VoteWhereInput[] | VoteWhereInput
+  OR?: VoteWhereInput[] | VoteWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  updatedAt?: DateTime
+  updatedAt_not?: DateTime
+  updatedAt_in?: DateTime[] | DateTime
+  updatedAt_not_in?: DateTime[] | DateTime
+  updatedAt_lt?: DateTime
+  updatedAt_lte?: DateTime
+  updatedAt_gt?: DateTime
+  updatedAt_gte?: DateTime
+  score?: Int
+  score_not?: Int
+  score_in?: Int[] | Int
+  score_not_in?: Int[] | Int
+  score_lt?: Int
+  score_lte?: Int
+  score_gt?: Int
+  score_gte?: Int
+  contentType?: CONTENT_TYPE
+  contentType_not?: CONTENT_TYPE
+  contentType_in?: CONTENT_TYPE[] | CONTENT_TYPE
+  contentType_not_in?: CONTENT_TYPE[] | CONTENT_TYPE
+  comment?: CommentWhereInput
+  post?: PostWhereInput
+  voter?: UserWhereInput
 }
 
-export interface FlagSubscriptionWhereInput {
-  AND?: FlagSubscriptionWhereInput[] | FlagSubscriptionWhereInput
-  OR?: FlagSubscriptionWhereInput[] | FlagSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: FlagWhereInput
-}
-
-export interface CommentCreateInput {
-  content: String
-  directParentType: CONTENT_TYPE
-  author: UserCreateOneWithoutCommentsInput
-  post: PostCreateOneWithoutCommentsInput
-  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
-  votes?: VoteCreateManyWithoutCommentInput
-  flags?: FlagCreateManyWithoutCommentInput
+export interface CommentUpdateWithoutVotesInput {
+  where: CommentWhereUniqueInput
+  data: CommentUpdateWithoutVotesDataInput
 }
 
 export interface CommentWhereInput {
@@ -3644,12 +3700,340 @@ export interface CommentWhereInput {
   flags_none?: FlagWhereInput
 }
 
+export interface PostCreateInput {
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author: UserCreateOneWithoutPostsInput
+  comments?: CommentCreateManyWithoutPostInput
+  flags?: FlagCreateManyWithoutPostInput
+  votes?: VoteCreateManyWithoutPostInput
+}
+
+export interface UserUpsertWithoutFlagsReportedAboutOthersInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutFlagsReportedAboutOthersDataInput
+  create: UserCreateWithoutFlagsReportedAboutOthersInput
+}
+
+export interface VoteCreateInput {
+  score: Int
+  contentType: CONTENT_TYPE
+  comment?: CommentCreateOneWithoutVotesInput
+  post: PostCreateOneWithoutVotesInput
+  voter: UserCreateOneWithoutVotesInput
+}
+
+export interface CommentUpdateWithoutVotesDataInput {
+  content?: String
+  directParentType?: CONTENT_TYPE
+  author?: UserUpdateOneWithoutCommentsInput
+  post?: PostUpdateOneWithoutCommentsInput
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput
+  flags?: FlagUpdateManyWithoutCommentInput
+}
+
+export interface CommentCreateInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  author: UserCreateOneWithoutCommentsInput
+  post: PostCreateOneWithoutCommentsInput
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  votes?: VoteCreateManyWithoutCommentInput
+  flags?: FlagCreateManyWithoutCommentInput
+}
+
+export interface CommentSubscriptionWhereInput {
+  AND?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput
+  OR?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: CommentWhereInput
+}
+
 export interface FlagCreateInput {
   reportedContentType: CONTENT_TYPE
   creator: UserCreateOneWithoutFlagsReportedAboutOthersInput
   reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
   comment?: CommentCreateOneWithoutFlagsInput
   post: PostCreateOneWithoutFlagsInput
+}
+
+export interface PostSubscriptionWhereInput {
+  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
+  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: PostWhereInput
+}
+
+export interface UserUpdateInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostUpdateManyWithoutAuthorInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+  votes?: VoteUpdateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
+}
+
+export interface FlagUpdateInput {
+  reportedContentType?: CONTENT_TYPE
+  creator?: UserUpdateOneWithoutFlagsReportedAboutOthersInput
+  reportedUser?: UserUpdateOneWithoutFlagsReportedAboutThisUserInput
+  comment?: CommentUpdateOneWithoutFlagsInput
+  post?: PostUpdateOneWithoutFlagsInput
+}
+
+export interface PostUpdateManyWithoutAuthorInput {
+  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput
+  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput
+  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput
+  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput
+  update?: PostUpdateWithoutAuthorInput[] | PostUpdateWithoutAuthorInput
+  upsert?: PostUpsertWithoutAuthorInput[] | PostUpsertWithoutAuthorInput
+}
+
+export interface UserWhereUniqueInput {
+  id?: ID_Input
+  facebookUserId?: String
+  username?: String
+}
+
+export interface PostUpdateWithoutAuthorInput {
+  where: PostWhereUniqueInput
+  data: PostUpdateWithoutAuthorDataInput
+}
+
+export interface VoteWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface PostUpdateWithoutAuthorDataInput {
+  title?: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  comments?: CommentUpdateManyWithoutPostInput
+  flags?: FlagUpdateManyWithoutPostInput
+  votes?: VoteUpdateManyWithoutPostInput
+}
+
+export interface FlagWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface CommentUpdateManyWithoutPostInput {
+  create?: CommentCreateWithoutPostInput[] | CommentCreateWithoutPostInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+  update?: CommentUpdateWithoutPostInput[] | CommentUpdateWithoutPostInput
+  upsert?: CommentUpsertWithoutPostInput[] | CommentUpsertWithoutPostInput
+}
+
+export interface PostUpdateInput {
+  title?: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author?: UserUpdateOneWithoutPostsInput
+  comments?: CommentUpdateManyWithoutPostInput
+  flags?: FlagUpdateManyWithoutPostInput
+  votes?: VoteUpdateManyWithoutPostInput
+}
+
+export interface CommentUpdateWithoutPostInput {
+  where: CommentWhereUniqueInput
+  data: CommentUpdateWithoutPostDataInput
+}
+
+export interface CommentUpsertWithoutPostInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutPostDataInput
+  create: CommentCreateWithoutPostInput
+}
+
+export interface CommentUpdateWithoutPostDataInput {
+  content?: String
+  directParentType?: CONTENT_TYPE
+  author?: UserUpdateOneWithoutCommentsInput
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput
+  votes?: VoteUpdateManyWithoutCommentInput
+  flags?: FlagUpdateManyWithoutCommentInput
+}
+
+export interface VoteUpsertWithoutVoterInput {
+  where: VoteWhereUniqueInput
+  update: VoteUpdateWithoutVoterDataInput
+  create: VoteCreateWithoutVoterInput
+}
+
+export interface UserUpdateOneWithoutCommentsInput {
+  create?: UserCreateWithoutCommentsInput
+  connect?: UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput
+  delete?: UserWhereUniqueInput
+  update?: UserUpdateWithoutCommentsInput
+  upsert?: UserUpsertWithoutCommentsInput
+}
+
+export interface PostUpsertWithoutCommentsInput {
+  where: PostWhereUniqueInput
+  update: PostUpdateWithoutCommentsDataInput
+  create: PostCreateWithoutCommentsInput
+}
+
+export interface PostUpsertWithoutVotesInput {
+  where: PostWhereUniqueInput
+  update: PostUpdateWithoutVotesDataInput
+  create: PostCreateWithoutVotesInput
+}
+
+export interface CommentUpsertWithoutAuthorInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutAuthorDataInput
+  create: CommentCreateWithoutAuthorInput
+}
+
+export interface UserUpdateWithoutCommentsDataInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostUpdateManyWithoutAuthorInput
+  votes?: VoteUpdateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
+}
+
+export interface FlagUpsertWithoutCommentInput {
+  where: FlagWhereUniqueInput
+  update: FlagUpdateWithoutCommentDataInput
+  create: FlagCreateWithoutCommentInput
+}
+
+export interface VoteUpdateManyWithoutVoterInput {
+  create?: VoteCreateWithoutVoterInput[] | VoteCreateWithoutVoterInput
+  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+  disconnect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+  delete?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+  update?: VoteUpdateWithoutVoterInput[] | VoteUpdateWithoutVoterInput
+  upsert?: VoteUpsertWithoutVoterInput[] | VoteUpsertWithoutVoterInput
+}
+
+export interface FlagUpdateWithoutCommentInput {
+  where: FlagWhereUniqueInput
+  data: FlagUpdateWithoutCommentDataInput
+}
+
+export interface VoteUpdateWithoutVoterInput {
+  where: VoteWhereUniqueInput
+  data: VoteUpdateWithoutVoterDataInput
+}
+
+export interface VoteUpsertWithoutCommentInput {
+  where: VoteWhereUniqueInput
+  update: VoteUpdateWithoutCommentDataInput
+  create: VoteCreateWithoutCommentInput
+}
+
+export interface VoteUpdateWithoutVoterDataInput {
+  score?: Int
+  contentType?: CONTENT_TYPE
+  comment?: CommentUpdateOneWithoutVotesInput
+  post?: PostUpdateOneWithoutVotesInput
+}
+
+export interface PostCreateManyWithoutAuthorInput {
+  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput
+  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput
+}
+
+export interface FlagWhereInput {
+  AND?: FlagWhereInput[] | FlagWhereInput
+  OR?: FlagWhereInput[] | FlagWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  updatedAt?: DateTime
+  updatedAt_not?: DateTime
+  updatedAt_in?: DateTime[] | DateTime
+  updatedAt_not_in?: DateTime[] | DateTime
+  updatedAt_lt?: DateTime
+  updatedAt_lte?: DateTime
+  updatedAt_gt?: DateTime
+  updatedAt_gte?: DateTime
+  reportedContentType?: CONTENT_TYPE
+  reportedContentType_not?: CONTENT_TYPE
+  reportedContentType_in?: CONTENT_TYPE[] | CONTENT_TYPE
+  reportedContentType_not_in?: CONTENT_TYPE[] | CONTENT_TYPE
+  creator?: UserWhereInput
+  reportedUser?: UserWhereInput
+  comment?: CommentWhereInput
+  post?: PostWhereInput
+}
+
+export interface CommentCreateManyWithoutPostInput {
+  create?: CommentCreateWithoutPostInput[] | CommentCreateWithoutPostInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+}
+
+export interface FlagUpsertWithoutPostInput {
+  where: FlagWhereUniqueInput
+  update: FlagUpdateWithoutPostDataInput
+  create: FlagCreateWithoutPostInput
+}
+
+export interface UserCreateOneWithoutCommentsInput {
+  create?: UserCreateWithoutCommentsInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface PostWhereInput {
@@ -3757,282 +4141,9 @@ export interface PostWhereInput {
   votes_none?: VoteWhereInput
 }
 
-export interface UserUpdateInput {
-  facebookUserId?: String
-  facebookEmail?: String
-  email?: String
-  username?: String
-  password?: String
-  name?: String
-  admin?: Boolean
-  about?: String
-  profileImageUrl?: String
-  userType?: USER_TYPE
-  posts?: PostUpdateManyWithoutAuthorInput
-  comments?: CommentUpdateManyWithoutAuthorInput
-  votes?: VoteUpdateManyWithoutVoterInput
-  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
-  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
-}
-
-export interface PostSubscriptionWhereInput {
-  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
-  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: PostWhereInput
-}
-
-export interface PostUpdateManyWithoutAuthorInput {
-  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput
-  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput
-  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput
-  update?: PostUpdateWithoutAuthorInput[] | PostUpdateWithoutAuthorInput
-  upsert?: PostUpsertWithoutAuthorInput[] | PostUpsertWithoutAuthorInput
-}
-
-export interface FlagUpdateInput {
-  reportedContentType?: CONTENT_TYPE
-  creator?: UserUpdateOneWithoutFlagsReportedAboutOthersInput
-  reportedUser?: UserUpdateOneWithoutFlagsReportedAboutThisUserInput
-  comment?: CommentUpdateOneWithoutFlagsInput
-  post?: PostUpdateOneWithoutFlagsInput
-}
-
-export interface PostUpdateWithoutAuthorInput {
-  where: PostWhereUniqueInput
-  data: PostUpdateWithoutAuthorDataInput
-}
-
-export interface UserWhereUniqueInput {
-  id?: ID_Input
-  facebookUserId?: String
-  username?: String
-}
-
-export interface PostUpdateWithoutAuthorDataInput {
-  title?: String
-  url?: String
-  content?: String
-  hidden?: Boolean
-  mediaLink?: String
-  isAdmin?: Boolean
-  comments?: CommentUpdateManyWithoutPostInput
-  flags?: FlagUpdateManyWithoutPostInput
-  votes?: VoteUpdateManyWithoutPostInput
-}
-
-export interface VoteWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface CommentUpdateManyWithoutPostInput {
-  create?: CommentCreateWithoutPostInput[] | CommentCreateWithoutPostInput
-  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-  update?: CommentUpdateWithoutPostInput[] | CommentUpdateWithoutPostInput
-  upsert?: CommentUpsertWithoutPostInput[] | CommentUpsertWithoutPostInput
-}
-
-export interface FlagWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface CommentUpdateWithoutPostInput {
-  where: CommentWhereUniqueInput
-  data: CommentUpdateWithoutPostDataInput
-}
-
-export interface PostUpdateInput {
-  title?: String
-  url?: String
-  content?: String
-  hidden?: Boolean
-  mediaLink?: String
-  isAdmin?: Boolean
-  author?: UserUpdateOneWithoutPostsInput
-  comments?: CommentUpdateManyWithoutPostInput
-  flags?: FlagUpdateManyWithoutPostInput
-  votes?: VoteUpdateManyWithoutPostInput
-}
-
-export interface CommentUpdateWithoutPostDataInput {
-  content?: String
-  directParentType?: CONTENT_TYPE
-  author?: UserUpdateOneWithoutCommentsInput
-  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput
-  votes?: VoteUpdateManyWithoutCommentInput
-  flags?: FlagUpdateManyWithoutCommentInput
-}
-
-export interface CommentUpsertWithoutPostInput {
-  where: CommentWhereUniqueInput
-  update: CommentUpdateWithoutPostDataInput
-  create: CommentCreateWithoutPostInput
-}
-
-export interface UserUpdateOneWithoutCommentsInput {
-  create?: UserCreateWithoutCommentsInput
-  connect?: UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput
-  delete?: UserWhereUniqueInput
-  update?: UserUpdateWithoutCommentsInput
-  upsert?: UserUpsertWithoutCommentsInput
-}
-
-export interface VoteUpsertWithoutVoterInput {
-  where: VoteWhereUniqueInput
-  update: VoteUpdateWithoutVoterDataInput
-  create: VoteCreateWithoutVoterInput
-}
-
-export interface PostUpsertWithoutVotesInput {
-  where: PostWhereUniqueInput
-  update: PostUpdateWithoutVotesDataInput
-  create: PostCreateWithoutVotesInput
-}
-
-export interface PostUpsertWithoutCommentsInput {
-  where: PostWhereUniqueInput
-  update: PostUpdateWithoutCommentsDataInput
-  create: PostCreateWithoutCommentsInput
-}
-
-export interface UserUpdateWithoutCommentsDataInput {
-  facebookUserId?: String
-  facebookEmail?: String
-  email?: String
-  username?: String
-  password?: String
-  name?: String
-  admin?: Boolean
-  about?: String
-  profileImageUrl?: String
-  userType?: USER_TYPE
-  posts?: PostUpdateManyWithoutAuthorInput
-  votes?: VoteUpdateManyWithoutVoterInput
-  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
-  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
-}
-
-export interface CommentUpsertWithoutAuthorInput {
-  where: CommentWhereUniqueInput
-  update: CommentUpdateWithoutAuthorDataInput
-  create: CommentCreateWithoutAuthorInput
-}
-
-export interface VoteUpdateManyWithoutVoterInput {
+export interface VoteCreateManyWithoutVoterInput {
   create?: VoteCreateWithoutVoterInput[] | VoteCreateWithoutVoterInput
   connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
-  disconnect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
-  delete?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
-  update?: VoteUpdateWithoutVoterInput[] | VoteUpdateWithoutVoterInput
-  upsert?: VoteUpsertWithoutVoterInput[] | VoteUpsertWithoutVoterInput
-}
-
-export interface FlagUpsertWithoutCommentInput {
-  where: FlagWhereUniqueInput
-  update: FlagUpdateWithoutCommentDataInput
-  create: FlagCreateWithoutCommentInput
-}
-
-export interface VoteUpdateWithoutVoterInput {
-  where: VoteWhereUniqueInput
-  data: VoteUpdateWithoutVoterDataInput
-}
-
-export interface FlagUpdateWithoutCommentInput {
-  where: FlagWhereUniqueInput
-  data: FlagUpdateWithoutCommentDataInput
-}
-
-export interface VoteUpdateWithoutVoterDataInput {
-  score?: Int
-  contentType?: CONTENT_TYPE
-  comment?: CommentUpdateOneWithoutVotesInput
-  post?: PostUpdateOneWithoutVotesInput
-}
-
-export interface VoteUpsertWithoutCommentInput {
-  where: VoteWhereUniqueInput
-  update: VoteUpdateWithoutCommentDataInput
-  create: VoteCreateWithoutCommentInput
-}
-
-export interface FlagWhereInput {
-  AND?: FlagWhereInput[] | FlagWhereInput
-  OR?: FlagWhereInput[] | FlagWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  createdAt?: DateTime
-  createdAt_not?: DateTime
-  createdAt_in?: DateTime[] | DateTime
-  createdAt_not_in?: DateTime[] | DateTime
-  createdAt_lt?: DateTime
-  createdAt_lte?: DateTime
-  createdAt_gt?: DateTime
-  createdAt_gte?: DateTime
-  updatedAt?: DateTime
-  updatedAt_not?: DateTime
-  updatedAt_in?: DateTime[] | DateTime
-  updatedAt_not_in?: DateTime[] | DateTime
-  updatedAt_lt?: DateTime
-  updatedAt_lte?: DateTime
-  updatedAt_gt?: DateTime
-  updatedAt_gte?: DateTime
-  reportedContentType?: CONTENT_TYPE
-  reportedContentType_not?: CONTENT_TYPE
-  reportedContentType_in?: CONTENT_TYPE[] | CONTENT_TYPE
-  reportedContentType_not_in?: CONTENT_TYPE[] | CONTENT_TYPE
-  creator?: UserWhereInput
-  reportedUser?: UserWhereInput
-  comment?: CommentWhereInput
-  post?: PostWhereInput
-}
-
-export interface PostCreateManyWithoutAuthorInput {
-  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput
-}
-
-export interface CommentUpdateWithoutVotesInput {
-  where: CommentWhereUniqueInput
-  data: CommentUpdateWithoutVotesDataInput
-}
-
-export interface CommentCreateManyWithoutPostInput {
-  create?: CommentCreateWithoutPostInput[] | CommentCreateWithoutPostInput
-  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
-}
-
-export interface CommentUpdateWithoutVotesDataInput {
-  content?: String
-  directParentType?: CONTENT_TYPE
-  author?: UserUpdateOneWithoutCommentsInput
-  post?: PostUpdateOneWithoutCommentsInput
-  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput
-  flags?: FlagUpdateManyWithoutCommentInput
-}
-
-export interface UserCreateOneWithoutCommentsInput {
-  create?: UserCreateWithoutCommentsInput
-  connect?: UserWhereUniqueInput
 }
 
 export interface PostUpdateOneWithoutCommentsInput {
@@ -4044,9 +4155,9 @@ export interface PostUpdateOneWithoutCommentsInput {
   upsert?: PostUpsertWithoutCommentsInput
 }
 
-export interface VoteCreateManyWithoutVoterInput {
-  create?: VoteCreateWithoutVoterInput[] | VoteCreateWithoutVoterInput
-  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+export interface CommentCreateOneWithoutVotesInput {
+  create?: CommentCreateWithoutVotesInput
+  connect?: CommentWhereUniqueInput
 }
 
 export interface PostUpdateWithoutCommentsInput {
@@ -4054,9 +4165,9 @@ export interface PostUpdateWithoutCommentsInput {
   data: PostUpdateWithoutCommentsDataInput
 }
 
-export interface CommentCreateOneWithoutVotesInput {
-  create?: CommentCreateWithoutVotesInput
-  connect?: CommentWhereUniqueInput
+export interface PostCreateOneWithoutCommentsInput {
+  create?: PostCreateWithoutCommentsInput
+  connect?: PostWhereUniqueInput
 }
 
 export interface PostUpdateWithoutCommentsDataInput {
@@ -4071,9 +4182,9 @@ export interface PostUpdateWithoutCommentsDataInput {
   votes?: VoteUpdateManyWithoutPostInput
 }
 
-export interface PostCreateOneWithoutCommentsInput {
-  create?: PostCreateWithoutCommentsInput
-  connect?: PostWhereUniqueInput
+export interface UserCreateOneWithoutPostsInput {
+  create?: UserCreateWithoutPostsInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface UserUpdateOneWithoutPostsInput {
@@ -4085,9 +4196,9 @@ export interface UserUpdateOneWithoutPostsInput {
   upsert?: UserUpsertWithoutPostsInput
 }
 
-export interface UserCreateOneWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput
-  connect?: UserWhereUniqueInput
+export interface CommentCreateManyWithoutAuthorInput {
+  create?: CommentCreateWithoutAuthorInput[] | CommentCreateWithoutAuthorInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
 }
 
 export interface UserUpdateWithoutPostsInput {
@@ -4095,8 +4206,8 @@ export interface UserUpdateWithoutPostsInput {
   data: UserUpdateWithoutPostsDataInput
 }
 
-export interface CommentCreateManyWithoutAuthorInput {
-  create?: CommentCreateWithoutAuthorInput[] | CommentCreateWithoutAuthorInput
+export interface CommentCreateManyWithoutThreadedParentCommentInput {
+  create?: CommentCreateWithoutThreadedParentCommentInput[] | CommentCreateWithoutThreadedParentCommentInput
   connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
 }
 
@@ -4111,15 +4222,16 @@ export interface UserUpdateWithoutPostsDataInput {
   about?: String
   profileImageUrl?: String
   userType?: USER_TYPE
+  karma?: Int
   comments?: CommentUpdateManyWithoutAuthorInput
   votes?: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
   flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
 }
 
-export interface CommentCreateManyWithoutThreadedParentCommentInput {
-  create?: CommentCreateWithoutThreadedParentCommentInput[] | CommentCreateWithoutThreadedParentCommentInput
-  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+export interface VoteCreateManyWithoutCommentInput {
+  create?: VoteCreateWithoutCommentInput[] | VoteCreateWithoutCommentInput
+  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
 }
 
 export interface CommentUpdateManyWithoutAuthorInput {
@@ -4131,9 +4243,9 @@ export interface CommentUpdateManyWithoutAuthorInput {
   upsert?: CommentUpsertWithoutAuthorInput[] | CommentUpsertWithoutAuthorInput
 }
 
-export interface VoteCreateManyWithoutCommentInput {
-  create?: VoteCreateWithoutCommentInput[] | VoteCreateWithoutCommentInput
-  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+export interface PostCreateOneWithoutVotesInput {
+  create?: PostCreateWithoutVotesInput
+  connect?: PostWhereUniqueInput
 }
 
 export interface CommentUpdateWithoutAuthorInput {
@@ -4141,9 +4253,9 @@ export interface CommentUpdateWithoutAuthorInput {
   data: CommentUpdateWithoutAuthorDataInput
 }
 
-export interface PostCreateOneWithoutVotesInput {
-  create?: PostCreateWithoutVotesInput
-  connect?: PostWhereUniqueInput
+export interface FlagCreateManyWithoutPostInput {
+  create?: FlagCreateWithoutPostInput[] | FlagCreateWithoutPostInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
 }
 
 export interface CommentUpdateWithoutAuthorDataInput {
@@ -4155,9 +4267,9 @@ export interface CommentUpdateWithoutAuthorDataInput {
   flags?: FlagUpdateManyWithoutCommentInput
 }
 
-export interface FlagCreateManyWithoutPostInput {
-  create?: FlagCreateWithoutPostInput[] | FlagCreateWithoutPostInput
-  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+export interface UserCreateOneWithoutFlagsReportedAboutOthersInput {
+  create?: UserCreateWithoutFlagsReportedAboutOthersInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface CommentUpdateManyWithoutThreadedParentCommentInput {
@@ -4169,9 +4281,9 @@ export interface CommentUpdateManyWithoutThreadedParentCommentInput {
   upsert?: CommentUpsertWithoutThreadedParentCommentInput[] | CommentUpsertWithoutThreadedParentCommentInput
 }
 
-export interface UserCreateOneWithoutFlagsReportedAboutOthersInput {
-  create?: UserCreateWithoutFlagsReportedAboutOthersInput
-  connect?: UserWhereUniqueInput
+export interface FlagCreateManyWithoutReportedUserInput {
+  create?: FlagCreateWithoutReportedUserInput[] | FlagCreateWithoutReportedUserInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
 }
 
 export interface CommentUpdateWithoutThreadedParentCommentInput {
@@ -4179,9 +4291,9 @@ export interface CommentUpdateWithoutThreadedParentCommentInput {
   data: CommentUpdateWithoutThreadedParentCommentDataInput
 }
 
-export interface FlagCreateManyWithoutReportedUserInput {
-  create?: FlagCreateWithoutReportedUserInput[] | FlagCreateWithoutReportedUserInput
-  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+export interface CommentCreateOneWithoutFlagsInput {
+  create?: CommentCreateWithoutFlagsInput
+  connect?: CommentWhereUniqueInput
 }
 
 export interface CommentUpdateWithoutThreadedParentCommentDataInput {
@@ -4193,9 +4305,9 @@ export interface CommentUpdateWithoutThreadedParentCommentDataInput {
   flags?: FlagUpdateManyWithoutCommentInput
 }
 
-export interface CommentCreateOneWithoutFlagsInput {
-  create?: CommentCreateWithoutFlagsInput
-  connect?: CommentWhereUniqueInput
+export interface PostCreateOneWithoutFlagsInput {
+  create?: PostCreateWithoutFlagsInput
+  connect?: PostWhereUniqueInput
 }
 
 export interface VoteUpdateManyWithoutCommentInput {
@@ -4207,9 +4319,9 @@ export interface VoteUpdateManyWithoutCommentInput {
   upsert?: VoteUpsertWithoutCommentInput[] | VoteUpsertWithoutCommentInput
 }
 
-export interface PostCreateOneWithoutFlagsInput {
-  create?: PostCreateWithoutFlagsInput
-  connect?: PostWhereUniqueInput
+export interface VoteCreateManyWithoutPostInput {
+  create?: VoteCreateWithoutPostInput[] | VoteCreateWithoutPostInput
+  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
 }
 
 export interface VoteUpdateWithoutCommentInput {
@@ -4217,9 +4329,9 @@ export interface VoteUpdateWithoutCommentInput {
   data: VoteUpdateWithoutCommentDataInput
 }
 
-export interface VoteCreateManyWithoutPostInput {
-  create?: VoteCreateWithoutPostInput[] | VoteCreateWithoutPostInput
-  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+export interface UserCreateOneWithoutVotesInput {
+  create?: UserCreateWithoutVotesInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface VoteUpdateWithoutCommentDataInput {
@@ -4229,9 +4341,9 @@ export interface VoteUpdateWithoutCommentDataInput {
   voter?: UserUpdateOneWithoutVotesInput
 }
 
-export interface UserCreateOneWithoutVotesInput {
-  create?: UserCreateWithoutVotesInput
-  connect?: UserWhereUniqueInput
+export interface FlagCreateManyWithoutCreatorInput {
+  create?: FlagCreateWithoutCreatorInput[] | FlagCreateWithoutCreatorInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
 }
 
 export interface PostUpdateOneWithoutVotesInput {
@@ -4243,9 +4355,9 @@ export interface PostUpdateOneWithoutVotesInput {
   upsert?: PostUpsertWithoutVotesInput
 }
 
-export interface FlagCreateManyWithoutCreatorInput {
-  create?: FlagCreateWithoutCreatorInput[] | FlagCreateWithoutCreatorInput
-  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+export interface UserCreateOneWithoutFlagsReportedAboutThisUserInput {
+  create?: UserCreateWithoutFlagsReportedAboutThisUserInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface PostUpdateWithoutVotesInput {
@@ -4253,9 +4365,9 @@ export interface PostUpdateWithoutVotesInput {
   data: PostUpdateWithoutVotesDataInput
 }
 
-export interface UserCreateOneWithoutFlagsReportedAboutThisUserInput {
-  create?: UserCreateWithoutFlagsReportedAboutThisUserInput
-  connect?: UserWhereUniqueInput
+export interface FlagCreateManyWithoutCommentInput {
+  create?: FlagCreateWithoutCommentInput[] | FlagCreateWithoutCommentInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
 }
 
 export interface PostUpdateWithoutVotesDataInput {
@@ -4270,9 +4382,14 @@ export interface PostUpdateWithoutVotesDataInput {
   flags?: FlagUpdateManyWithoutPostInput
 }
 
-export interface FlagCreateManyWithoutCommentInput {
-  create?: FlagCreateWithoutCommentInput[] | FlagCreateWithoutCommentInput
-  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+export interface FlagSubscriptionWhereInput {
+  AND?: FlagSubscriptionWhereInput[] | FlagSubscriptionWhereInput
+  OR?: FlagSubscriptionWhereInput[] | FlagSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: FlagWhereInput
 }
 
 export interface FlagUpdateManyWithoutPostInput {
@@ -4284,14 +4401,14 @@ export interface FlagUpdateManyWithoutPostInput {
   upsert?: FlagUpsertWithoutPostInput[] | FlagUpsertWithoutPostInput
 }
 
-export interface VoteSubscriptionWhereInput {
-  AND?: VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput
-  OR?: VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput
+export interface UserSubscriptionWhereInput {
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
   mutation_in?: MutationType[] | MutationType
   updatedFields_contains?: String
   updatedFields_contains_every?: String[] | String
   updatedFields_contains_some?: String[] | String
-  node?: VoteWhereInput
+  node?: UserWhereInput
 }
 
 export interface FlagUpdateWithoutPostInput {
@@ -4299,14 +4416,8 @@ export interface FlagUpdateWithoutPostInput {
   data: FlagUpdateWithoutPostDataInput
 }
 
-export interface CommentUpdateInput {
-  content?: String
-  directParentType?: CONTENT_TYPE
-  author?: UserUpdateOneWithoutCommentsInput
-  post?: PostUpdateOneWithoutCommentsInput
-  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput
-  votes?: VoteUpdateManyWithoutCommentInput
-  flags?: FlagUpdateManyWithoutCommentInput
+export interface PostWhereUniqueInput {
+  id?: ID_Input
 }
 
 export interface FlagUpdateWithoutPostDataInput {
@@ -4316,8 +4427,12 @@ export interface FlagUpdateWithoutPostDataInput {
   comment?: CommentUpdateOneWithoutFlagsInput
 }
 
-export interface CommentWhereUniqueInput {
-  id?: ID_Input
+export interface VoteUpdateInput {
+  score?: Int
+  contentType?: CONTENT_TYPE
+  comment?: CommentUpdateOneWithoutVotesInput
+  post?: PostUpdateOneWithoutVotesInput
+  voter?: UserUpdateOneWithoutVotesInput
 }
 
 export interface UserUpdateOneWithoutFlagsReportedAboutOthersInput {
@@ -4329,10 +4444,10 @@ export interface UserUpdateOneWithoutFlagsReportedAboutOthersInput {
   upsert?: UserUpsertWithoutFlagsReportedAboutOthersInput
 }
 
-export interface PostUpsertWithoutAuthorInput {
-  where: PostWhereUniqueInput
-  update: PostUpdateWithoutAuthorDataInput
-  create: PostCreateWithoutAuthorInput
+export interface UserUpsertWithoutCommentsInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutCommentsDataInput
+  create: UserCreateWithoutCommentsInput
 }
 
 export interface UserUpdateWithoutFlagsReportedAboutOthersInput {
@@ -4340,10 +4455,10 @@ export interface UserUpdateWithoutFlagsReportedAboutOthersInput {
   data: UserUpdateWithoutFlagsReportedAboutOthersDataInput
 }
 
-export interface CommentUpsertWithoutVotesInput {
-  where: CommentWhereUniqueInput
-  update: CommentUpdateWithoutVotesDataInput
-  create: CommentCreateWithoutVotesInput
+export interface UserUpsertWithoutPostsInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutPostsDataInput
+  create: UserCreateWithoutPostsInput
 }
 
 export interface UserUpdateWithoutFlagsReportedAboutOthersDataInput {
@@ -4357,16 +4472,18 @@ export interface UserUpdateWithoutFlagsReportedAboutOthersDataInput {
   about?: String
   profileImageUrl?: String
   userType?: USER_TYPE
+  karma?: Int
   posts?: PostUpdateManyWithoutAuthorInput
   comments?: CommentUpdateManyWithoutAuthorInput
   votes?: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
 }
 
-export interface CommentUpsertWithoutThreadedParentCommentInput {
-  where: CommentWhereUniqueInput
-  update: CommentUpdateWithoutThreadedParentCommentDataInput
-  create: CommentCreateWithoutThreadedParentCommentInput
+export interface FlagUpdateWithoutCommentDataInput {
+  reportedContentType?: CONTENT_TYPE
+  creator?: UserUpdateOneWithoutFlagsReportedAboutOthersInput
+  reportedUser?: UserUpdateOneWithoutFlagsReportedAboutThisUserInput
+  post?: PostUpdateOneWithoutFlagsInput
 }
 
 export interface FlagUpdateManyWithoutReportedUserInput {
@@ -4376,324 +4493,6 @@ export interface FlagUpdateManyWithoutReportedUserInput {
   delete?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
   update?: FlagUpdateWithoutReportedUserInput[] | FlagUpdateWithoutReportedUserInput
   upsert?: FlagUpsertWithoutReportedUserInput[] | FlagUpsertWithoutReportedUserInput
-}
-
-export interface FlagUpdateManyWithoutCommentInput {
-  create?: FlagCreateWithoutCommentInput[] | FlagCreateWithoutCommentInput
-  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
-  disconnect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
-  delete?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
-  update?: FlagUpdateWithoutCommentInput[] | FlagUpdateWithoutCommentInput
-  upsert?: FlagUpsertWithoutCommentInput[] | FlagUpsertWithoutCommentInput
-}
-
-export interface FlagUpdateWithoutReportedUserInput {
-  where: FlagWhereUniqueInput
-  data: FlagUpdateWithoutReportedUserDataInput
-}
-
-export interface PostCreateWithoutAuthorInput {
-  title: String
-  url?: String
-  content?: String
-  hidden?: Boolean
-  mediaLink?: String
-  isAdmin?: Boolean
-  comments?: CommentCreateManyWithoutPostInput
-  flags?: FlagCreateManyWithoutPostInput
-  votes?: VoteCreateManyWithoutPostInput
-}
-
-export interface FlagUpdateWithoutReportedUserDataInput {
-  reportedContentType?: CONTENT_TYPE
-  creator?: UserUpdateOneWithoutFlagsReportedAboutOthersInput
-  comment?: CommentUpdateOneWithoutFlagsInput
-  post?: PostUpdateOneWithoutFlagsInput
-}
-
-export interface UserCreateWithoutCommentsInput {
-  facebookUserId?: String
-  facebookEmail?: String
-  email?: String
-  username?: String
-  password?: String
-  name?: String
-  admin?: Boolean
-  about?: String
-  profileImageUrl?: String
-  userType?: USER_TYPE
-  posts?: PostCreateManyWithoutAuthorInput
-  votes?: VoteCreateManyWithoutVoterInput
-  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
-  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
-}
-
-export interface CommentUpdateOneWithoutFlagsInput {
-  create?: CommentCreateWithoutFlagsInput
-  connect?: CommentWhereUniqueInput
-  disconnect?: CommentWhereUniqueInput
-  delete?: CommentWhereUniqueInput
-  update?: CommentUpdateWithoutFlagsInput
-  upsert?: CommentUpsertWithoutFlagsInput
-}
-
-export interface CommentCreateWithoutVotesInput {
-  content: String
-  directParentType: CONTENT_TYPE
-  author: UserCreateOneWithoutCommentsInput
-  post: PostCreateOneWithoutCommentsInput
-  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
-  flags?: FlagCreateManyWithoutCommentInput
-}
-
-export interface CommentUpdateWithoutFlagsInput {
-  where: CommentWhereUniqueInput
-  data: CommentUpdateWithoutFlagsDataInput
-}
-
-export interface UserCreateWithoutPostsInput {
-  facebookUserId?: String
-  facebookEmail?: String
-  email?: String
-  username?: String
-  password?: String
-  name?: String
-  admin?: Boolean
-  about?: String
-  profileImageUrl?: String
-  userType?: USER_TYPE
-  comments?: CommentCreateManyWithoutAuthorInput
-  votes?: VoteCreateManyWithoutVoterInput
-  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
-  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
-}
-
-export interface CommentUpdateWithoutFlagsDataInput {
-  content?: String
-  directParentType?: CONTENT_TYPE
-  author?: UserUpdateOneWithoutCommentsInput
-  post?: PostUpdateOneWithoutCommentsInput
-  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput
-  votes?: VoteUpdateManyWithoutCommentInput
-}
-
-export interface CommentCreateWithoutThreadedParentCommentInput {
-  content: String
-  directParentType: CONTENT_TYPE
-  author: UserCreateOneWithoutCommentsInput
-  post: PostCreateOneWithoutCommentsInput
-  votes?: VoteCreateManyWithoutCommentInput
-  flags?: FlagCreateManyWithoutCommentInput
-}
-
-export interface CommentUpsertWithoutFlagsInput {
-  where: CommentWhereUniqueInput
-  update: CommentUpdateWithoutFlagsDataInput
-  create: CommentCreateWithoutFlagsInput
-}
-
-export interface PostCreateWithoutVotesInput {
-  title: String
-  url?: String
-  content?: String
-  hidden?: Boolean
-  mediaLink?: String
-  isAdmin?: Boolean
-  author: UserCreateOneWithoutPostsInput
-  comments?: CommentCreateManyWithoutPostInput
-  flags?: FlagCreateManyWithoutPostInput
-}
-
-export interface PostUpdateOneWithoutFlagsInput {
-  create?: PostCreateWithoutFlagsInput
-  connect?: PostWhereUniqueInput
-  disconnect?: PostWhereUniqueInput
-  delete?: PostWhereUniqueInput
-  update?: PostUpdateWithoutFlagsInput
-  upsert?: PostUpsertWithoutFlagsInput
-}
-
-export interface UserCreateWithoutFlagsReportedAboutOthersInput {
-  facebookUserId?: String
-  facebookEmail?: String
-  email?: String
-  username?: String
-  password?: String
-  name?: String
-  admin?: Boolean
-  about?: String
-  profileImageUrl?: String
-  userType?: USER_TYPE
-  posts?: PostCreateManyWithoutAuthorInput
-  comments?: CommentCreateManyWithoutAuthorInput
-  votes?: VoteCreateManyWithoutVoterInput
-  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
-}
-
-export interface PostUpdateWithoutFlagsInput {
-  where: PostWhereUniqueInput
-  data: PostUpdateWithoutFlagsDataInput
-}
-
-export interface CommentCreateWithoutFlagsInput {
-  content: String
-  directParentType: CONTENT_TYPE
-  author: UserCreateOneWithoutCommentsInput
-  post: PostCreateOneWithoutCommentsInput
-  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
-  votes?: VoteCreateManyWithoutCommentInput
-}
-
-export interface PostUpdateWithoutFlagsDataInput {
-  title?: String
-  url?: String
-  content?: String
-  hidden?: Boolean
-  mediaLink?: String
-  isAdmin?: Boolean
-  author?: UserUpdateOneWithoutPostsInput
-  comments?: CommentUpdateManyWithoutPostInput
-  votes?: VoteUpdateManyWithoutPostInput
-}
-
-export interface VoteCreateWithoutPostInput {
-  score: Int
-  contentType: CONTENT_TYPE
-  comment?: CommentCreateOneWithoutVotesInput
-  voter: UserCreateOneWithoutVotesInput
-}
-
-export interface VoteUpdateManyWithoutPostInput {
-  create?: VoteCreateWithoutPostInput[] | VoteCreateWithoutPostInput
-  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
-  disconnect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
-  delete?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
-  update?: VoteUpdateWithoutPostInput[] | VoteUpdateWithoutPostInput
-  upsert?: VoteUpsertWithoutPostInput[] | VoteUpsertWithoutPostInput
-}
-
-export interface FlagCreateWithoutCreatorInput {
-  reportedContentType: CONTENT_TYPE
-  reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
-  comment?: CommentCreateOneWithoutFlagsInput
-  post: PostCreateOneWithoutFlagsInput
-}
-
-export interface VoteUpdateWithoutPostInput {
-  where: VoteWhereUniqueInput
-  data: VoteUpdateWithoutPostDataInput
-}
-
-export interface VoteWhereInput {
-  AND?: VoteWhereInput[] | VoteWhereInput
-  OR?: VoteWhereInput[] | VoteWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: ID_Input[] | ID_Input
-  id_not_in?: ID_Input[] | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  createdAt?: DateTime
-  createdAt_not?: DateTime
-  createdAt_in?: DateTime[] | DateTime
-  createdAt_not_in?: DateTime[] | DateTime
-  createdAt_lt?: DateTime
-  createdAt_lte?: DateTime
-  createdAt_gt?: DateTime
-  createdAt_gte?: DateTime
-  updatedAt?: DateTime
-  updatedAt_not?: DateTime
-  updatedAt_in?: DateTime[] | DateTime
-  updatedAt_not_in?: DateTime[] | DateTime
-  updatedAt_lt?: DateTime
-  updatedAt_lte?: DateTime
-  updatedAt_gt?: DateTime
-  updatedAt_gte?: DateTime
-  score?: Int
-  score_not?: Int
-  score_in?: Int[] | Int
-  score_not_in?: Int[] | Int
-  score_lt?: Int
-  score_lte?: Int
-  score_gt?: Int
-  score_gte?: Int
-  contentType?: CONTENT_TYPE
-  contentType_not?: CONTENT_TYPE
-  contentType_in?: CONTENT_TYPE[] | CONTENT_TYPE
-  contentType_not_in?: CONTENT_TYPE[] | CONTENT_TYPE
-  comment?: CommentWhereInput
-  post?: PostWhereInput
-  voter?: UserWhereInput
-}
-
-export interface VoteUpdateWithoutPostDataInput {
-  score?: Int
-  contentType?: CONTENT_TYPE
-  comment?: CommentUpdateOneWithoutVotesInput
-  voter?: UserUpdateOneWithoutVotesInput
-}
-
-export interface UserSubscriptionWhereInput {
-  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
-  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: UserWhereInput
-}
-
-export interface UserUpdateOneWithoutVotesInput {
-  create?: UserCreateWithoutVotesInput
-  connect?: UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput
-  delete?: UserWhereUniqueInput
-  update?: UserUpdateWithoutVotesInput
-  upsert?: UserUpsertWithoutVotesInput
-}
-
-export interface VoteUpdateInput {
-  score?: Int
-  contentType?: CONTENT_TYPE
-  comment?: CommentUpdateOneWithoutVotesInput
-  post?: PostUpdateOneWithoutVotesInput
-  voter?: UserUpdateOneWithoutVotesInput
-}
-
-export interface UserUpdateWithoutVotesInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutVotesDataInput
-}
-
-export interface UserUpsertWithoutPostsInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutPostsDataInput
-  create: UserCreateWithoutPostsInput
-}
-
-export interface UserUpdateWithoutVotesDataInput {
-  facebookUserId?: String
-  facebookEmail?: String
-  email?: String
-  username?: String
-  password?: String
-  name?: String
-  admin?: Boolean
-  about?: String
-  profileImageUrl?: String
-  userType?: USER_TYPE
-  posts?: PostUpdateManyWithoutAuthorInput
-  comments?: CommentUpdateManyWithoutAuthorInput
-  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
-  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
 }
 
 export interface UserCreateInput {
@@ -4707,6 +4506,7 @@ export interface UserCreateInput {
   about?: String
   profileImageUrl?: String
   userType?: USER_TYPE
+  karma?: Int
   posts?: PostCreateManyWithoutAuthorInput
   comments?: CommentCreateManyWithoutAuthorInput
   votes?: VoteCreateManyWithoutVoterInput
@@ -4714,13 +4514,25 @@ export interface UserCreateInput {
   flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
 }
 
-export interface FlagUpdateManyWithoutCreatorInput {
-  create?: FlagCreateWithoutCreatorInput[] | FlagCreateWithoutCreatorInput
-  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
-  disconnect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
-  delete?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
-  update?: FlagUpdateWithoutCreatorInput[] | FlagUpdateWithoutCreatorInput
-  upsert?: FlagUpsertWithoutCreatorInput[] | FlagUpsertWithoutCreatorInput
+export interface FlagUpdateWithoutReportedUserInput {
+  where: FlagWhereUniqueInput
+  data: FlagUpdateWithoutReportedUserDataInput
+}
+
+export interface CommentCreateWithoutPostInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  author: UserCreateOneWithoutCommentsInput
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  votes?: VoteCreateManyWithoutCommentInput
+  flags?: FlagCreateManyWithoutCommentInput
+}
+
+export interface FlagUpdateWithoutReportedUserDataInput {
+  reportedContentType?: CONTENT_TYPE
+  creator?: UserUpdateOneWithoutFlagsReportedAboutOthersInput
+  comment?: CommentUpdateOneWithoutFlagsInput
+  post?: PostUpdateOneWithoutFlagsInput
 }
 
 export interface VoteCreateWithoutVoterInput {
@@ -4730,115 +4542,13 @@ export interface VoteCreateWithoutVoterInput {
   post: PostCreateOneWithoutVotesInput
 }
 
-export interface FlagUpdateWithoutCreatorInput {
-  where: FlagWhereUniqueInput
-  data: FlagUpdateWithoutCreatorDataInput
-}
-
-export interface CommentCreateWithoutAuthorInput {
-  content: String
-  directParentType: CONTENT_TYPE
-  post: PostCreateOneWithoutCommentsInput
-  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
-  votes?: VoteCreateManyWithoutCommentInput
-  flags?: FlagCreateManyWithoutCommentInput
-}
-
-export interface FlagUpdateWithoutCreatorDataInput {
-  reportedContentType?: CONTENT_TYPE
-  reportedUser?: UserUpdateOneWithoutFlagsReportedAboutThisUserInput
-  comment?: CommentUpdateOneWithoutFlagsInput
-  post?: PostUpdateOneWithoutFlagsInput
-}
-
-export interface FlagCreateWithoutPostInput {
-  reportedContentType: CONTENT_TYPE
-  creator: UserCreateOneWithoutFlagsReportedAboutOthersInput
-  reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
-  comment?: CommentCreateOneWithoutFlagsInput
-}
-
-export interface UserUpdateOneWithoutFlagsReportedAboutThisUserInput {
-  create?: UserCreateWithoutFlagsReportedAboutThisUserInput
-  connect?: UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput
-  delete?: UserWhereUniqueInput
-  update?: UserUpdateWithoutFlagsReportedAboutThisUserInput
-  upsert?: UserUpsertWithoutFlagsReportedAboutThisUserInput
-}
-
-export interface PostCreateWithoutFlagsInput {
-  title: String
-  url?: String
-  content?: String
-  hidden?: Boolean
-  mediaLink?: String
-  isAdmin?: Boolean
-  author: UserCreateOneWithoutPostsInput
-  comments?: CommentCreateManyWithoutPostInput
-  votes?: VoteCreateManyWithoutPostInput
-}
-
-export interface UserUpdateWithoutFlagsReportedAboutThisUserInput {
-  where: UserWhereUniqueInput
-  data: UserUpdateWithoutFlagsReportedAboutThisUserDataInput
-}
-
-export interface UserCreateWithoutFlagsReportedAboutThisUserInput {
-  facebookUserId?: String
-  facebookEmail?: String
-  email?: String
-  username?: String
-  password?: String
-  name?: String
-  admin?: Boolean
-  about?: String
-  profileImageUrl?: String
-  userType?: USER_TYPE
-  posts?: PostCreateManyWithoutAuthorInput
-  comments?: CommentCreateManyWithoutAuthorInput
-  votes?: VoteCreateManyWithoutVoterInput
-  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
-}
-
-export interface UserUpdateWithoutFlagsReportedAboutThisUserDataInput {
-  facebookUserId?: String
-  facebookEmail?: String
-  email?: String
-  username?: String
-  password?: String
-  name?: String
-  admin?: Boolean
-  about?: String
-  profileImageUrl?: String
-  userType?: USER_TYPE
-  posts?: PostUpdateManyWithoutAuthorInput
-  comments?: CommentUpdateManyWithoutAuthorInput
-  votes?: VoteUpdateManyWithoutVoterInput
-  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
-}
-
-export interface PostWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface UserUpsertWithoutFlagsReportedAboutThisUserInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutFlagsReportedAboutThisUserDataInput
-  create: UserCreateWithoutFlagsReportedAboutThisUserInput
-}
-
-export interface FlagUpdateWithoutCommentDataInput {
-  reportedContentType?: CONTENT_TYPE
-  creator?: UserUpdateOneWithoutFlagsReportedAboutOthersInput
-  reportedUser?: UserUpdateOneWithoutFlagsReportedAboutThisUserInput
-  post?: PostUpdateOneWithoutFlagsInput
-}
-
-export interface FlagUpsertWithoutCreatorInput {
-  where: FlagWhereUniqueInput
-  update: FlagUpdateWithoutCreatorDataInput
-  create: FlagCreateWithoutCreatorInput
+export interface CommentUpdateOneWithoutFlagsInput {
+  create?: CommentCreateWithoutFlagsInput
+  connect?: CommentWhereUniqueInput
+  disconnect?: CommentWhereUniqueInput
+  delete?: CommentWhereUniqueInput
+  update?: CommentUpdateWithoutFlagsInput
+  upsert?: CommentUpsertWithoutFlagsInput
 }
 
 export interface PostCreateWithoutCommentsInput {
@@ -4853,10 +4563,56 @@ export interface PostCreateWithoutCommentsInput {
   votes?: VoteCreateManyWithoutPostInput
 }
 
-export interface UserUpsertWithoutVotesInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutVotesDataInput
-  create: UserCreateWithoutVotesInput
+export interface CommentUpdateWithoutFlagsInput {
+  where: CommentWhereUniqueInput
+  data: CommentUpdateWithoutFlagsDataInput
+}
+
+export interface CommentCreateWithoutAuthorInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  post: PostCreateOneWithoutCommentsInput
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  votes?: VoteCreateManyWithoutCommentInput
+  flags?: FlagCreateManyWithoutCommentInput
+}
+
+export interface CommentUpdateWithoutFlagsDataInput {
+  content?: String
+  directParentType?: CONTENT_TYPE
+  author?: UserUpdateOneWithoutCommentsInput
+  post?: PostUpdateOneWithoutCommentsInput
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput
+  votes?: VoteUpdateManyWithoutCommentInput
+}
+
+export interface VoteCreateWithoutCommentInput {
+  score: Int
+  contentType: CONTENT_TYPE
+  post: PostCreateOneWithoutVotesInput
+  voter: UserCreateOneWithoutVotesInput
+}
+
+export interface CommentUpsertWithoutFlagsInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutFlagsDataInput
+  create: CommentCreateWithoutFlagsInput
+}
+
+export interface FlagCreateWithoutPostInput {
+  reportedContentType: CONTENT_TYPE
+  creator: UserCreateOneWithoutFlagsReportedAboutOthersInput
+  reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
+  comment?: CommentCreateOneWithoutFlagsInput
+}
+
+export interface PostUpdateOneWithoutFlagsInput {
+  create?: PostCreateWithoutFlagsInput
+  connect?: PostWhereUniqueInput
+  disconnect?: PostWhereUniqueInput
+  delete?: PostWhereUniqueInput
+  update?: PostUpdateWithoutFlagsInput
+  upsert?: PostUpsertWithoutFlagsInput
 }
 
 export interface FlagCreateWithoutReportedUserInput {
@@ -4866,10 +4622,330 @@ export interface FlagCreateWithoutReportedUserInput {
   post: PostCreateOneWithoutFlagsInput
 }
 
-export interface UserUpsertWithoutFlagsReportedAboutOthersInput {
+export interface PostUpdateWithoutFlagsInput {
+  where: PostWhereUniqueInput
+  data: PostUpdateWithoutFlagsDataInput
+}
+
+export interface PostCreateWithoutFlagsInput {
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author: UserCreateOneWithoutPostsInput
+  comments?: CommentCreateManyWithoutPostInput
+  votes?: VoteCreateManyWithoutPostInput
+}
+
+export interface PostUpdateWithoutFlagsDataInput {
+  title?: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author?: UserUpdateOneWithoutPostsInput
+  comments?: CommentUpdateManyWithoutPostInput
+  votes?: VoteUpdateManyWithoutPostInput
+}
+
+export interface UserCreateWithoutVotesInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostCreateManyWithoutAuthorInput
+  comments?: CommentCreateManyWithoutAuthorInput
+  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
+}
+
+export interface VoteUpdateManyWithoutPostInput {
+  create?: VoteCreateWithoutPostInput[] | VoteCreateWithoutPostInput
+  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+  disconnect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+  delete?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+  update?: VoteUpdateWithoutPostInput[] | VoteUpdateWithoutPostInput
+  upsert?: VoteUpsertWithoutPostInput[] | VoteUpsertWithoutPostInput
+}
+
+export interface UserCreateWithoutFlagsReportedAboutThisUserInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostCreateManyWithoutAuthorInput
+  comments?: CommentCreateManyWithoutAuthorInput
+  votes?: VoteCreateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
+}
+
+export interface VoteUpdateWithoutPostInput {
+  where: VoteWhereUniqueInput
+  data: VoteUpdateWithoutPostDataInput
+}
+
+export interface VoteSubscriptionWhereInput {
+  AND?: VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput
+  OR?: VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: VoteWhereInput
+}
+
+export interface VoteUpdateWithoutPostDataInput {
+  score?: Int
+  contentType?: CONTENT_TYPE
+  comment?: CommentUpdateOneWithoutVotesInput
+  voter?: UserUpdateOneWithoutVotesInput
+}
+
+export interface CommentWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface UserUpdateOneWithoutVotesInput {
+  create?: UserCreateWithoutVotesInput
+  connect?: UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput
+  delete?: UserWhereUniqueInput
+  update?: UserUpdateWithoutVotesInput
+  upsert?: UserUpsertWithoutVotesInput
+}
+
+export interface CommentUpsertWithoutVotesInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutVotesDataInput
+  create: CommentCreateWithoutVotesInput
+}
+
+export interface UserUpdateWithoutVotesInput {
   where: UserWhereUniqueInput
-  update: UserUpdateWithoutFlagsReportedAboutOthersDataInput
-  create: UserCreateWithoutFlagsReportedAboutOthersInput
+  data: UserUpdateWithoutVotesDataInput
+}
+
+export interface FlagUpdateManyWithoutCommentInput {
+  create?: FlagCreateWithoutCommentInput[] | FlagCreateWithoutCommentInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+  disconnect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+  delete?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+  update?: FlagUpdateWithoutCommentInput[] | FlagUpdateWithoutCommentInput
+  upsert?: FlagUpsertWithoutCommentInput[] | FlagUpsertWithoutCommentInput
+}
+
+export interface UserUpdateWithoutVotesDataInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostUpdateManyWithoutAuthorInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
+}
+
+export interface UserCreateWithoutCommentsInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostCreateManyWithoutAuthorInput
+  votes?: VoteCreateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
+}
+
+export interface FlagUpdateManyWithoutCreatorInput {
+  create?: FlagCreateWithoutCreatorInput[] | FlagCreateWithoutCreatorInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+  disconnect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+  delete?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+  update?: FlagUpdateWithoutCreatorInput[] | FlagUpdateWithoutCreatorInput
+  upsert?: FlagUpsertWithoutCreatorInput[] | FlagUpsertWithoutCreatorInput
+}
+
+export interface UserCreateWithoutPostsInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  comments?: CommentCreateManyWithoutAuthorInput
+  votes?: VoteCreateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
+}
+
+export interface FlagUpdateWithoutCreatorInput {
+  where: FlagWhereUniqueInput
+  data: FlagUpdateWithoutCreatorDataInput
+}
+
+export interface PostCreateWithoutVotesInput {
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author: UserCreateOneWithoutPostsInput
+  comments?: CommentCreateManyWithoutPostInput
+  flags?: FlagCreateManyWithoutPostInput
+}
+
+export interface FlagUpdateWithoutCreatorDataInput {
+  reportedContentType?: CONTENT_TYPE
+  reportedUser?: UserUpdateOneWithoutFlagsReportedAboutThisUserInput
+  comment?: CommentUpdateOneWithoutFlagsInput
+  post?: PostUpdateOneWithoutFlagsInput
+}
+
+export interface CommentCreateWithoutFlagsInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  author: UserCreateOneWithoutCommentsInput
+  post: PostCreateOneWithoutCommentsInput
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  votes?: VoteCreateManyWithoutCommentInput
+}
+
+export interface UserUpdateOneWithoutFlagsReportedAboutThisUserInput {
+  create?: UserCreateWithoutFlagsReportedAboutThisUserInput
+  connect?: UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput
+  delete?: UserWhereUniqueInput
+  update?: UserUpdateWithoutFlagsReportedAboutThisUserInput
+  upsert?: UserUpsertWithoutFlagsReportedAboutThisUserInput
+}
+
+export interface FlagCreateWithoutCreatorInput {
+  reportedContentType: CONTENT_TYPE
+  reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
+  comment?: CommentCreateOneWithoutFlagsInput
+  post: PostCreateOneWithoutFlagsInput
+}
+
+export interface UserUpdateWithoutFlagsReportedAboutThisUserInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutFlagsReportedAboutThisUserDataInput
+}
+
+export interface CommentUpdateInput {
+  content?: String
+  directParentType?: CONTENT_TYPE
+  author?: UserUpdateOneWithoutCommentsInput
+  post?: PostUpdateOneWithoutCommentsInput
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput
+  votes?: VoteUpdateManyWithoutCommentInput
+  flags?: FlagUpdateManyWithoutCommentInput
+}
+
+export interface UserUpdateWithoutFlagsReportedAboutThisUserDataInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostUpdateManyWithoutAuthorInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+  votes?: VoteUpdateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
+}
+
+export interface CommentUpsertWithoutThreadedParentCommentInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutThreadedParentCommentDataInput
+  create: CommentCreateWithoutThreadedParentCommentInput
+}
+
+export interface UserUpsertWithoutFlagsReportedAboutThisUserInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutFlagsReportedAboutThisUserDataInput
+  create: UserCreateWithoutFlagsReportedAboutThisUserInput
+}
+
+export interface CommentCreateWithoutVotesInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  author: UserCreateOneWithoutCommentsInput
+  post: PostCreateOneWithoutCommentsInput
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  flags?: FlagCreateManyWithoutCommentInput
+}
+
+export interface FlagUpsertWithoutCreatorInput {
+  where: FlagWhereUniqueInput
+  update: FlagUpdateWithoutCreatorDataInput
+  create: FlagCreateWithoutCreatorInput
+}
+
+export interface UserCreateWithoutFlagsReportedAboutOthersInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostCreateManyWithoutAuthorInput
+  comments?: CommentCreateManyWithoutAuthorInput
+  votes?: VoteCreateManyWithoutVoterInput
+  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
+}
+
+export interface FlagCreateWithoutCommentInput {
+  reportedContentType: CONTENT_TYPE
+  creator: UserCreateOneWithoutFlagsReportedAboutOthersInput
+  reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
+  post: PostCreateOneWithoutFlagsInput
 }
 
 export interface FlagUpsertWithoutReportedUserInput {
@@ -4890,53 +4966,44 @@ export interface VoteUpsertWithoutPostInput {
   create: VoteCreateWithoutPostInput
 }
 
-export interface UserCreateWithoutVotesInput {
-  facebookUserId?: String
-  facebookEmail?: String
-  email?: String
-  username?: String
-  password?: String
-  name?: String
-  admin?: Boolean
-  about?: String
-  profileImageUrl?: String
-  userType?: USER_TYPE
-  posts?: PostCreateManyWithoutAuthorInput
-  comments?: CommentCreateManyWithoutAuthorInput
-  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
-  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
+export interface UserUpsertWithoutVotesInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutVotesDataInput
+  create: UserCreateWithoutVotesInput
 }
 
-export interface VoteCreateWithoutCommentInput {
+export interface PostUpsertWithoutAuthorInput {
+  where: PostWhereUniqueInput
+  update: PostUpdateWithoutAuthorDataInput
+  create: PostCreateWithoutAuthorInput
+}
+
+export interface VoteCreateWithoutPostInput {
   score: Int
   contentType: CONTENT_TYPE
-  post: PostCreateOneWithoutVotesInput
+  comment?: CommentCreateOneWithoutVotesInput
   voter: UserCreateOneWithoutVotesInput
 }
 
-export interface CommentCreateWithoutPostInput {
+export interface CommentCreateWithoutThreadedParentCommentInput {
   content: String
   directParentType: CONTENT_TYPE
   author: UserCreateOneWithoutCommentsInput
-  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  post: PostCreateOneWithoutCommentsInput
   votes?: VoteCreateManyWithoutCommentInput
   flags?: FlagCreateManyWithoutCommentInput
 }
 
-export interface UserUpsertWithoutCommentsInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutCommentsDataInput
-  create: UserCreateWithoutCommentsInput
-}
-
-export interface CommentSubscriptionWhereInput {
-  AND?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput
-  OR?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput
-  mutation_in?: MutationType[] | MutationType
-  updatedFields_contains?: String
-  updatedFields_contains_every?: String[] | String
-  updatedFields_contains_some?: String[] | String
-  node?: CommentWhereInput
+export interface PostCreateWithoutAuthorInput {
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  comments?: CommentCreateManyWithoutPostInput
+  flags?: FlagCreateManyWithoutPostInput
+  votes?: VoteCreateManyWithoutPostInput
 }
 
 /*
@@ -4952,83 +5019,6 @@ export interface FlagPreviousValues {
   createdAt: DateTime
   updatedAt: DateTime
   reportedContentType: CONTENT_TYPE
-}
-
-export interface Flag extends Node {
-  id: ID_Output
-  createdAt: DateTime
-  updatedAt: DateTime
-  reportedContentType: CONTENT_TYPE
-  creator: User
-  reportedUser: User
-  comment?: Comment
-  post: Post
-}
-
-export interface CommentSubscriptionPayload {
-  mutation: MutationType
-  node?: Comment
-  updatedFields?: String[]
-  previousValues?: CommentPreviousValues
-}
-
-export interface AggregateFlag {
-  count: Int
-}
-
-/*
- * A connection to a list of items.
-
- */
-export interface FlagConnection {
-  pageInfo: PageInfo
-  edges: FlagEdge[]
-  aggregate: AggregateFlag
-}
-
-export interface BatchPayload {
-  count: Long
-}
-
-/*
- * An edge in a connection.
-
- */
-export interface CommentEdge {
-  node: Comment
-  cursor: String
-}
-
-export interface FlagSubscriptionPayload {
-  mutation: MutationType
-  node?: Flag
-  updatedFields?: String[]
-  previousValues?: FlagPreviousValues
-}
-
-export interface AggregateVote {
-  count: Int
-}
-
-export interface Vote extends Node {
-  id: ID_Output
-  createdAt: DateTime
-  updatedAt: DateTime
-  score: Int
-  contentType: CONTENT_TYPE
-  comment?: Comment
-  post: Post
-  voter: User
-}
-
-/*
- * A connection to a list of items.
-
- */
-export interface VoteConnection {
-  pageInfo: PageInfo
-  edges: VoteEdge[]
-  aggregate: AggregateVote
 }
 
 export interface User extends Node {
@@ -5050,61 +5040,29 @@ export interface User extends Node {
   votes?: Vote[]
   flagsReportedAboutOthers?: Flag[]
   flagsReportedAboutThisUser?: Flag[]
+  karma?: Int
 }
 
-/*
- * An edge in a connection.
-
- */
-export interface PostEdge {
-  node: Post
-  cursor: String
+export interface BatchPayload {
+  count: Long
 }
 
-export interface UserSubscriptionPayload {
-  mutation: MutationType
-  node?: User
-  updatedFields?: String[]
-  previousValues?: UserPreviousValues
-}
-
-export interface AggregateUser {
+export interface AggregateFlag {
   count: Int
 }
 
-export interface UserPreviousValues {
-  id: ID_Output
-  facebookUserId?: String
-  facebookEmail?: String
-  createdAt: DateTime
-  updatedAt: DateTime
-  email?: String
-  username?: String
-  password?: String
-  name?: String
-  admin?: Boolean
-  about?: String
-  profileImageUrl?: String
-  userType?: USER_TYPE
+export interface FlagSubscriptionPayload {
+  mutation: MutationType
+  node?: Flag
+  updatedFields?: String[]
+  previousValues?: FlagPreviousValues
 }
 
-/*
- * Information about pagination in a connection.
-
- */
-export interface PageInfo {
-  hasNextPage: Boolean
-  hasPreviousPage: Boolean
-  startCursor?: String
-  endCursor?: String
-}
-
-export interface CommentPreviousValues {
-  id: ID_Output
-  createdAt: DateTime
-  updatedAt: DateTime
-  content: String
-  directParentType: CONTENT_TYPE
+export interface CommentSubscriptionPayload {
+  mutation: MutationType
+  node?: Comment
+  updatedFields?: String[]
+  previousValues?: CommentPreviousValues
 }
 
 /*
@@ -5116,11 +5074,18 @@ export interface FlagEdge {
   cursor: String
 }
 
-export interface PostSubscriptionPayload {
-  mutation: MutationType
-  node?: Post
-  updatedFields?: String[]
-  previousValues?: PostPreviousValues
+/*
+ * A connection to a list of items.
+
+ */
+export interface FlagConnection {
+  pageInfo: PageInfo
+  edges: FlagEdge[]
+  aggregate: AggregateFlag
+}
+
+export interface AggregateComment {
+  count: Int
 }
 
 /*
@@ -5133,20 +5098,24 @@ export interface CommentConnection {
   aggregate: AggregateComment
 }
 
-export interface PostPreviousValues {
+export interface Vote extends Node {
   id: ID_Output
   createdAt: DateTime
   updatedAt: DateTime
-  title: String
-  url?: String
-  content?: String
-  hidden?: Boolean
-  mediaLink?: String
-  isAdmin?: Boolean
+  score: Int
+  contentType: CONTENT_TYPE
+  comment?: Comment
+  post: Post
+  voter: User
 }
 
-export interface AggregatePost {
-  count: Int
+/*
+ * An edge in a connection.
+
+ */
+export interface VoteEdge {
+  node: Vote
+  cursor: String
 }
 
 export interface Post extends Node {
@@ -5163,6 +5132,97 @@ export interface Post extends Node {
   comments?: Comment[]
   flags?: Flag[]
   votes?: Vote[]
+}
+
+export interface AggregatePost {
+  count: Int
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType
+  node?: User
+  updatedFields?: String[]
+  previousValues?: UserPreviousValues
+}
+
+/*
+ * A connection to a list of items.
+
+ */
+export interface PostConnection {
+  pageInfo: PageInfo
+  edges: PostEdge[]
+  aggregate: AggregatePost
+}
+
+export interface UserPreviousValues {
+  id: ID_Output
+  facebookUserId?: String
+  facebookEmail?: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+}
+
+/*
+ * An edge in a connection.
+
+ */
+export interface UserEdge {
+  node: User
+  cursor: String
+}
+
+export interface CommentPreviousValues {
+  id: ID_Output
+  createdAt: DateTime
+  updatedAt: DateTime
+  content: String
+  directParentType: CONTENT_TYPE
+}
+
+/*
+ * A connection to a list of items.
+
+ */
+export interface UserConnection {
+  pageInfo: PageInfo
+  edges: UserEdge[]
+  aggregate: AggregateUser
+}
+
+export interface PostSubscriptionPayload {
+  mutation: MutationType
+  node?: Post
+  updatedFields?: String[]
+  previousValues?: PostPreviousValues
+}
+
+/*
+ * An edge in a connection.
+
+ */
+export interface CommentEdge {
+  node: Comment
+  cursor: String
+}
+
+/*
+ * A connection to a list of items.
+
+ */
+export interface VoteConnection {
+  pageInfo: PageInfo
+  edges: VoteEdge[]
+  aggregate: AggregateVote
 }
 
 export interface VotePreviousValues {
@@ -5193,66 +5253,70 @@ export interface Comment extends Node {
   flags?: Flag[]
 }
 
-/*
- * A connection to a list of items.
-
- */
-export interface PostConnection {
-  pageInfo: PageInfo
-  edges: PostEdge[]
-  aggregate: AggregatePost
+export interface PostPreviousValues {
+  id: ID_Output
+  createdAt: DateTime
+  updatedAt: DateTime
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
 }
 
 /*
  * An edge in a connection.
 
  */
-export interface VoteEdge {
-  node: Vote
+export interface PostEdge {
+  node: Post
   cursor: String
 }
 
-export interface AggregateComment {
+export interface AggregateVote {
   count: Int
 }
 
-/*
- * A connection to a list of items.
-
- */
-export interface UserConnection {
-  pageInfo: PageInfo
-  edges: UserEdge[]
-  aggregate: AggregateUser
+export interface Flag extends Node {
+  id: ID_Output
+  createdAt: DateTime
+  updatedAt: DateTime
+  reportedContentType: CONTENT_TYPE
+  creator: User
+  reportedUser: User
+  comment?: Comment
+  post: Post
 }
 
 /*
- * An edge in a connection.
+ * Information about pagination in a connection.
 
  */
-export interface UserEdge {
-  node: User
-  cursor: String
+export interface PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor?: String
+  endCursor?: String
 }
 
-export type DateTime = string
-
-/*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
-*/
-export type Int = number
-
-/*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-*/
-export type ID_Input = string | number
-export type ID_Output = string
+export interface AggregateUser {
+  count: Int
+}
 
 /*
 The 'Long' scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
 */
 export type Long = string
+
+export type DateTime = string
+
+/*
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+*/
+export type ID_Input = string | number
+export type ID_Output = string
 
 /*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
@@ -5263,6 +5327,11 @@ export type String = string
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+*/
+export type Int = number
 
 export interface Schema {
   query: Query
