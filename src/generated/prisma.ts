@@ -17,7 +17,7 @@ type Comment implements Node {
   directParentType: CONTENT_TYPE!
   author(where: UserWhereInput): User!
   post(where: PostWhereInput): Post!
-  threadedParentComment(where: CommentWhereInput): Comment
+  threadedParentComment(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
   flags(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
 }
@@ -133,7 +133,7 @@ input CommentCreateInput {
   directParentType: CONTENT_TYPE!
   author: UserCreateOneWithoutCommentsInput!
   post: PostCreateOneWithoutCommentsInput!
-  threadedParentComment: CommentCreateOneWithoutThreadedParentCommentInput
+  threadedParentComment: CommentCreateManyWithoutThreadedParentCommentInput
   votes: VoteCreateManyWithoutCommentInput
   flags: FlagCreateManyWithoutCommentInput
 }
@@ -148,13 +148,13 @@ input CommentCreateManyWithoutPostInput {
   connect: [CommentWhereUniqueInput!]
 }
 
-input CommentCreateOneWithoutFlagsInput {
-  create: CommentCreateWithoutFlagsInput
-  connect: CommentWhereUniqueInput
+input CommentCreateManyWithoutThreadedParentCommentInput {
+  create: [CommentCreateWithoutThreadedParentCommentInput!]
+  connect: [CommentWhereUniqueInput!]
 }
 
-input CommentCreateOneWithoutThreadedParentCommentInput {
-  create: CommentCreateWithoutThreadedParentCommentInput
+input CommentCreateOneWithoutFlagsInput {
+  create: CommentCreateWithoutFlagsInput
   connect: CommentWhereUniqueInput
 }
 
@@ -167,7 +167,7 @@ input CommentCreateWithoutAuthorInput {
   content: String!
   directParentType: CONTENT_TYPE!
   post: PostCreateOneWithoutCommentsInput!
-  threadedParentComment: CommentCreateOneWithoutThreadedParentCommentInput
+  threadedParentComment: CommentCreateManyWithoutThreadedParentCommentInput
   votes: VoteCreateManyWithoutCommentInput
   flags: FlagCreateManyWithoutCommentInput
 }
@@ -177,7 +177,7 @@ input CommentCreateWithoutFlagsInput {
   directParentType: CONTENT_TYPE!
   author: UserCreateOneWithoutCommentsInput!
   post: PostCreateOneWithoutCommentsInput!
-  threadedParentComment: CommentCreateOneWithoutThreadedParentCommentInput
+  threadedParentComment: CommentCreateManyWithoutThreadedParentCommentInput
   votes: VoteCreateManyWithoutCommentInput
 }
 
@@ -185,7 +185,7 @@ input CommentCreateWithoutPostInput {
   content: String!
   directParentType: CONTENT_TYPE!
   author: UserCreateOneWithoutCommentsInput!
-  threadedParentComment: CommentCreateOneWithoutThreadedParentCommentInput
+  threadedParentComment: CommentCreateManyWithoutThreadedParentCommentInput
   votes: VoteCreateManyWithoutCommentInput
   flags: FlagCreateManyWithoutCommentInput
 }
@@ -204,7 +204,7 @@ input CommentCreateWithoutVotesInput {
   directParentType: CONTENT_TYPE!
   author: UserCreateOneWithoutCommentsInput!
   post: PostCreateOneWithoutCommentsInput!
-  threadedParentComment: CommentCreateOneWithoutThreadedParentCommentInput
+  threadedParentComment: CommentCreateManyWithoutThreadedParentCommentInput
   flags: FlagCreateManyWithoutCommentInput
 }
 
@@ -283,7 +283,7 @@ input CommentUpdateInput {
   directParentType: CONTENT_TYPE
   author: UserUpdateOneWithoutCommentsInput
   post: PostUpdateOneWithoutCommentsInput
-  threadedParentComment: CommentUpdateOneWithoutThreadedParentCommentInput
+  threadedParentComment: CommentUpdateManyWithoutThreadedParentCommentInput
   votes: VoteUpdateManyWithoutCommentInput
   flags: FlagUpdateManyWithoutCommentInput
 }
@@ -306,6 +306,15 @@ input CommentUpdateManyWithoutPostInput {
   upsert: [CommentUpsertWithoutPostInput!]
 }
 
+input CommentUpdateManyWithoutThreadedParentCommentInput {
+  create: [CommentCreateWithoutThreadedParentCommentInput!]
+  connect: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  delete: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithoutThreadedParentCommentInput!]
+  upsert: [CommentUpsertWithoutThreadedParentCommentInput!]
+}
+
 input CommentUpdateOneWithoutFlagsInput {
   create: CommentCreateWithoutFlagsInput
   connect: CommentWhereUniqueInput
@@ -313,15 +322,6 @@ input CommentUpdateOneWithoutFlagsInput {
   delete: CommentWhereUniqueInput
   update: CommentUpdateWithoutFlagsInput
   upsert: CommentUpsertWithoutFlagsInput
-}
-
-input CommentUpdateOneWithoutThreadedParentCommentInput {
-  create: CommentCreateWithoutThreadedParentCommentInput
-  connect: CommentWhereUniqueInput
-  disconnect: CommentWhereUniqueInput
-  delete: CommentWhereUniqueInput
-  update: CommentUpdateWithoutThreadedParentCommentInput
-  upsert: CommentUpsertWithoutThreadedParentCommentInput
 }
 
 input CommentUpdateOneWithoutVotesInput {
@@ -337,7 +337,7 @@ input CommentUpdateWithoutAuthorDataInput {
   content: String
   directParentType: CONTENT_TYPE
   post: PostUpdateOneWithoutCommentsInput
-  threadedParentComment: CommentUpdateOneWithoutThreadedParentCommentInput
+  threadedParentComment: CommentUpdateManyWithoutThreadedParentCommentInput
   votes: VoteUpdateManyWithoutCommentInput
   flags: FlagUpdateManyWithoutCommentInput
 }
@@ -352,7 +352,7 @@ input CommentUpdateWithoutFlagsDataInput {
   directParentType: CONTENT_TYPE
   author: UserUpdateOneWithoutCommentsInput
   post: PostUpdateOneWithoutCommentsInput
-  threadedParentComment: CommentUpdateOneWithoutThreadedParentCommentInput
+  threadedParentComment: CommentUpdateManyWithoutThreadedParentCommentInput
   votes: VoteUpdateManyWithoutCommentInput
 }
 
@@ -365,7 +365,7 @@ input CommentUpdateWithoutPostDataInput {
   content: String
   directParentType: CONTENT_TYPE
   author: UserUpdateOneWithoutCommentsInput
-  threadedParentComment: CommentUpdateOneWithoutThreadedParentCommentInput
+  threadedParentComment: CommentUpdateManyWithoutThreadedParentCommentInput
   votes: VoteUpdateManyWithoutCommentInput
   flags: FlagUpdateManyWithoutCommentInput
 }
@@ -394,7 +394,7 @@ input CommentUpdateWithoutVotesDataInput {
   directParentType: CONTENT_TYPE
   author: UserUpdateOneWithoutCommentsInput
   post: PostUpdateOneWithoutCommentsInput
-  threadedParentComment: CommentUpdateOneWithoutThreadedParentCommentInput
+  threadedParentComment: CommentUpdateManyWithoutThreadedParentCommentInput
   flags: FlagUpdateManyWithoutCommentInput
 }
 
@@ -621,7 +621,9 @@ input CommentWhereInput {
   directParentType_not_in: [CONTENT_TYPE!]
   author: UserWhereInput
   post: PostWhereInput
-  threadedParentComment: CommentWhereInput
+  threadedParentComment_every: CommentWhereInput
+  threadedParentComment_some: CommentWhereInput
+  threadedParentComment_none: CommentWhereInput
   votes_every: VoteWhereInput
   votes_some: VoteWhereInput
   votes_none: VoteWhereInput
@@ -3573,7 +3575,7 @@ export interface CommentCreateInput {
   directParentType: CONTENT_TYPE;
   author: UserCreateOneWithoutCommentsInput;
   post: PostCreateOneWithoutCommentsInput;
-  threadedParentComment?: CommentCreateOneWithoutThreadedParentCommentInput;
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput;
   votes?: VoteCreateManyWithoutCommentInput;
   flags?: FlagCreateManyWithoutCommentInput;
 }
@@ -3631,7 +3633,9 @@ export interface CommentWhereInput {
   directParentType_not_in?: CONTENT_TYPE[] | CONTENT_TYPE;
   author?: UserWhereInput;
   post?: PostWhereInput;
-  threadedParentComment?: CommentWhereInput;
+  threadedParentComment_every?: CommentWhereInput;
+  threadedParentComment_some?: CommentWhereInput;
+  threadedParentComment_none?: CommentWhereInput;
   votes_every?: VoteWhereInput;
   votes_some?: VoteWhereInput;
   votes_none?: VoteWhereInput;
@@ -3860,7 +3864,7 @@ export interface CommentUpdateWithoutPostDataInput {
   content?: String;
   directParentType?: CONTENT_TYPE;
   author?: UserUpdateOneWithoutCommentsInput;
-  threadedParentComment?: CommentUpdateOneWithoutThreadedParentCommentInput;
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput;
   votes?: VoteUpdateManyWithoutCommentInput;
   flags?: FlagUpdateManyWithoutCommentInput;
 }
@@ -4022,7 +4026,7 @@ export interface CommentUpdateWithoutVotesDataInput {
   directParentType?: CONTENT_TYPE;
   author?: UserUpdateOneWithoutCommentsInput;
   post?: PostUpdateOneWithoutCommentsInput;
-  threadedParentComment?: CommentUpdateOneWithoutThreadedParentCommentInput;
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput;
   flags?: FlagUpdateManyWithoutCommentInput;
 }
 
@@ -4113,9 +4117,9 @@ export interface UserUpdateWithoutPostsDataInput {
   flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput;
 }
 
-export interface CommentCreateOneWithoutThreadedParentCommentInput {
-  create?: CommentCreateWithoutThreadedParentCommentInput;
-  connect?: CommentWhereUniqueInput;
+export interface CommentCreateManyWithoutThreadedParentCommentInput {
+  create?: CommentCreateWithoutThreadedParentCommentInput[] | CommentCreateWithoutThreadedParentCommentInput;
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
 }
 
 export interface CommentUpdateManyWithoutAuthorInput {
@@ -4146,7 +4150,7 @@ export interface CommentUpdateWithoutAuthorDataInput {
   content?: String;
   directParentType?: CONTENT_TYPE;
   post?: PostUpdateOneWithoutCommentsInput;
-  threadedParentComment?: CommentUpdateOneWithoutThreadedParentCommentInput;
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput;
   votes?: VoteUpdateManyWithoutCommentInput;
   flags?: FlagUpdateManyWithoutCommentInput;
 }
@@ -4156,13 +4160,13 @@ export interface FlagCreateManyWithoutPostInput {
   connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput;
 }
 
-export interface CommentUpdateOneWithoutThreadedParentCommentInput {
-  create?: CommentCreateWithoutThreadedParentCommentInput;
-  connect?: CommentWhereUniqueInput;
-  disconnect?: CommentWhereUniqueInput;
-  delete?: CommentWhereUniqueInput;
-  update?: CommentUpdateWithoutThreadedParentCommentInput;
-  upsert?: CommentUpsertWithoutThreadedParentCommentInput;
+export interface CommentUpdateManyWithoutThreadedParentCommentInput {
+  create?: CommentCreateWithoutThreadedParentCommentInput[] | CommentCreateWithoutThreadedParentCommentInput;
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  disconnect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  delete?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+  update?: CommentUpdateWithoutThreadedParentCommentInput[] | CommentUpdateWithoutThreadedParentCommentInput;
+  upsert?: CommentUpsertWithoutThreadedParentCommentInput[] | CommentUpsertWithoutThreadedParentCommentInput;
 }
 
 export interface UserCreateOneWithoutFlagsReportedAboutOthersInput {
@@ -4300,7 +4304,7 @@ export interface CommentUpdateInput {
   directParentType?: CONTENT_TYPE;
   author?: UserUpdateOneWithoutCommentsInput;
   post?: PostUpdateOneWithoutCommentsInput;
-  threadedParentComment?: CommentUpdateOneWithoutThreadedParentCommentInput;
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput;
   votes?: VoteUpdateManyWithoutCommentInput;
   flags?: FlagUpdateManyWithoutCommentInput;
 }
@@ -4438,7 +4442,7 @@ export interface CommentCreateWithoutVotesInput {
   directParentType: CONTENT_TYPE;
   author: UserCreateOneWithoutCommentsInput;
   post: PostCreateOneWithoutCommentsInput;
-  threadedParentComment?: CommentCreateOneWithoutThreadedParentCommentInput;
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput;
   flags?: FlagCreateManyWithoutCommentInput;
 }
 
@@ -4469,7 +4473,7 @@ export interface CommentUpdateWithoutFlagsDataInput {
   directParentType?: CONTENT_TYPE;
   author?: UserUpdateOneWithoutCommentsInput;
   post?: PostUpdateOneWithoutCommentsInput;
-  threadedParentComment?: CommentUpdateOneWithoutThreadedParentCommentInput;
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput;
   votes?: VoteUpdateManyWithoutCommentInput;
 }
 
@@ -4536,7 +4540,7 @@ export interface CommentCreateWithoutFlagsInput {
   directParentType: CONTENT_TYPE;
   author: UserCreateOneWithoutCommentsInput;
   post: PostCreateOneWithoutCommentsInput;
-  threadedParentComment?: CommentCreateOneWithoutThreadedParentCommentInput;
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput;
   votes?: VoteCreateManyWithoutCommentInput;
 }
 
@@ -4735,7 +4739,7 @@ export interface CommentCreateWithoutAuthorInput {
   content: String;
   directParentType: CONTENT_TYPE;
   post: PostCreateOneWithoutCommentsInput;
-  threadedParentComment?: CommentCreateOneWithoutThreadedParentCommentInput;
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput;
   votes?: VoteCreateManyWithoutCommentInput;
   flags?: FlagCreateManyWithoutCommentInput;
 }
@@ -4914,7 +4918,7 @@ export interface CommentCreateWithoutPostInput {
   content: String;
   directParentType: CONTENT_TYPE;
   author: UserCreateOneWithoutCommentsInput;
-  threadedParentComment?: CommentCreateOneWithoutThreadedParentCommentInput;
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput;
   votes?: VoteCreateManyWithoutCommentInput;
   flags?: FlagCreateManyWithoutCommentInput;
 }
@@ -5184,7 +5188,7 @@ export interface Comment extends Node {
   directParentType: CONTENT_TYPE;
   author: User;
   post: Post;
-  threadedParentComment?: Comment;
+  threadedParentComment?: Comment[];
   votes?: Vote[];
   flags?: Flag[];
 }
