@@ -29,9 +29,7 @@ export const comment = {
             threadedParentCommentData = {
                 connect: { id: parentCommentId },
             };
-            //threadedParentCommentData = getParentCommentData(parentCommentId, ctx);
         }
-
         return ctx.db.mutation.createComment(
             {
                 data: {
@@ -56,15 +54,4 @@ async function checkPostExists(postId, ctx) {
     if (!post) {
         throw new Error(`Post does not exist`);
     }
-}
-
-function getParentCommentData(parentCommentId, ctx) {
-    const parentComment = ctx.db.query.comment({ where: { id: parentCommentId } });
-    if (!parentComment) {
-        throw new Error(`Parent comment does not exist.`);
-    }
-    const threadedParentData = {
-        connect: { id: parentComment.id },
-    };
-    return threadedParentData;
 }
