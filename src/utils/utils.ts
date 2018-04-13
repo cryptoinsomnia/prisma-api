@@ -25,7 +25,7 @@ export class AuthError extends Error {
 
 export async function incrementUserKarma(id, ctx: Context, info) {
   const userToIncrement = await ctx.db.query.user(
-    { where: { id: id } }, null,
+    { where: { id } }, null,
   );
   const curKarma = userToIncrement.karma;
   if (!curKarma) {
