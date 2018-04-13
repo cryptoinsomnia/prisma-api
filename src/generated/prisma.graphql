@@ -38,6 +38,7 @@ type Post implements Node {
   content: String
   hidden: Boolean
   mediaLink: String
+  tags: [String!]
   isAdmin: Boolean
   author(where: UserWhereInput): User!
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
@@ -1133,6 +1134,7 @@ input PostCreateInput {
   hidden: Boolean
   mediaLink: String
   isAdmin: Boolean
+  tags: PostCreatetagsInput
   author: UserCreateOneWithoutPostsInput!
   comments: CommentCreateManyWithoutPostInput
   flags: FlagCreateManyWithoutPostInput
@@ -1159,6 +1161,10 @@ input PostCreateOneWithoutVotesInput {
   connect: PostWhereUniqueInput
 }
 
+input PostCreatetagsInput {
+  set: [String!]
+}
+
 input PostCreateWithoutAuthorInput {
   title: String!
   url: String
@@ -1166,6 +1172,7 @@ input PostCreateWithoutAuthorInput {
   hidden: Boolean
   mediaLink: String
   isAdmin: Boolean
+  tags: PostCreatetagsInput
   comments: CommentCreateManyWithoutPostInput
   flags: FlagCreateManyWithoutPostInput
   votes: VoteCreateManyWithoutPostInput
@@ -1178,6 +1185,7 @@ input PostCreateWithoutCommentsInput {
   hidden: Boolean
   mediaLink: String
   isAdmin: Boolean
+  tags: PostCreatetagsInput
   author: UserCreateOneWithoutPostsInput!
   flags: FlagCreateManyWithoutPostInput
   votes: VoteCreateManyWithoutPostInput
@@ -1190,6 +1198,7 @@ input PostCreateWithoutFlagsInput {
   hidden: Boolean
   mediaLink: String
   isAdmin: Boolean
+  tags: PostCreatetagsInput
   author: UserCreateOneWithoutPostsInput!
   comments: CommentCreateManyWithoutPostInput
   votes: VoteCreateManyWithoutPostInput
@@ -1202,6 +1211,7 @@ input PostCreateWithoutVotesInput {
   hidden: Boolean
   mediaLink: String
   isAdmin: Boolean
+  tags: PostCreatetagsInput
   author: UserCreateOneWithoutPostsInput!
   comments: CommentCreateManyWithoutPostInput
   flags: FlagCreateManyWithoutPostInput
@@ -1251,6 +1261,7 @@ type PostPreviousValues {
   content: String
   hidden: Boolean
   mediaLink: String
+  tags: [String!]
   isAdmin: Boolean
 }
 
@@ -1296,6 +1307,7 @@ input PostUpdateInput {
   hidden: Boolean
   mediaLink: String
   isAdmin: Boolean
+  tags: PostUpdatetagsInput
   author: UserUpdateOneWithoutPostsInput
   comments: CommentUpdateManyWithoutPostInput
   flags: FlagUpdateManyWithoutPostInput
@@ -1338,6 +1350,10 @@ input PostUpdateOneWithoutVotesInput {
   upsert: PostUpsertWithoutVotesInput
 }
 
+input PostUpdatetagsInput {
+  set: [String!]
+}
+
 input PostUpdateWithoutAuthorDataInput {
   title: String
   url: String
@@ -1345,6 +1361,7 @@ input PostUpdateWithoutAuthorDataInput {
   hidden: Boolean
   mediaLink: String
   isAdmin: Boolean
+  tags: PostUpdatetagsInput
   comments: CommentUpdateManyWithoutPostInput
   flags: FlagUpdateManyWithoutPostInput
   votes: VoteUpdateManyWithoutPostInput
@@ -1362,6 +1379,7 @@ input PostUpdateWithoutCommentsDataInput {
   hidden: Boolean
   mediaLink: String
   isAdmin: Boolean
+  tags: PostUpdatetagsInput
   author: UserUpdateOneWithoutPostsInput
   flags: FlagUpdateManyWithoutPostInput
   votes: VoteUpdateManyWithoutPostInput
@@ -1379,6 +1397,7 @@ input PostUpdateWithoutFlagsDataInput {
   hidden: Boolean
   mediaLink: String
   isAdmin: Boolean
+  tags: PostUpdatetagsInput
   author: UserUpdateOneWithoutPostsInput
   comments: CommentUpdateManyWithoutPostInput
   votes: VoteUpdateManyWithoutPostInput
@@ -1396,6 +1415,7 @@ input PostUpdateWithoutVotesDataInput {
   hidden: Boolean
   mediaLink: String
   isAdmin: Boolean
+  tags: PostUpdatetagsInput
   author: UserUpdateOneWithoutPostsInput
   comments: CommentUpdateManyWithoutPostInput
   flags: FlagUpdateManyWithoutPostInput

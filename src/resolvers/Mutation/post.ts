@@ -13,7 +13,7 @@ export const post = {
 
     return ctx.db.mutation.deletePost({ where: { id } });
   },
-  async createPost(parent, { title, url, content }, ctx: Context, info) {
+  async createPost(parent, { title, url, content, tags }, ctx: Context, info) {
     const userId = getUserId(ctx);
     return ctx.db.mutation.createPost(
       {
@@ -24,6 +24,7 @@ export const post = {
           title,
           url,
           content,
+          tags,
         },
       },
       info,
