@@ -1,7 +1,7 @@
 # import Post from "./generated/prisma.graphql"
 
 type Query {
-  feed(first: Int = 20, orderBy: PostOrderByInput = createdAt_DESC): [Post!]!
+  feed(first: Int = 20, orderBy: PostOrderByInput): [Post!]!
   post(id: ID!): Post!
   comment(id: ID!): Comment!
   allComments(first: Int = 20): [Comment!]!
