@@ -36,12 +36,14 @@ export const comment = {
                 throw new Error(`Parent comment does not exist for the provided parentCommentId`);
             }
             threadedParentCommentData = {
-                connect: { id: parentComment.id }
-            }
+                connect: { id: parentComment.id },
+            };
         } else {
             directParentType = 'POST';
         }
-        incrementUserKarma(post.author.id, ctx, info);
+        if (post.author.id !== userId) { // prevent abuse of karma
+            incrementUserKarma(post.author.id, ctx, info);
+        }
         return ctx.db.mutation.createComment(
             {
                 data: {

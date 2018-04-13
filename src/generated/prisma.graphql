@@ -64,7 +64,7 @@ type User implements Node {
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
   flagsReportedAboutOthers(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
   flagsReportedAboutThisUser(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
-  karma: Int
+  karma: Int!
 }
 
 type Vote implements Node {
@@ -1856,7 +1856,7 @@ input UserCreateInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
-  karma: Int
+  karma: Int!
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1900,7 +1900,7 @@ input UserCreateWithoutCommentsInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
-  karma: Int
+  karma: Int!
   posts: PostCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -1918,7 +1918,7 @@ input UserCreateWithoutFlagsReportedAboutOthersInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
-  karma: Int
+  karma: Int!
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1936,7 +1936,7 @@ input UserCreateWithoutFlagsReportedAboutThisUserInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
-  karma: Int
+  karma: Int!
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1954,7 +1954,7 @@ input UserCreateWithoutPostsInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
-  karma: Int
+  karma: Int!
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -1972,7 +1972,7 @@ input UserCreateWithoutVotesInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
-  karma: Int
+  karma: Int!
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -2038,7 +2038,7 @@ type UserPreviousValues {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
-  karma: Int
+  karma: Int!
 }
 
 type UserSubscriptionPayload {

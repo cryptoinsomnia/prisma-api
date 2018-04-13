@@ -17,7 +17,7 @@ type User {
   votes: [Vote!]! @relation(name:"UserVotes")
   flagsReportedAboutOthers: [Flag!]! @relation(name: "UserReportsOfOthersFlags")
   flagsReportedAboutThisUser: [Flag!]! @relation(name: "AllFlagsAboutAUser")
-  karma: Int!
+  karma: Int
 }
 
 type Post {

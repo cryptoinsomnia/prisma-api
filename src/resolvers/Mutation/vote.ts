@@ -24,12 +24,15 @@ export const vote = {
                 voter: {
                     id: userId,
                 },
-            }
+            },
         });
         if (votes.length > 0) {
             throw new Error(`Already voted on this post`);
         }
-        incrementUserKarma(post.author.id, ctx, info);
+
+        if (post.author.id !== userId) { // prevent abuse of karma
+            incrementUserKarma(post.author.id, ctx, info);
+        }
         return ctx.db.mutation.createVote(
             {
                 data: {
