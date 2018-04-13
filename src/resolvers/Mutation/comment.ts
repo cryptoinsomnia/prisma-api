@@ -65,6 +65,6 @@ function getParentCommentData(parentCommentId, ctx) {
     }
     const threadedParentData = {
         connect: { id: parentComment.id },
-    }
+    };
     return threadedParentData;
 }
