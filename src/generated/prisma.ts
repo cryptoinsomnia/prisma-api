@@ -68,6 +68,7 @@ type User implements Node {
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
   flagsReportedAboutOthers(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
   flagsReportedAboutThisUser(where: FlagWhereInput, orderBy: FlagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Flag!]
+  karma: Int
 }
 
 type Vote implements Node {
@@ -1859,6 +1860,7 @@ input UserCreateInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1902,6 +1904,7 @@ input UserCreateWithoutCommentsInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -1919,6 +1922,7 @@ input UserCreateWithoutFlagsReportedAboutOthersInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1936,6 +1940,7 @@ input UserCreateWithoutFlagsReportedAboutThisUserInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
@@ -1953,6 +1958,7 @@ input UserCreateWithoutPostsInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   comments: CommentCreateManyWithoutAuthorInput
   votes: VoteCreateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -1970,6 +1976,7 @@ input UserCreateWithoutVotesInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   flagsReportedAboutOthers: FlagCreateManyWithoutCreatorInput
@@ -2017,6 +2024,8 @@ enum UserOrderByInput {
   profileImageUrl_DESC
   userType_ASC
   userType_DESC
+  karma_ASC
+  karma_DESC
 }
 
 type UserPreviousValues {
@@ -2033,6 +2042,7 @@ type UserPreviousValues {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
 }
 
 type UserSubscriptionPayload {
@@ -2081,6 +2091,7 @@ input UserUpdateInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
@@ -2144,6 +2155,7 @@ input UserUpdateWithoutCommentsDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
@@ -2166,6 +2178,7 @@ input UserUpdateWithoutFlagsReportedAboutOthersDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
@@ -2188,6 +2201,7 @@ input UserUpdateWithoutFlagsReportedAboutThisUserDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
@@ -2210,6 +2224,7 @@ input UserUpdateWithoutPostsDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   comments: CommentUpdateManyWithoutAuthorInput
   votes: VoteUpdateManyWithoutVoterInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
@@ -2232,6 +2247,7 @@ input UserUpdateWithoutVotesDataInput {
   about: String
   profileImageUrl: String
   userType: USER_TYPE
+  karma: Int
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   flagsReportedAboutOthers: FlagUpdateManyWithoutCreatorInput
@@ -2835,6 +2851,35 @@ input UserWhereInput {
   All values that are not contained in given list.
   """
   userType_not_in: [USER_TYPE!]
+  karma: Int
+  """
+  All values that are not equal to given value.
+  """
+  karma_not: Int
+  """
+  All values that are contained in given list.
+  """
+  karma_in: [Int!]
+  """
+  All values that are not contained in given list.
+  """
+  karma_not_in: [Int!]
+  """
+  All values less than the given value.
+  """
+  karma_lt: Int
+  """
+  All values less than or equal the given value.
+  """
+  karma_lte: Int
+  """
+  All values greater than the given value.
+  """
+  karma_gt: Int
+  """
+  All values greater than or equal the given value.
+  """
+  karma_gte: Int
   posts_every: PostWhereInput
   posts_some: PostWhereInput
   posts_none: PostWhereInput
@@ -3248,7 +3293,15 @@ input VoteWhereUniqueInput {
 }
 `;
 
+<<<<<<< HEAD
 export type UserOrderByInput =
+=======
+export type CONTENT_TYPE = 
+  'POST' |
+  'COMMENT'
+
+export type UserOrderByInput = 
+>>>>>>> karma working when a user comments on a post or upvotes a post
   'id_ASC' |
   'id_DESC' |
   'facebookUserId_ASC' |
@@ -3274,11 +3327,17 @@ export type UserOrderByInput =
   'profileImageUrl_ASC' |
   'profileImageUrl_DESC' |
   'userType_ASC' |
+<<<<<<< HEAD
   'userType_DESC';
 
 export type CONTENT_TYPE =
   'POST' |
   'COMMENT';
+=======
+  'userType_DESC' |
+  'karma_ASC' |
+  'karma_DESC'
+>>>>>>> karma working when a user comments on a post or upvotes a post
 
 export type PostOrderByInput =
   'id_ASC' |
@@ -3350,6 +3409,7 @@ export interface UserUpdateWithoutCommentsInput {
 }
 
 export interface UserWhereInput {
+<<<<<<< HEAD
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   id?: ID_Input;
@@ -3543,6 +3603,183 @@ export interface PostCreateInput {
   votes?: VoteCreateManyWithoutPostInput;
 }
 
+=======
+  AND?: UserWhereInput[] | UserWhereInput
+  OR?: UserWhereInput[] | UserWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  facebookUserId?: String
+  facebookUserId_not?: String
+  facebookUserId_in?: String[] | String
+  facebookUserId_not_in?: String[] | String
+  facebookUserId_lt?: String
+  facebookUserId_lte?: String
+  facebookUserId_gt?: String
+  facebookUserId_gte?: String
+  facebookUserId_contains?: String
+  facebookUserId_not_contains?: String
+  facebookUserId_starts_with?: String
+  facebookUserId_not_starts_with?: String
+  facebookUserId_ends_with?: String
+  facebookUserId_not_ends_with?: String
+  facebookEmail?: String
+  facebookEmail_not?: String
+  facebookEmail_in?: String[] | String
+  facebookEmail_not_in?: String[] | String
+  facebookEmail_lt?: String
+  facebookEmail_lte?: String
+  facebookEmail_gt?: String
+  facebookEmail_gte?: String
+  facebookEmail_contains?: String
+  facebookEmail_not_contains?: String
+  facebookEmail_starts_with?: String
+  facebookEmail_not_starts_with?: String
+  facebookEmail_ends_with?: String
+  facebookEmail_not_ends_with?: String
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  updatedAt?: DateTime
+  updatedAt_not?: DateTime
+  updatedAt_in?: DateTime[] | DateTime
+  updatedAt_not_in?: DateTime[] | DateTime
+  updatedAt_lt?: DateTime
+  updatedAt_lte?: DateTime
+  updatedAt_gt?: DateTime
+  updatedAt_gte?: DateTime
+  email?: String
+  email_not?: String
+  email_in?: String[] | String
+  email_not_in?: String[] | String
+  email_lt?: String
+  email_lte?: String
+  email_gt?: String
+  email_gte?: String
+  email_contains?: String
+  email_not_contains?: String
+  email_starts_with?: String
+  email_not_starts_with?: String
+  email_ends_with?: String
+  email_not_ends_with?: String
+  username?: String
+  username_not?: String
+  username_in?: String[] | String
+  username_not_in?: String[] | String
+  username_lt?: String
+  username_lte?: String
+  username_gt?: String
+  username_gte?: String
+  username_contains?: String
+  username_not_contains?: String
+  username_starts_with?: String
+  username_not_starts_with?: String
+  username_ends_with?: String
+  username_not_ends_with?: String
+  password?: String
+  password_not?: String
+  password_in?: String[] | String
+  password_not_in?: String[] | String
+  password_lt?: String
+  password_lte?: String
+  password_gt?: String
+  password_gte?: String
+  password_contains?: String
+  password_not_contains?: String
+  password_starts_with?: String
+  password_not_starts_with?: String
+  password_ends_with?: String
+  password_not_ends_with?: String
+  name?: String
+  name_not?: String
+  name_in?: String[] | String
+  name_not_in?: String[] | String
+  name_lt?: String
+  name_lte?: String
+  name_gt?: String
+  name_gte?: String
+  name_contains?: String
+  name_not_contains?: String
+  name_starts_with?: String
+  name_not_starts_with?: String
+  name_ends_with?: String
+  name_not_ends_with?: String
+  admin?: Boolean
+  admin_not?: Boolean
+  about?: String
+  about_not?: String
+  about_in?: String[] | String
+  about_not_in?: String[] | String
+  about_lt?: String
+  about_lte?: String
+  about_gt?: String
+  about_gte?: String
+  about_contains?: String
+  about_not_contains?: String
+  about_starts_with?: String
+  about_not_starts_with?: String
+  about_ends_with?: String
+  about_not_ends_with?: String
+  profileImageUrl?: String
+  profileImageUrl_not?: String
+  profileImageUrl_in?: String[] | String
+  profileImageUrl_not_in?: String[] | String
+  profileImageUrl_lt?: String
+  profileImageUrl_lte?: String
+  profileImageUrl_gt?: String
+  profileImageUrl_gte?: String
+  profileImageUrl_contains?: String
+  profileImageUrl_not_contains?: String
+  profileImageUrl_starts_with?: String
+  profileImageUrl_not_starts_with?: String
+  profileImageUrl_ends_with?: String
+  profileImageUrl_not_ends_with?: String
+  userType?: USER_TYPE
+  userType_not?: USER_TYPE
+  userType_in?: USER_TYPE[] | USER_TYPE
+  userType_not_in?: USER_TYPE[] | USER_TYPE
+  karma?: Int
+  karma_not?: Int
+  karma_in?: Int[] | Int
+  karma_not_in?: Int[] | Int
+  karma_lt?: Int
+  karma_lte?: Int
+  karma_gt?: Int
+  karma_gte?: Int
+  posts_every?: PostWhereInput
+  posts_some?: PostWhereInput
+  posts_none?: PostWhereInput
+  comments_every?: CommentWhereInput
+  comments_some?: CommentWhereInput
+  comments_none?: CommentWhereInput
+  votes_every?: VoteWhereInput
+  votes_some?: VoteWhereInput
+  votes_none?: VoteWhereInput
+  flagsReportedAboutOthers_every?: FlagWhereInput
+  flagsReportedAboutOthers_some?: FlagWhereInput
+  flagsReportedAboutOthers_none?: FlagWhereInput
+  flagsReportedAboutThisUser_every?: FlagWhereInput
+  flagsReportedAboutThisUser_some?: FlagWhereInput
+  flagsReportedAboutThisUser_none?: FlagWhereInput
+}
+
+>>>>>>> karma working when a user comments on a post or upvotes a post
 export interface CommentUpdateOneWithoutVotesInput {
   create?: CommentCreateWithoutVotesInput;
   connect?: CommentWhereUniqueInput;
@@ -3552,6 +3789,7 @@ export interface CommentUpdateOneWithoutVotesInput {
   upsert?: CommentUpsertWithoutVotesInput;
 }
 
+<<<<<<< HEAD
 export interface VoteCreateInput {
   score: Int;
   contentType: CONTENT_TYPE;
@@ -3792,6 +4030,218 @@ export interface PostUpdateManyWithoutAuthorInput {
   delete?: PostWhereUniqueInput[] | PostWhereUniqueInput;
   update?: PostUpdateWithoutAuthorInput[] | PostUpdateWithoutAuthorInput;
   upsert?: PostUpsertWithoutAuthorInput[] | PostUpsertWithoutAuthorInput;
+=======
+export interface VoteWhereInput {
+  AND?: VoteWhereInput[] | VoteWhereInput
+  OR?: VoteWhereInput[] | VoteWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  updatedAt?: DateTime
+  updatedAt_not?: DateTime
+  updatedAt_in?: DateTime[] | DateTime
+  updatedAt_not_in?: DateTime[] | DateTime
+  updatedAt_lt?: DateTime
+  updatedAt_lte?: DateTime
+  updatedAt_gt?: DateTime
+  updatedAt_gte?: DateTime
+  score?: Int
+  score_not?: Int
+  score_in?: Int[] | Int
+  score_not_in?: Int[] | Int
+  score_lt?: Int
+  score_lte?: Int
+  score_gt?: Int
+  score_gte?: Int
+  contentType?: CONTENT_TYPE
+  contentType_not?: CONTENT_TYPE
+  contentType_in?: CONTENT_TYPE[] | CONTENT_TYPE
+  contentType_not_in?: CONTENT_TYPE[] | CONTENT_TYPE
+  comment?: CommentWhereInput
+  post?: PostWhereInput
+  voter?: UserWhereInput
+}
+
+export interface CommentUpdateWithoutVotesInput {
+  where: CommentWhereUniqueInput
+  data: CommentUpdateWithoutVotesDataInput
+}
+
+export interface CommentWhereInput {
+  AND?: CommentWhereInput[] | CommentWhereInput
+  OR?: CommentWhereInput[] | CommentWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  updatedAt?: DateTime
+  updatedAt_not?: DateTime
+  updatedAt_in?: DateTime[] | DateTime
+  updatedAt_not_in?: DateTime[] | DateTime
+  updatedAt_lt?: DateTime
+  updatedAt_lte?: DateTime
+  updatedAt_gt?: DateTime
+  updatedAt_gte?: DateTime
+  content?: String
+  content_not?: String
+  content_in?: String[] | String
+  content_not_in?: String[] | String
+  content_lt?: String
+  content_lte?: String
+  content_gt?: String
+  content_gte?: String
+  content_contains?: String
+  content_not_contains?: String
+  content_starts_with?: String
+  content_not_starts_with?: String
+  content_ends_with?: String
+  content_not_ends_with?: String
+  directParentType?: CONTENT_TYPE
+  directParentType_not?: CONTENT_TYPE
+  directParentType_in?: CONTENT_TYPE[] | CONTENT_TYPE
+  directParentType_not_in?: CONTENT_TYPE[] | CONTENT_TYPE
+  author?: UserWhereInput
+  post?: PostWhereInput
+  threadedParentComment_every?: CommentWhereInput
+  threadedParentComment_some?: CommentWhereInput
+  threadedParentComment_none?: CommentWhereInput
+  votes_every?: VoteWhereInput
+  votes_some?: VoteWhereInput
+  votes_none?: VoteWhereInput
+  flags_every?: FlagWhereInput
+  flags_some?: FlagWhereInput
+  flags_none?: FlagWhereInput
+}
+
+export interface PostCreateInput {
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author: UserCreateOneWithoutPostsInput
+  comments?: CommentCreateManyWithoutPostInput
+  flags?: FlagCreateManyWithoutPostInput
+  votes?: VoteCreateManyWithoutPostInput
+}
+
+export interface UserUpsertWithoutFlagsReportedAboutOthersInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutFlagsReportedAboutOthersDataInput
+  create: UserCreateWithoutFlagsReportedAboutOthersInput
+}
+
+export interface VoteCreateInput {
+  score: Int
+  contentType: CONTENT_TYPE
+  comment?: CommentCreateOneWithoutVotesInput
+  post: PostCreateOneWithoutVotesInput
+  voter: UserCreateOneWithoutVotesInput
+}
+
+export interface CommentUpdateWithoutVotesDataInput {
+  content?: String
+  directParentType?: CONTENT_TYPE
+  author?: UserUpdateOneWithoutCommentsInput
+  post?: PostUpdateOneWithoutCommentsInput
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput
+  flags?: FlagUpdateManyWithoutCommentInput
+}
+
+export interface CommentCreateInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  author: UserCreateOneWithoutCommentsInput
+  post: PostCreateOneWithoutCommentsInput
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  votes?: VoteCreateManyWithoutCommentInput
+  flags?: FlagCreateManyWithoutCommentInput
+}
+
+export interface CommentSubscriptionWhereInput {
+  AND?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput
+  OR?: CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: CommentWhereInput
+}
+
+export interface FlagCreateInput {
+  reportedContentType: CONTENT_TYPE
+  creator: UserCreateOneWithoutFlagsReportedAboutOthersInput
+  reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
+  comment?: CommentCreateOneWithoutFlagsInput
+  post: PostCreateOneWithoutFlagsInput
+}
+
+export interface PostSubscriptionWhereInput {
+  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
+  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: PostWhereInput
+}
+
+export interface UserUpdateInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostUpdateManyWithoutAuthorInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+  votes?: VoteUpdateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface FlagUpdateInput {
@@ -3802,15 +4252,34 @@ export interface FlagUpdateInput {
   post?: PostUpdateOneWithoutFlagsInput;
 }
 
+<<<<<<< HEAD
 export interface PostUpdateWithoutAuthorInput {
   where: PostWhereUniqueInput;
   data: PostUpdateWithoutAuthorDataInput;
+=======
+export interface PostUpdateManyWithoutAuthorInput {
+  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput
+  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput
+  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput
+  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput
+  update?: PostUpdateWithoutAuthorInput[] | PostUpdateWithoutAuthorInput
+  upsert?: PostUpsertWithoutAuthorInput[] | PostUpsertWithoutAuthorInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserWhereUniqueInput {
   id?: ID_Input;
   facebookUserId?: String;
   username?: String;
+}
+
+export interface PostUpdateWithoutAuthorInput {
+  where: PostWhereUniqueInput
+  data: PostUpdateWithoutAuthorDataInput
+}
+
+export interface VoteWhereUniqueInput {
+  id?: ID_Input
 }
 
 export interface PostUpdateWithoutAuthorDataInput {
@@ -3825,8 +4294,13 @@ export interface PostUpdateWithoutAuthorDataInput {
   votes?: VoteUpdateManyWithoutPostInput;
 }
 
+<<<<<<< HEAD
 export interface VoteWhereUniqueInput {
   id?: ID_Input;
+=======
+export interface FlagWhereUniqueInput {
+  id?: ID_Input
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentUpdateManyWithoutPostInput {
@@ -3838,6 +4312,7 @@ export interface CommentUpdateManyWithoutPostInput {
   upsert?: CommentUpsertWithoutPostInput[] | CommentUpsertWithoutPostInput;
 }
 
+<<<<<<< HEAD
 export interface FlagWhereUniqueInput {
   id?: ID_Input;
 }
@@ -3847,6 +4322,8 @@ export interface CommentUpdateWithoutPostInput {
   data: CommentUpdateWithoutPostDataInput;
 }
 
+=======
+>>>>>>> karma working when a user comments on a post or upvotes a post
 export interface PostUpdateInput {
   title?: String;
   url?: String;
@@ -3860,6 +4337,17 @@ export interface PostUpdateInput {
   votes?: VoteUpdateManyWithoutPostInput;
 }
 
+export interface CommentUpdateWithoutPostInput {
+  where: CommentWhereUniqueInput
+  data: CommentUpdateWithoutPostDataInput
+}
+
+export interface CommentUpsertWithoutPostInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutPostDataInput
+  create: CommentCreateWithoutPostInput
+}
+
 export interface CommentUpdateWithoutPostDataInput {
   content?: String;
   directParentType?: CONTENT_TYPE;
@@ -3869,10 +4357,17 @@ export interface CommentUpdateWithoutPostDataInput {
   flags?: FlagUpdateManyWithoutCommentInput;
 }
 
+<<<<<<< HEAD
 export interface CommentUpsertWithoutPostInput {
   where: CommentWhereUniqueInput;
   update: CommentUpdateWithoutPostDataInput;
   create: CommentCreateWithoutPostInput;
+=======
+export interface VoteUpsertWithoutVoterInput {
+  where: VoteWhereUniqueInput
+  update: VoteUpdateWithoutVoterDataInput
+  create: VoteCreateWithoutVoterInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserUpdateOneWithoutCommentsInput {
@@ -3884,10 +4379,17 @@ export interface UserUpdateOneWithoutCommentsInput {
   upsert?: UserUpsertWithoutCommentsInput;
 }
 
+<<<<<<< HEAD
 export interface VoteUpsertWithoutVoterInput {
   where: VoteWhereUniqueInput;
   update: VoteUpdateWithoutVoterDataInput;
   create: VoteCreateWithoutVoterInput;
+=======
+export interface PostUpsertWithoutCommentsInput {
+  where: PostWhereUniqueInput
+  update: PostUpdateWithoutCommentsDataInput
+  create: PostCreateWithoutCommentsInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface PostUpsertWithoutVotesInput {
@@ -3896,6 +4398,7 @@ export interface PostUpsertWithoutVotesInput {
   create: PostCreateWithoutVotesInput;
 }
 
+<<<<<<< HEAD
 export interface PostUpsertWithoutCommentsInput {
   where: PostWhereUniqueInput;
   update: PostUpdateWithoutCommentsDataInput;
@@ -3923,6 +4426,36 @@ export interface CommentUpsertWithoutAuthorInput {
   where: CommentWhereUniqueInput;
   update: CommentUpdateWithoutAuthorDataInput;
   create: CommentCreateWithoutAuthorInput;
+=======
+export interface CommentUpsertWithoutAuthorInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutAuthorDataInput
+  create: CommentCreateWithoutAuthorInput
+}
+
+export interface UserUpdateWithoutCommentsDataInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostUpdateManyWithoutAuthorInput
+  votes?: VoteUpdateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
+}
+
+export interface FlagUpsertWithoutCommentInput {
+  where: FlagWhereUniqueInput
+  update: FlagUpdateWithoutCommentDataInput
+  create: FlagCreateWithoutCommentInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface VoteUpdateManyWithoutVoterInput {
@@ -3934,10 +4467,16 @@ export interface VoteUpdateManyWithoutVoterInput {
   upsert?: VoteUpsertWithoutVoterInput[] | VoteUpsertWithoutVoterInput;
 }
 
+<<<<<<< HEAD
 export interface FlagUpsertWithoutCommentInput {
   where: FlagWhereUniqueInput;
   update: FlagUpdateWithoutCommentDataInput;
   create: FlagCreateWithoutCommentInput;
+=======
+export interface FlagUpdateWithoutCommentInput {
+  where: FlagWhereUniqueInput
+  data: FlagUpdateWithoutCommentDataInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface VoteUpdateWithoutVoterInput {
@@ -3945,9 +4484,16 @@ export interface VoteUpdateWithoutVoterInput {
   data: VoteUpdateWithoutVoterDataInput;
 }
 
+<<<<<<< HEAD
 export interface FlagUpdateWithoutCommentInput {
   where: FlagWhereUniqueInput;
   data: FlagUpdateWithoutCommentDataInput;
+=======
+export interface VoteUpsertWithoutCommentInput {
+  where: VoteWhereUniqueInput
+  update: VoteUpdateWithoutCommentDataInput
+  create: VoteCreateWithoutCommentInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface VoteUpdateWithoutVoterDataInput {
@@ -3957,10 +4503,16 @@ export interface VoteUpdateWithoutVoterDataInput {
   post?: PostUpdateOneWithoutVotesInput;
 }
 
+<<<<<<< HEAD
 export interface VoteUpsertWithoutCommentInput {
   where: VoteWhereUniqueInput;
   update: VoteUpdateWithoutCommentDataInput;
   create: VoteCreateWithoutCommentInput;
+=======
+export interface PostCreateManyWithoutAuthorInput {
+  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput
+  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface FlagWhereInput {
@@ -4006,6 +4558,7 @@ export interface FlagWhereInput {
   post?: PostWhereInput;
 }
 
+<<<<<<< HEAD
 export interface PostCreateManyWithoutAuthorInput {
   create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput;
   connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
@@ -4016,11 +4569,14 @@ export interface CommentUpdateWithoutVotesInput {
   data: CommentUpdateWithoutVotesDataInput;
 }
 
+=======
+>>>>>>> karma working when a user comments on a post or upvotes a post
 export interface CommentCreateManyWithoutPostInput {
   create?: CommentCreateWithoutPostInput[] | CommentCreateWithoutPostInput;
   connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
 }
 
+<<<<<<< HEAD
 export interface CommentUpdateWithoutVotesDataInput {
   content?: String;
   directParentType?: CONTENT_TYPE;
@@ -4028,6 +4584,12 @@ export interface CommentUpdateWithoutVotesDataInput {
   post?: PostUpdateOneWithoutCommentsInput;
   threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput;
   flags?: FlagUpdateManyWithoutCommentInput;
+=======
+export interface FlagUpsertWithoutPostInput {
+  where: FlagWhereUniqueInput
+  update: FlagUpdateWithoutPostDataInput
+  create: FlagCreateWithoutPostInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserCreateOneWithoutCommentsInput {
@@ -4035,6 +4597,7 @@ export interface UserCreateOneWithoutCommentsInput {
   connect?: UserWhereUniqueInput;
 }
 
+<<<<<<< HEAD
 export interface PostUpdateOneWithoutCommentsInput {
   create?: PostCreateWithoutCommentsInput;
   connect?: PostWhereUniqueInput;
@@ -4069,11 +4632,157 @@ export interface PostUpdateWithoutCommentsDataInput {
   author?: UserUpdateOneWithoutPostsInput;
   flags?: FlagUpdateManyWithoutPostInput;
   votes?: VoteUpdateManyWithoutPostInput;
+=======
+export interface PostWhereInput {
+  AND?: PostWhereInput[] | PostWhereInput
+  OR?: PostWhereInput[] | PostWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  updatedAt?: DateTime
+  updatedAt_not?: DateTime
+  updatedAt_in?: DateTime[] | DateTime
+  updatedAt_not_in?: DateTime[] | DateTime
+  updatedAt_lt?: DateTime
+  updatedAt_lte?: DateTime
+  updatedAt_gt?: DateTime
+  updatedAt_gte?: DateTime
+  title?: String
+  title_not?: String
+  title_in?: String[] | String
+  title_not_in?: String[] | String
+  title_lt?: String
+  title_lte?: String
+  title_gt?: String
+  title_gte?: String
+  title_contains?: String
+  title_not_contains?: String
+  title_starts_with?: String
+  title_not_starts_with?: String
+  title_ends_with?: String
+  title_not_ends_with?: String
+  url?: String
+  url_not?: String
+  url_in?: String[] | String
+  url_not_in?: String[] | String
+  url_lt?: String
+  url_lte?: String
+  url_gt?: String
+  url_gte?: String
+  url_contains?: String
+  url_not_contains?: String
+  url_starts_with?: String
+  url_not_starts_with?: String
+  url_ends_with?: String
+  url_not_ends_with?: String
+  content?: String
+  content_not?: String
+  content_in?: String[] | String
+  content_not_in?: String[] | String
+  content_lt?: String
+  content_lte?: String
+  content_gt?: String
+  content_gte?: String
+  content_contains?: String
+  content_not_contains?: String
+  content_starts_with?: String
+  content_not_starts_with?: String
+  content_ends_with?: String
+  content_not_ends_with?: String
+  hidden?: Boolean
+  hidden_not?: Boolean
+  mediaLink?: String
+  mediaLink_not?: String
+  mediaLink_in?: String[] | String
+  mediaLink_not_in?: String[] | String
+  mediaLink_lt?: String
+  mediaLink_lte?: String
+  mediaLink_gt?: String
+  mediaLink_gte?: String
+  mediaLink_contains?: String
+  mediaLink_not_contains?: String
+  mediaLink_starts_with?: String
+  mediaLink_not_starts_with?: String
+  mediaLink_ends_with?: String
+  mediaLink_not_ends_with?: String
+  isAdmin?: Boolean
+  isAdmin_not?: Boolean
+  author?: UserWhereInput
+  comments_every?: CommentWhereInput
+  comments_some?: CommentWhereInput
+  comments_none?: CommentWhereInput
+  flags_every?: FlagWhereInput
+  flags_some?: FlagWhereInput
+  flags_none?: FlagWhereInput
+  votes_every?: VoteWhereInput
+  votes_some?: VoteWhereInput
+  votes_none?: VoteWhereInput
+}
+
+export interface VoteCreateManyWithoutVoterInput {
+  create?: VoteCreateWithoutVoterInput[] | VoteCreateWithoutVoterInput
+  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+}
+
+export interface PostUpdateOneWithoutCommentsInput {
+  create?: PostCreateWithoutCommentsInput
+  connect?: PostWhereUniqueInput
+  disconnect?: PostWhereUniqueInput
+  delete?: PostWhereUniqueInput
+  update?: PostUpdateWithoutCommentsInput
+  upsert?: PostUpsertWithoutCommentsInput
+}
+
+export interface CommentCreateOneWithoutVotesInput {
+  create?: CommentCreateWithoutVotesInput
+  connect?: CommentWhereUniqueInput
+}
+
+export interface PostUpdateWithoutCommentsInput {
+  where: PostWhereUniqueInput
+  data: PostUpdateWithoutCommentsDataInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface PostCreateOneWithoutCommentsInput {
   create?: PostCreateWithoutCommentsInput;
   connect?: PostWhereUniqueInput;
+}
+
+export interface PostUpdateWithoutCommentsDataInput {
+  title?: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author?: UserUpdateOneWithoutPostsInput
+  flags?: FlagUpdateManyWithoutPostInput
+  votes?: VoteUpdateManyWithoutPostInput
+}
+
+export interface UserCreateOneWithoutPostsInput {
+  create?: UserCreateWithoutPostsInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface UserUpdateOneWithoutPostsInput {
@@ -4085,9 +4794,15 @@ export interface UserUpdateOneWithoutPostsInput {
   upsert?: UserUpsertWithoutPostsInput;
 }
 
+<<<<<<< HEAD
 export interface UserCreateOneWithoutPostsInput {
   create?: UserCreateWithoutPostsInput;
   connect?: UserWhereUniqueInput;
+=======
+export interface CommentCreateManyWithoutAuthorInput {
+  create?: CommentCreateWithoutAuthorInput[] | CommentCreateWithoutAuthorInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserUpdateWithoutPostsInput {
@@ -4095,6 +4810,7 @@ export interface UserUpdateWithoutPostsInput {
   data: UserUpdateWithoutPostsDataInput;
 }
 
+<<<<<<< HEAD
 export interface CommentCreateManyWithoutAuthorInput {
   create?: CommentCreateWithoutAuthorInput[] | CommentCreateWithoutAuthorInput;
   connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
@@ -4120,6 +4836,34 @@ export interface UserUpdateWithoutPostsDataInput {
 export interface CommentCreateManyWithoutThreadedParentCommentInput {
   create?: CommentCreateWithoutThreadedParentCommentInput[] | CommentCreateWithoutThreadedParentCommentInput;
   connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput;
+=======
+export interface CommentCreateManyWithoutThreadedParentCommentInput {
+  create?: CommentCreateWithoutThreadedParentCommentInput[] | CommentCreateWithoutThreadedParentCommentInput
+  connect?: CommentWhereUniqueInput[] | CommentWhereUniqueInput
+}
+
+export interface UserUpdateWithoutPostsDataInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  comments?: CommentUpdateManyWithoutAuthorInput
+  votes?: VoteUpdateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
+}
+
+export interface VoteCreateManyWithoutCommentInput {
+  create?: VoteCreateWithoutCommentInput[] | VoteCreateWithoutCommentInput
+  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentUpdateManyWithoutAuthorInput {
@@ -4131,9 +4875,15 @@ export interface CommentUpdateManyWithoutAuthorInput {
   upsert?: CommentUpsertWithoutAuthorInput[] | CommentUpsertWithoutAuthorInput;
 }
 
+<<<<<<< HEAD
 export interface VoteCreateManyWithoutCommentInput {
   create?: VoteCreateWithoutCommentInput[] | VoteCreateWithoutCommentInput;
   connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput;
+=======
+export interface PostCreateOneWithoutVotesInput {
+  create?: PostCreateWithoutVotesInput
+  connect?: PostWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentUpdateWithoutAuthorInput {
@@ -4141,9 +4891,15 @@ export interface CommentUpdateWithoutAuthorInput {
   data: CommentUpdateWithoutAuthorDataInput;
 }
 
+<<<<<<< HEAD
 export interface PostCreateOneWithoutVotesInput {
   create?: PostCreateWithoutVotesInput;
   connect?: PostWhereUniqueInput;
+=======
+export interface FlagCreateManyWithoutPostInput {
+  create?: FlagCreateWithoutPostInput[] | FlagCreateWithoutPostInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentUpdateWithoutAuthorDataInput {
@@ -4155,9 +4911,15 @@ export interface CommentUpdateWithoutAuthorDataInput {
   flags?: FlagUpdateManyWithoutCommentInput;
 }
 
+<<<<<<< HEAD
 export interface FlagCreateManyWithoutPostInput {
   create?: FlagCreateWithoutPostInput[] | FlagCreateWithoutPostInput;
   connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput;
+=======
+export interface UserCreateOneWithoutFlagsReportedAboutOthersInput {
+  create?: UserCreateWithoutFlagsReportedAboutOthersInput
+  connect?: UserWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentUpdateManyWithoutThreadedParentCommentInput {
@@ -4169,9 +4931,15 @@ export interface CommentUpdateManyWithoutThreadedParentCommentInput {
   upsert?: CommentUpsertWithoutThreadedParentCommentInput[] | CommentUpsertWithoutThreadedParentCommentInput;
 }
 
+<<<<<<< HEAD
 export interface UserCreateOneWithoutFlagsReportedAboutOthersInput {
   create?: UserCreateWithoutFlagsReportedAboutOthersInput;
   connect?: UserWhereUniqueInput;
+=======
+export interface FlagCreateManyWithoutReportedUserInput {
+  create?: FlagCreateWithoutReportedUserInput[] | FlagCreateWithoutReportedUserInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentUpdateWithoutThreadedParentCommentInput {
@@ -4179,9 +4947,15 @@ export interface CommentUpdateWithoutThreadedParentCommentInput {
   data: CommentUpdateWithoutThreadedParentCommentDataInput;
 }
 
+<<<<<<< HEAD
 export interface FlagCreateManyWithoutReportedUserInput {
   create?: FlagCreateWithoutReportedUserInput[] | FlagCreateWithoutReportedUserInput;
   connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput;
+=======
+export interface CommentCreateOneWithoutFlagsInput {
+  create?: CommentCreateWithoutFlagsInput
+  connect?: CommentWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentUpdateWithoutThreadedParentCommentDataInput {
@@ -4193,9 +4967,15 @@ export interface CommentUpdateWithoutThreadedParentCommentDataInput {
   flags?: FlagUpdateManyWithoutCommentInput;
 }
 
+<<<<<<< HEAD
 export interface CommentCreateOneWithoutFlagsInput {
   create?: CommentCreateWithoutFlagsInput;
   connect?: CommentWhereUniqueInput;
+=======
+export interface PostCreateOneWithoutFlagsInput {
+  create?: PostCreateWithoutFlagsInput
+  connect?: PostWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface VoteUpdateManyWithoutCommentInput {
@@ -4207,9 +4987,15 @@ export interface VoteUpdateManyWithoutCommentInput {
   upsert?: VoteUpsertWithoutCommentInput[] | VoteUpsertWithoutCommentInput;
 }
 
+<<<<<<< HEAD
 export interface PostCreateOneWithoutFlagsInput {
   create?: PostCreateWithoutFlagsInput;
   connect?: PostWhereUniqueInput;
+=======
+export interface VoteCreateManyWithoutPostInput {
+  create?: VoteCreateWithoutPostInput[] | VoteCreateWithoutPostInput
+  connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface VoteUpdateWithoutCommentInput {
@@ -4217,9 +5003,15 @@ export interface VoteUpdateWithoutCommentInput {
   data: VoteUpdateWithoutCommentDataInput;
 }
 
+<<<<<<< HEAD
 export interface VoteCreateManyWithoutPostInput {
   create?: VoteCreateWithoutPostInput[] | VoteCreateWithoutPostInput;
   connect?: VoteWhereUniqueInput[] | VoteWhereUniqueInput;
+=======
+export interface UserCreateOneWithoutVotesInput {
+  create?: UserCreateWithoutVotesInput
+  connect?: UserWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface VoteUpdateWithoutCommentDataInput {
@@ -4229,9 +5021,15 @@ export interface VoteUpdateWithoutCommentDataInput {
   voter?: UserUpdateOneWithoutVotesInput;
 }
 
+<<<<<<< HEAD
 export interface UserCreateOneWithoutVotesInput {
   create?: UserCreateWithoutVotesInput;
   connect?: UserWhereUniqueInput;
+=======
+export interface FlagCreateManyWithoutCreatorInput {
+  create?: FlagCreateWithoutCreatorInput[] | FlagCreateWithoutCreatorInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface PostUpdateOneWithoutVotesInput {
@@ -4243,9 +5041,15 @@ export interface PostUpdateOneWithoutVotesInput {
   upsert?: PostUpsertWithoutVotesInput;
 }
 
+<<<<<<< HEAD
 export interface FlagCreateManyWithoutCreatorInput {
   create?: FlagCreateWithoutCreatorInput[] | FlagCreateWithoutCreatorInput;
   connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput;
+=======
+export interface UserCreateOneWithoutFlagsReportedAboutThisUserInput {
+  create?: UserCreateWithoutFlagsReportedAboutThisUserInput
+  connect?: UserWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface PostUpdateWithoutVotesInput {
@@ -4253,9 +5057,15 @@ export interface PostUpdateWithoutVotesInput {
   data: PostUpdateWithoutVotesDataInput;
 }
 
+<<<<<<< HEAD
 export interface UserCreateOneWithoutFlagsReportedAboutThisUserInput {
   create?: UserCreateWithoutFlagsReportedAboutThisUserInput;
   connect?: UserWhereUniqueInput;
+=======
+export interface FlagCreateManyWithoutCommentInput {
+  create?: FlagCreateWithoutCommentInput[] | FlagCreateWithoutCommentInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface PostUpdateWithoutVotesDataInput {
@@ -4270,9 +5080,20 @@ export interface PostUpdateWithoutVotesDataInput {
   flags?: FlagUpdateManyWithoutPostInput;
 }
 
+<<<<<<< HEAD
 export interface FlagCreateManyWithoutCommentInput {
   create?: FlagCreateWithoutCommentInput[] | FlagCreateWithoutCommentInput;
   connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput;
+=======
+export interface FlagSubscriptionWhereInput {
+  AND?: FlagSubscriptionWhereInput[] | FlagSubscriptionWhereInput
+  OR?: FlagSubscriptionWhereInput[] | FlagSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: FlagWhereInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface FlagUpdateManyWithoutPostInput {
@@ -4284,6 +5105,7 @@ export interface FlagUpdateManyWithoutPostInput {
   upsert?: FlagUpsertWithoutPostInput[] | FlagUpsertWithoutPostInput;
 }
 
+<<<<<<< HEAD
 export interface VoteSubscriptionWhereInput {
   AND?: VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput;
   OR?: VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput;
@@ -4292,6 +5114,16 @@ export interface VoteSubscriptionWhereInput {
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
   node?: VoteWhereInput;
+=======
+export interface UserSubscriptionWhereInput {
+  AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: UserWhereInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface FlagUpdateWithoutPostInput {
@@ -4299,6 +5131,7 @@ export interface FlagUpdateWithoutPostInput {
   data: FlagUpdateWithoutPostDataInput;
 }
 
+<<<<<<< HEAD
 export interface CommentUpdateInput {
   content?: String;
   directParentType?: CONTENT_TYPE;
@@ -4307,6 +5140,10 @@ export interface CommentUpdateInput {
   threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput;
   votes?: VoteUpdateManyWithoutCommentInput;
   flags?: FlagUpdateManyWithoutCommentInput;
+=======
+export interface PostWhereUniqueInput {
+  id?: ID_Input
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface FlagUpdateWithoutPostDataInput {
@@ -4316,8 +5153,17 @@ export interface FlagUpdateWithoutPostDataInput {
   comment?: CommentUpdateOneWithoutFlagsInput;
 }
 
+<<<<<<< HEAD
 export interface CommentWhereUniqueInput {
   id?: ID_Input;
+=======
+export interface VoteUpdateInput {
+  score?: Int
+  contentType?: CONTENT_TYPE
+  comment?: CommentUpdateOneWithoutVotesInput
+  post?: PostUpdateOneWithoutVotesInput
+  voter?: UserUpdateOneWithoutVotesInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserUpdateOneWithoutFlagsReportedAboutOthersInput {
@@ -4329,10 +5175,17 @@ export interface UserUpdateOneWithoutFlagsReportedAboutOthersInput {
   upsert?: UserUpsertWithoutFlagsReportedAboutOthersInput;
 }
 
+<<<<<<< HEAD
 export interface PostUpsertWithoutAuthorInput {
   where: PostWhereUniqueInput;
   update: PostUpdateWithoutAuthorDataInput;
   create: PostCreateWithoutAuthorInput;
+=======
+export interface UserUpsertWithoutCommentsInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutCommentsDataInput
+  create: UserCreateWithoutCommentsInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserUpdateWithoutFlagsReportedAboutOthersInput {
@@ -4340,6 +5193,7 @@ export interface UserUpdateWithoutFlagsReportedAboutOthersInput {
   data: UserUpdateWithoutFlagsReportedAboutOthersDataInput;
 }
 
+<<<<<<< HEAD
 export interface CommentUpsertWithoutVotesInput {
   where: CommentWhereUniqueInput;
   update: CommentUpdateWithoutVotesDataInput;
@@ -4367,6 +5221,37 @@ export interface CommentUpsertWithoutThreadedParentCommentInput {
   where: CommentWhereUniqueInput;
   update: CommentUpdateWithoutThreadedParentCommentDataInput;
   create: CommentCreateWithoutThreadedParentCommentInput;
+=======
+export interface UserUpsertWithoutPostsInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutPostsDataInput
+  create: UserCreateWithoutPostsInput
+}
+
+export interface UserUpdateWithoutFlagsReportedAboutOthersDataInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostUpdateManyWithoutAuthorInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+  votes?: VoteUpdateManyWithoutVoterInput
+  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
+}
+
+export interface FlagUpdateWithoutCommentDataInput {
+  reportedContentType?: CONTENT_TYPE
+  creator?: UserUpdateOneWithoutFlagsReportedAboutOthersInput
+  reportedUser?: UserUpdateOneWithoutFlagsReportedAboutThisUserInput
+  post?: PostUpdateOneWithoutFlagsInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface FlagUpdateManyWithoutReportedUserInput {
@@ -4378,6 +5263,7 @@ export interface FlagUpdateManyWithoutReportedUserInput {
   upsert?: FlagUpsertWithoutReportedUserInput[] | FlagUpsertWithoutReportedUserInput;
 }
 
+<<<<<<< HEAD
 export interface FlagUpdateManyWithoutCommentInput {
   create?: FlagCreateWithoutCommentInput[] | FlagCreateWithoutCommentInput;
   connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput;
@@ -4426,6 +5312,53 @@ export interface UserCreateWithoutCommentsInput {
   votes?: VoteCreateManyWithoutVoterInput;
   flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput;
   flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput;
+=======
+export interface UserCreateInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostCreateManyWithoutAuthorInput
+  comments?: CommentCreateManyWithoutAuthorInput
+  votes?: VoteCreateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
+}
+
+export interface FlagUpdateWithoutReportedUserInput {
+  where: FlagWhereUniqueInput
+  data: FlagUpdateWithoutReportedUserDataInput
+}
+
+export interface CommentCreateWithoutPostInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  author: UserCreateOneWithoutCommentsInput
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  votes?: VoteCreateManyWithoutCommentInput
+  flags?: FlagCreateManyWithoutCommentInput
+}
+
+export interface FlagUpdateWithoutReportedUserDataInput {
+  reportedContentType?: CONTENT_TYPE
+  creator?: UserUpdateOneWithoutFlagsReportedAboutOthersInput
+  comment?: CommentUpdateOneWithoutFlagsInput
+  post?: PostUpdateOneWithoutFlagsInput
+}
+
+export interface VoteCreateWithoutVoterInput {
+  score: Int
+  contentType: CONTENT_TYPE
+  comment?: CommentCreateOneWithoutVotesInput
+  post: PostCreateOneWithoutVotesInput
 }
 
 export interface CommentUpdateOneWithoutFlagsInput {
@@ -4437,6 +5370,7 @@ export interface CommentUpdateOneWithoutFlagsInput {
   upsert?: CommentUpsertWithoutFlagsInput;
 }
 
+<<<<<<< HEAD
 export interface CommentCreateWithoutVotesInput {
   content: String;
   directParentType: CONTENT_TYPE;
@@ -4444,6 +5378,18 @@ export interface CommentCreateWithoutVotesInput {
   post: PostCreateOneWithoutCommentsInput;
   threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput;
   flags?: FlagCreateManyWithoutCommentInput;
+=======
+export interface PostCreateWithoutCommentsInput {
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author: UserCreateOneWithoutPostsInput
+  flags?: FlagCreateManyWithoutPostInput
+  votes?: VoteCreateManyWithoutPostInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentUpdateWithoutFlagsInput {
@@ -4451,6 +5397,7 @@ export interface CommentUpdateWithoutFlagsInput {
   data: CommentUpdateWithoutFlagsDataInput;
 }
 
+<<<<<<< HEAD
 export interface UserCreateWithoutPostsInput {
   facebookUserId?: String;
   facebookEmail?: String;
@@ -4466,6 +5413,15 @@ export interface UserCreateWithoutPostsInput {
   votes?: VoteCreateManyWithoutVoterInput;
   flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput;
   flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput;
+=======
+export interface CommentCreateWithoutAuthorInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  post: PostCreateOneWithoutCommentsInput
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  votes?: VoteCreateManyWithoutCommentInput
+  flags?: FlagCreateManyWithoutCommentInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentUpdateWithoutFlagsDataInput {
@@ -4477,6 +5433,7 @@ export interface CommentUpdateWithoutFlagsDataInput {
   votes?: VoteUpdateManyWithoutCommentInput;
 }
 
+<<<<<<< HEAD
 export interface CommentCreateWithoutThreadedParentCommentInput {
   content: String;
   directParentType: CONTENT_TYPE;
@@ -4484,6 +5441,13 @@ export interface CommentCreateWithoutThreadedParentCommentInput {
   post: PostCreateOneWithoutCommentsInput;
   votes?: VoteCreateManyWithoutCommentInput;
   flags?: FlagCreateManyWithoutCommentInput;
+=======
+export interface VoteCreateWithoutCommentInput {
+  score: Int
+  contentType: CONTENT_TYPE
+  post: PostCreateOneWithoutVotesInput
+  voter: UserCreateOneWithoutVotesInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentUpsertWithoutFlagsInput {
@@ -4492,6 +5456,7 @@ export interface CommentUpsertWithoutFlagsInput {
   create: CommentCreateWithoutFlagsInput;
 }
 
+<<<<<<< HEAD
 export interface PostCreateWithoutVotesInput {
   title: String;
   url?: String;
@@ -4502,6 +5467,13 @@ export interface PostCreateWithoutVotesInput {
   author: UserCreateOneWithoutPostsInput;
   comments?: CommentCreateManyWithoutPostInput;
   flags?: FlagCreateManyWithoutPostInput;
+=======
+export interface FlagCreateWithoutPostInput {
+  reportedContentType: CONTENT_TYPE
+  creator: UserCreateOneWithoutFlagsReportedAboutOthersInput
+  reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
+  comment?: CommentCreateOneWithoutFlagsInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface PostUpdateOneWithoutFlagsInput {
@@ -4513,6 +5485,7 @@ export interface PostUpdateOneWithoutFlagsInput {
   upsert?: PostUpsertWithoutFlagsInput;
 }
 
+<<<<<<< HEAD
 export interface UserCreateWithoutFlagsReportedAboutOthersInput {
   facebookUserId?: String;
   facebookEmail?: String;
@@ -4528,6 +5501,13 @@ export interface UserCreateWithoutFlagsReportedAboutOthersInput {
   comments?: CommentCreateManyWithoutAuthorInput;
   votes?: VoteCreateManyWithoutVoterInput;
   flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput;
+=======
+export interface FlagCreateWithoutReportedUserInput {
+  reportedContentType: CONTENT_TYPE
+  creator: UserCreateOneWithoutFlagsReportedAboutOthersInput
+  comment?: CommentCreateOneWithoutFlagsInput
+  post: PostCreateOneWithoutFlagsInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface PostUpdateWithoutFlagsInput {
@@ -4535,6 +5515,7 @@ export interface PostUpdateWithoutFlagsInput {
   data: PostUpdateWithoutFlagsDataInput;
 }
 
+<<<<<<< HEAD
 export interface CommentCreateWithoutFlagsInput {
   content: String;
   directParentType: CONTENT_TYPE;
@@ -4542,6 +5523,18 @@ export interface CommentCreateWithoutFlagsInput {
   post: PostCreateOneWithoutCommentsInput;
   threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput;
   votes?: VoteCreateManyWithoutCommentInput;
+=======
+export interface PostCreateWithoutFlagsInput {
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author: UserCreateOneWithoutPostsInput
+  comments?: CommentCreateManyWithoutPostInput
+  votes?: VoteCreateManyWithoutPostInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface PostUpdateWithoutFlagsDataInput {
@@ -4556,11 +5549,30 @@ export interface PostUpdateWithoutFlagsDataInput {
   votes?: VoteUpdateManyWithoutPostInput;
 }
 
+<<<<<<< HEAD
 export interface VoteCreateWithoutPostInput {
   score: Int;
   contentType: CONTENT_TYPE;
   comment?: CommentCreateOneWithoutVotesInput;
   voter: UserCreateOneWithoutVotesInput;
+=======
+export interface UserCreateWithoutVotesInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostCreateManyWithoutAuthorInput
+  comments?: CommentCreateManyWithoutAuthorInput
+  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface VoteUpdateManyWithoutPostInput {
@@ -4572,11 +5584,30 @@ export interface VoteUpdateManyWithoutPostInput {
   upsert?: VoteUpsertWithoutPostInput[] | VoteUpsertWithoutPostInput;
 }
 
+<<<<<<< HEAD
 export interface FlagCreateWithoutCreatorInput {
   reportedContentType: CONTENT_TYPE;
   reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput;
   comment?: CommentCreateOneWithoutFlagsInput;
   post: PostCreateOneWithoutFlagsInput;
+=======
+export interface UserCreateWithoutFlagsReportedAboutThisUserInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostCreateManyWithoutAuthorInput
+  comments?: CommentCreateManyWithoutAuthorInput
+  votes?: VoteCreateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface VoteUpdateWithoutPostInput {
@@ -4584,6 +5615,7 @@ export interface VoteUpdateWithoutPostInput {
   data: VoteUpdateWithoutPostDataInput;
 }
 
+<<<<<<< HEAD
 export interface VoteWhereInput {
   AND?: VoteWhereInput[] | VoteWhereInput;
   OR?: VoteWhereInput[] | VoteWhereInput;
@@ -4632,6 +5664,16 @@ export interface VoteWhereInput {
   comment?: CommentWhereInput;
   post?: PostWhereInput;
   voter?: UserWhereInput;
+=======
+export interface VoteSubscriptionWhereInput {
+  AND?: VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput
+  OR?: VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: VoteWhereInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface VoteUpdateWithoutPostDataInput {
@@ -4641,6 +5683,7 @@ export interface VoteUpdateWithoutPostDataInput {
   voter?: UserUpdateOneWithoutVotesInput;
 }
 
+<<<<<<< HEAD
 export interface UserSubscriptionWhereInput {
   AND?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
   OR?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
@@ -4649,6 +5692,10 @@ export interface UserSubscriptionWhereInput {
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
   node?: UserWhereInput;
+=======
+export interface CommentWhereUniqueInput {
+  id?: ID_Input
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserUpdateOneWithoutVotesInput {
@@ -4660,12 +5707,19 @@ export interface UserUpdateOneWithoutVotesInput {
   upsert?: UserUpsertWithoutVotesInput;
 }
 
+<<<<<<< HEAD
 export interface VoteUpdateInput {
   score?: Int;
   contentType?: CONTENT_TYPE;
   comment?: CommentUpdateOneWithoutVotesInput;
   post?: PostUpdateOneWithoutVotesInput;
   voter?: UserUpdateOneWithoutVotesInput;
+=======
+export interface CommentUpsertWithoutVotesInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutVotesDataInput
+  create: CommentCreateWithoutVotesInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserUpdateWithoutVotesInput {
@@ -4673,6 +5727,7 @@ export interface UserUpdateWithoutVotesInput {
   data: UserUpdateWithoutVotesDataInput;
 }
 
+<<<<<<< HEAD
 export interface UserUpsertWithoutPostsInput {
   where: UserWhereUniqueInput;
   update: UserUpdateWithoutPostsDataInput;
@@ -4712,6 +5767,51 @@ export interface UserCreateInput {
   votes?: VoteCreateManyWithoutVoterInput;
   flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput;
   flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput;
+=======
+export interface FlagUpdateManyWithoutCommentInput {
+  create?: FlagCreateWithoutCommentInput[] | FlagCreateWithoutCommentInput
+  connect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+  disconnect?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+  delete?: FlagWhereUniqueInput[] | FlagWhereUniqueInput
+  update?: FlagUpdateWithoutCommentInput[] | FlagUpdateWithoutCommentInput
+  upsert?: FlagUpsertWithoutCommentInput[] | FlagUpsertWithoutCommentInput
+}
+
+export interface UserUpdateWithoutVotesDataInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostUpdateManyWithoutAuthorInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagUpdateManyWithoutReportedUserInput
+}
+
+export interface UserCreateWithoutCommentsInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostCreateManyWithoutAuthorInput
+  votes?: VoteCreateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface FlagUpdateManyWithoutCreatorInput {
@@ -4723,11 +5823,30 @@ export interface FlagUpdateManyWithoutCreatorInput {
   upsert?: FlagUpsertWithoutCreatorInput[] | FlagUpsertWithoutCreatorInput;
 }
 
+<<<<<<< HEAD
 export interface VoteCreateWithoutVoterInput {
   score: Int;
   contentType: CONTENT_TYPE;
   comment?: CommentCreateOneWithoutVotesInput;
   post: PostCreateOneWithoutVotesInput;
+=======
+export interface UserCreateWithoutPostsInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  comments?: CommentCreateManyWithoutAuthorInput
+  votes?: VoteCreateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagCreateManyWithoutCreatorInput
+  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface FlagUpdateWithoutCreatorInput {
@@ -4735,6 +5854,7 @@ export interface FlagUpdateWithoutCreatorInput {
   data: FlagUpdateWithoutCreatorDataInput;
 }
 
+<<<<<<< HEAD
 export interface CommentCreateWithoutAuthorInput {
   content: String;
   directParentType: CONTENT_TYPE;
@@ -4742,6 +5862,18 @@ export interface CommentCreateWithoutAuthorInput {
   threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput;
   votes?: VoteCreateManyWithoutCommentInput;
   flags?: FlagCreateManyWithoutCommentInput;
+=======
+export interface PostCreateWithoutVotesInput {
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author: UserCreateOneWithoutPostsInput
+  comments?: CommentCreateManyWithoutPostInput
+  flags?: FlagCreateManyWithoutPostInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface FlagUpdateWithoutCreatorDataInput {
@@ -4751,11 +5883,21 @@ export interface FlagUpdateWithoutCreatorDataInput {
   post?: PostUpdateOneWithoutFlagsInput;
 }
 
+<<<<<<< HEAD
 export interface FlagCreateWithoutPostInput {
   reportedContentType: CONTENT_TYPE;
   creator: UserCreateOneWithoutFlagsReportedAboutOthersInput;
   reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput;
   comment?: CommentCreateOneWithoutFlagsInput;
+=======
+export interface CommentCreateWithoutFlagsInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  author: UserCreateOneWithoutCommentsInput
+  post: PostCreateOneWithoutCommentsInput
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  votes?: VoteCreateManyWithoutCommentInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserUpdateOneWithoutFlagsReportedAboutThisUserInput {
@@ -4767,6 +5909,7 @@ export interface UserUpdateOneWithoutFlagsReportedAboutThisUserInput {
   upsert?: UserUpsertWithoutFlagsReportedAboutThisUserInput;
 }
 
+<<<<<<< HEAD
 export interface PostCreateWithoutFlagsInput {
   title: String;
   url?: String;
@@ -4777,6 +5920,13 @@ export interface PostCreateWithoutFlagsInput {
   author: UserCreateOneWithoutPostsInput;
   comments?: CommentCreateManyWithoutPostInput;
   votes?: VoteCreateManyWithoutPostInput;
+=======
+export interface FlagCreateWithoutCreatorInput {
+  reportedContentType: CONTENT_TYPE
+  reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
+  comment?: CommentCreateOneWithoutFlagsInput
+  post: PostCreateOneWithoutFlagsInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserUpdateWithoutFlagsReportedAboutThisUserInput {
@@ -4784,6 +5934,7 @@ export interface UserUpdateWithoutFlagsReportedAboutThisUserInput {
   data: UserUpdateWithoutFlagsReportedAboutThisUserDataInput;
 }
 
+<<<<<<< HEAD
 export interface UserCreateWithoutFlagsReportedAboutThisUserInput {
   facebookUserId?: String;
   facebookEmail?: String;
@@ -4820,6 +5971,40 @@ export interface UserUpdateWithoutFlagsReportedAboutThisUserDataInput {
 
 export interface PostWhereUniqueInput {
   id?: ID_Input;
+=======
+export interface CommentUpdateInput {
+  content?: String
+  directParentType?: CONTENT_TYPE
+  author?: UserUpdateOneWithoutCommentsInput
+  post?: PostUpdateOneWithoutCommentsInput
+  threadedParentComment?: CommentUpdateManyWithoutThreadedParentCommentInput
+  votes?: VoteUpdateManyWithoutCommentInput
+  flags?: FlagUpdateManyWithoutCommentInput
+}
+
+export interface UserUpdateWithoutFlagsReportedAboutThisUserDataInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostUpdateManyWithoutAuthorInput
+  comments?: CommentUpdateManyWithoutAuthorInput
+  votes?: VoteUpdateManyWithoutVoterInput
+  flagsReportedAboutOthers?: FlagUpdateManyWithoutCreatorInput
+}
+
+export interface CommentUpsertWithoutThreadedParentCommentInput {
+  where: CommentWhereUniqueInput
+  update: CommentUpdateWithoutThreadedParentCommentDataInput
+  create: CommentCreateWithoutThreadedParentCommentInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserUpsertWithoutFlagsReportedAboutThisUserInput {
@@ -4828,11 +6013,21 @@ export interface UserUpsertWithoutFlagsReportedAboutThisUserInput {
   create: UserCreateWithoutFlagsReportedAboutThisUserInput;
 }
 
+<<<<<<< HEAD
 export interface FlagUpdateWithoutCommentDataInput {
   reportedContentType?: CONTENT_TYPE;
   creator?: UserUpdateOneWithoutFlagsReportedAboutOthersInput;
   reportedUser?: UserUpdateOneWithoutFlagsReportedAboutThisUserInput;
   post?: PostUpdateOneWithoutFlagsInput;
+=======
+export interface CommentCreateWithoutVotesInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  author: UserCreateOneWithoutCommentsInput
+  post: PostCreateOneWithoutCommentsInput
+  threadedParentComment?: CommentCreateManyWithoutThreadedParentCommentInput
+  flags?: FlagCreateManyWithoutCommentInput
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface FlagUpsertWithoutCreatorInput {
@@ -4841,6 +6036,7 @@ export interface FlagUpsertWithoutCreatorInput {
   create: FlagCreateWithoutCreatorInput;
 }
 
+<<<<<<< HEAD
 export interface PostCreateWithoutCommentsInput {
   title: String;
   url?: String;
@@ -4872,6 +6068,33 @@ export interface UserUpsertWithoutFlagsReportedAboutOthersInput {
   create: UserCreateWithoutFlagsReportedAboutOthersInput;
 }
 
+=======
+export interface UserCreateWithoutFlagsReportedAboutOthersInput {
+  facebookUserId?: String
+  facebookEmail?: String
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+  posts?: PostCreateManyWithoutAuthorInput
+  comments?: CommentCreateManyWithoutAuthorInput
+  votes?: VoteCreateManyWithoutVoterInput
+  flagsReportedAboutThisUser?: FlagCreateManyWithoutReportedUserInput
+}
+
+export interface FlagCreateWithoutCommentInput {
+  reportedContentType: CONTENT_TYPE
+  creator: UserCreateOneWithoutFlagsReportedAboutOthersInput
+  reportedUser: UserCreateOneWithoutFlagsReportedAboutThisUserInput
+  post: PostCreateOneWithoutFlagsInput
+}
+
+>>>>>>> karma working when a user comments on a post or upvotes a post
 export interface FlagUpsertWithoutReportedUserInput {
   where: FlagWhereUniqueInput;
   update: FlagUpdateWithoutReportedUserDataInput;
@@ -4890,6 +6113,7 @@ export interface VoteUpsertWithoutPostInput {
   create: VoteCreateWithoutPostInput;
 }
 
+<<<<<<< HEAD
 export interface UserCreateWithoutVotesInput {
   facebookUserId?: String;
   facebookEmail?: String;
@@ -4963,6 +6187,98 @@ export interface Flag extends Node {
   reportedUser: User;
   comment?: Comment;
   post: Post;
+=======
+export interface UserUpsertWithoutVotesInput {
+  where: UserWhereUniqueInput
+  update: UserUpdateWithoutVotesDataInput
+  create: UserCreateWithoutVotesInput
+}
+
+export interface PostUpsertWithoutAuthorInput {
+  where: PostWhereUniqueInput
+  update: PostUpdateWithoutAuthorDataInput
+  create: PostCreateWithoutAuthorInput
+}
+
+export interface VoteCreateWithoutPostInput {
+  score: Int
+  contentType: CONTENT_TYPE
+  comment?: CommentCreateOneWithoutVotesInput
+  voter: UserCreateOneWithoutVotesInput
+}
+
+export interface CommentCreateWithoutThreadedParentCommentInput {
+  content: String
+  directParentType: CONTENT_TYPE
+  author: UserCreateOneWithoutCommentsInput
+  post: PostCreateOneWithoutCommentsInput
+  votes?: VoteCreateManyWithoutCommentInput
+  flags?: FlagCreateManyWithoutCommentInput
+}
+
+export interface PostCreateWithoutAuthorInput {
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  comments?: CommentCreateManyWithoutPostInput
+  flags?: FlagCreateManyWithoutPostInput
+  votes?: VoteCreateManyWithoutPostInput
+}
+
+/*
+ * An object with an ID
+
+ */
+export interface Node {
+  id: ID_Output
+}
+
+export interface FlagPreviousValues {
+  id: ID_Output
+  createdAt: DateTime
+  updatedAt: DateTime
+  reportedContentType: CONTENT_TYPE
+}
+
+export interface User extends Node {
+  id: ID_Output
+  facebookUserId?: String
+  facebookEmail?: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  posts?: Post[]
+  comments?: Comment[]
+  votes?: Vote[]
+  flagsReportedAboutOthers?: Flag[]
+  flagsReportedAboutThisUser?: Flag[]
+  karma?: Int
+}
+
+export interface BatchPayload {
+  count: Long
+}
+
+export interface AggregateFlag {
+  count: Int
+}
+
+export interface FlagSubscriptionPayload {
+  mutation: MutationType
+  node?: Flag
+  updatedFields?: String[]
+  previousValues?: FlagPreviousValues
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentSubscriptionPayload {
@@ -4972,8 +6288,18 @@ export interface CommentSubscriptionPayload {
   previousValues?: CommentPreviousValues;
 }
 
+<<<<<<< HEAD
 export interface AggregateFlag {
   count: Int;
+=======
+/*
+ * An edge in a connection.
+
+ */
+export interface FlagEdge {
+  node: Flag
+  cursor: String
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 /*
@@ -4986,14 +6312,20 @@ export interface FlagConnection {
   aggregate: AggregateFlag;
 }
 
+<<<<<<< HEAD
 export interface BatchPayload {
   count: Long;
+=======
+export interface AggregateComment {
+  count: Int
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 /*
- * An edge in a connection.
+ * A connection to a list of items.
 
  */
+<<<<<<< HEAD
 export interface CommentEdge {
   node: Comment;
   cursor: String;
@@ -5008,6 +6340,12 @@ export interface FlagSubscriptionPayload {
 
 export interface AggregateVote {
   count: Int;
+=======
+export interface CommentConnection {
+  pageInfo: PageInfo
+  edges: CommentEdge[]
+  aggregate: AggregateComment
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface Vote extends Node {
@@ -5022,9 +6360,10 @@ export interface Vote extends Node {
 }
 
 /*
- * A connection to a list of items.
+ * An edge in a connection.
 
  */
+<<<<<<< HEAD
 export interface VoteConnection {
   pageInfo: PageInfo;
   edges: VoteEdge[];
@@ -5059,6 +6398,31 @@ export interface User extends Node {
 export interface PostEdge {
   node: Post;
   cursor: String;
+=======
+export interface VoteEdge {
+  node: Vote
+  cursor: String
+}
+
+export interface Post extends Node {
+  id: ID_Output
+  createdAt: DateTime
+  updatedAt: DateTime
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+  author: User
+  comments?: Comment[]
+  flags?: Flag[]
+  votes?: Vote[]
+}
+
+export interface AggregatePost {
+  count: Int
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface UserSubscriptionPayload {
@@ -5068,6 +6432,7 @@ export interface UserSubscriptionPayload {
   previousValues?: UserPreviousValues;
 }
 
+<<<<<<< HEAD
 export interface AggregateUser {
   count: Int;
 }
@@ -5086,17 +6451,50 @@ export interface UserPreviousValues {
   about?: String;
   profileImageUrl?: String;
   userType?: USER_TYPE;
+=======
+/*
+ * A connection to a list of items.
+
+ */
+export interface PostConnection {
+  pageInfo: PageInfo
+  edges: PostEdge[]
+  aggregate: AggregatePost
+}
+
+export interface UserPreviousValues {
+  id: ID_Output
+  facebookUserId?: String
+  facebookEmail?: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  email?: String
+  username?: String
+  password?: String
+  name?: String
+  admin?: Boolean
+  about?: String
+  profileImageUrl?: String
+  userType?: USER_TYPE
+  karma?: Int
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 /*
- * Information about pagination in a connection.
+ * An edge in a connection.
 
  */
+<<<<<<< HEAD
 export interface PageInfo {
   hasNextPage: Boolean;
   hasPreviousPage: Boolean;
   startCursor?: String;
   endCursor?: String;
+=======
+export interface UserEdge {
+  node: User
+  cursor: String
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface CommentPreviousValues {
@@ -5108,12 +6506,19 @@ export interface CommentPreviousValues {
 }
 
 /*
- * An edge in a connection.
+ * A connection to a list of items.
 
  */
+<<<<<<< HEAD
 export interface FlagEdge {
   node: Flag;
   cursor: String;
+=======
+export interface UserConnection {
+  pageInfo: PageInfo
+  edges: UserEdge[]
+  aggregate: AggregateUser
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface PostSubscriptionPayload {
@@ -5124,9 +6529,10 @@ export interface PostSubscriptionPayload {
 }
 
 /*
- * A connection to a list of items.
+ * An edge in a connection.
 
  */
+<<<<<<< HEAD
 export interface CommentConnection {
   pageInfo: PageInfo;
   edges: CommentEdge[];
@@ -5163,6 +6569,21 @@ export interface Post extends Node {
   comments?: Comment[];
   flags?: Flag[];
   votes?: Vote[];
+=======
+export interface CommentEdge {
+  node: Comment
+  cursor: String
+}
+
+/*
+ * A connection to a list of items.
+
+ */
+export interface VoteConnection {
+  pageInfo: PageInfo
+  edges: VoteEdge[]
+  aggregate: AggregateVote
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 export interface VotePreviousValues {
@@ -5193,6 +6614,7 @@ export interface Comment extends Node {
   flags?: Flag[];
 }
 
+<<<<<<< HEAD
 /*
  * A connection to a list of items.
 
@@ -5201,12 +6623,25 @@ export interface PostConnection {
   pageInfo: PageInfo;
   edges: PostEdge[];
   aggregate: AggregatePost;
+=======
+export interface PostPreviousValues {
+  id: ID_Output
+  createdAt: DateTime
+  updatedAt: DateTime
+  title: String
+  url?: String
+  content?: String
+  hidden?: Boolean
+  mediaLink?: String
+  isAdmin?: Boolean
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 /*
  * An edge in a connection.
 
  */
+<<<<<<< HEAD
 export interface VoteEdge {
   node: Vote;
   cursor: String;
@@ -5224,12 +6659,33 @@ export interface UserConnection {
   pageInfo: PageInfo;
   edges: UserEdge[];
   aggregate: AggregateUser;
+=======
+export interface PostEdge {
+  node: Post
+  cursor: String
+}
+
+export interface AggregateVote {
+  count: Int
+}
+
+export interface Flag extends Node {
+  id: ID_Output
+  createdAt: DateTime
+  updatedAt: DateTime
+  reportedContentType: CONTENT_TYPE
+  creator: User
+  reportedUser: User
+  comment?: Comment
+  post: Post
+>>>>>>> karma working when a user comments on a post or upvotes a post
 }
 
 /*
- * An edge in a connection.
+ * Information about pagination in a connection.
 
  */
+<<<<<<< HEAD
 export interface UserEdge {
   node: User;
   cursor: String;
@@ -5241,6 +6697,26 @@ export type DateTime = string;
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
+=======
+export interface PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor?: String
+  endCursor?: String
+}
+
+export interface AggregateUser {
+  count: Int
+}
+
+/*
+The 'Long' scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+*/
+export type Long = string
+
+export type DateTime = string
+>>>>>>> karma working when a user comments on a post or upvotes a post
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -5249,12 +6725,15 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
+<<<<<<< HEAD
 The 'Long' scalar type represents non-fractional signed whole numeric values.
 Long can represent values between -(2^63) and 2^63 - 1.
 */
 export type Long = string;
 
 /*
+=======
+>>>>>>> karma working when a user comments on a post or upvotes a post
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
@@ -5263,6 +6742,11 @@ export type String = string;
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+*/
+export type Int = number
 
 export interface Schema {
   query: Query;
