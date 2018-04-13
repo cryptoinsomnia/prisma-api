@@ -24,7 +24,9 @@ export const post = {
           title,
           url,
           content,
-          tags,
+          tags: {
+            set: tags,
+          },
         },
       },
       info,
