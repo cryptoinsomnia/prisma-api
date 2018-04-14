@@ -29,6 +29,7 @@ type Post {
   content: String
   hidden: Boolean @default(value: "false")
   mediaLink: String
+  tags: [String!]
   isAdmin: Boolean @default(value: "false")
   author: User! @relation(name: "UserPosts")
   comments: [Comment!]! @relation(name: "PostComments")

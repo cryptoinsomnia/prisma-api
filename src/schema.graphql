@@ -13,7 +13,7 @@ type Query {
 type Mutation {
   authenticateFacebook(fbToken: String!): AuthPayload!
   deletePost(id: ID!): Post!
-  createPost(title: String!, url: String, content: String): Post!
+  createPost(title: String!, url: String, content: String, tags: [String!]): Post!
 
   deleteComment(id: ID!): Comment!
   createComment(content: String!, postId: ID!, parentCommentId: ID): Comment!
