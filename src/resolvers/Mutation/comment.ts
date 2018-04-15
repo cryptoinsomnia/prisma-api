@@ -1,3 +1,4 @@
+import { CONTENT_TYPE } from '../../generated/prisma';
 import { Context, getUserId, incrementUserKarma } from '../../utils/utils';
 
 export const comment = {
@@ -10,8 +11,7 @@ export const comment = {
         if (!commentExists) {
             throw new Error(`Comment not found or you're not the author`);
         }
-
-        return ctx.db.mutation.delete({ where: { id } });
+        return ctx.db.mutation.deleteComment({ where: { id } });
     },
     async createComment(parent, { content, postId, parentCommentId }, ctx: Context, info) {
         const userId = getUserId(ctx);
@@ -26,8 +26,8 @@ export const comment = {
             throw new Error(`Post does not exist`);
         }
 
-        const directParentType = 'POST';
-        const threadedParentCommentData = null;
+        let directParentType: CONTENT_TYPE = 'POST';
+        let threadedParentCommentData = null;
 
         if (parentCommentId) {
             directParentType = 'COMMENT';
