@@ -27,7 +27,7 @@ export async function incrementUserKarma(id, ctx: Context, info) {
   const userToIncrement = await ctx.db.query.user(
     { where: { id } }, null,
   );
-  const curKarma = userToIncrement.karma;
+  let curKarma = userToIncrement.karma;
   if (!curKarma) {
     curKarma = 0;
   }
